@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
-import { groupVenuesByCity, isGoldPartner, type PublicVenue } from "@/lib/portal-venues";
+import { groupVenuesByCity, isGoldPartner, isPublicMenuUrl, type PublicVenue } from "@/lib/portal-venues";
 
 export function FindGoldGrid({
   lang,
@@ -78,7 +78,7 @@ function VenueCard({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
   return (
     <article className="group h-full border border-foreground/15 bg-[color:var(--paper)] transition hover:border-foreground/40">
       {venueLink}
-      {venue.menuMaterialUrl ? (
+      {isPublicMenuUrl(venue.menuMaterialUrl) ? (
         <div className="border-t border-foreground/15 px-6 py-4">
           <a
             href={venue.menuMaterialUrl}

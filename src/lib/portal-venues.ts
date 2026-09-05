@@ -60,6 +60,10 @@ export function isGoldPartner(venue: PublicVenue) {
   return venue.profile === "partner";
 }
 
+export function isPublicMenuUrl(url: string | null | undefined): url is string {
+  return Boolean(url && /^https?:\/\//i.test(url.trim()));
+}
+
 export function groupVenuesByCity(venues: PublicVenue[], fallbackCity: string) {
   const groups = new Map<string, PublicVenue[]>();
   for (const venue of venues) {

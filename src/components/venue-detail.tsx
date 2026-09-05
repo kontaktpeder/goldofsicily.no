@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
 import { BrandNav } from "@/components/brand-nav";
 import { VenuesMap } from "@/components/venues-map";
-import { isGoldPartner, mapsUrl, type PublicVenue } from "@/lib/portal-venues";
+import { isGoldPartner, isPublicMenuUrl, mapsUrl, type PublicVenue } from "@/lib/portal-venues";
 
 function visitUrl(venue: PublicVenue) {
   if (venue.websiteUrl) return venue.websiteUrl;
@@ -151,7 +151,7 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
           </div>
         ) : null}
 
-        {venue.menuMaterialUrl ? (
+        {isPublicMenuUrl(venue.menuMaterialUrl) ? (
           <a
             href={venue.menuMaterialUrl}
             target="_blank"
