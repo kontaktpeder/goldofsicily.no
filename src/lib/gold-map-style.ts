@@ -8,6 +8,7 @@ export const goldMapStyle = {
       "url": "https://tiles.openfreemap.org/planet"
     }
   },
+  "sprite": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
   "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
@@ -68,7 +69,7 @@ export const goldMapStyle = {
       ],
       "paint": {
         "fill-antialias": true,
-        "fill-color": "#8fb6c6"
+        "fill-color": "#a7c2c8"
       }
     },
     {
@@ -262,7 +263,7 @@ export const goldMapStyle = {
         false
       ],
       "paint": {
-        "line-color": "#9bc0cd"
+        "line-color": "#b0c8ce"
       }
     },
     {
