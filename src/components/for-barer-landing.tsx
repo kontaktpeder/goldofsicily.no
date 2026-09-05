@@ -64,6 +64,21 @@ const COPY = {
       "Levering",
       "Support",
     ],
+    offerEyebrow: "To måter å ha Gold",
+    offerTitle: "Gold Partner eller levering.",
+    offerBody:
+      "Alle steder som serverer Gold vises på kartet. Gold Partner får en rikere stedsside — meny, foto og hvordan dere serverer. Levering er produktet, uten markedsføringssamarbeid.",
+    offerPartner: "Gold Partner",
+    offerDelivery: "Levering",
+    offerRows: [
+      { label: "Arancini", partner: true, delivery: true },
+      { label: "Oppføring på kart", partner: true, delivery: true },
+      { label: "Egen stedsside", partner: true, delivery: true },
+      { label: "Menymateriell", partner: true, delivery: false },
+      { label: "Foto og video", partner: true, delivery: false },
+      { label: "Serveringskonsept", partner: true, delivery: false },
+      { label: "Aktivt samarbeid", partner: true, delivery: false },
+    ],
     whyEyebrow: "Hvorfor fungerer det?",
     whyTitle: "Mer omsetning. Nesten null ekstra drift.",
     why: [
@@ -248,6 +263,21 @@ const COPY = {
       "Product photos",
       "Delivery",
       "Support",
+    ],
+    offerEyebrow: "Two ways to serve Gold",
+    offerTitle: "Gold Partner or delivery.",
+    offerBody:
+      "Every venue that serves Gold appears on the map. Gold Partner gets a richer venue page — menu, photos and how you serve. Delivery is the product, without a marketing partnership.",
+    offerPartner: "Gold Partner",
+    offerDelivery: "Delivery",
+    offerRows: [
+      { label: "Arancini", partner: true, delivery: true },
+      { label: "Map listing", partner: true, delivery: true },
+      { label: "Own venue page", partner: true, delivery: true },
+      { label: "Menu materials", partner: true, delivery: false },
+      { label: "Photos and video", partner: true, delivery: false },
+      { label: "Serve concept", partner: true, delivery: false },
+      { label: "Active partnership", partner: true, delivery: false },
     ],
     whyEyebrow: "Why it works",
     whyTitle: "More revenue. Almost no extra operations.",
@@ -555,6 +585,41 @@ export function ForBarerLanding({ lang = "no" }: { lang?: Lang }) {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* PARTNER VS DELIVERY */}
+      <section className="border-b-2 border-foreground bg-[color:var(--paper)]">
+        <div className={`${sectionPad} max-w-4xl`}>
+          <p className="mb-3 text-[0.65rem] uppercase tracking-[0.24em] text-foreground/60 sm:mb-4 sm:text-[0.7rem] sm:tracking-[0.28em]">
+            {t.offerEyebrow}
+          </p>
+          <h2 className="font-display text-[clamp(1.65rem,5.5vw,3rem)] leading-[1.08] tracking-tight">
+            {t.offerTitle}
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-foreground/75 sm:text-lg">
+            {t.offerBody}
+          </p>
+          <div className={`${cardShadow} mt-8 overflow-x-auto bg-background sm:mt-10`}>
+            <table className="w-full min-w-[28rem] text-left text-sm">
+              <thead>
+                <tr className="border-b border-foreground/15">
+                  <th className="px-4 py-3 font-medium" />
+                  <th className="px-4 py-3 font-display text-base">{t.offerPartner}</th>
+                  <th className="px-4 py-3 font-display text-base">{t.offerDelivery}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {t.offerRows.map((row) => (
+                  <tr key={row.label} className="border-b border-foreground/10 last:border-0">
+                    <td className="px-4 py-3">{row.label}</td>
+                    <td className="px-4 py-3">{row.partner ? "✓" : "—"}</td>
+                    <td className="px-4 py-3">{row.delivery ? "✓" : "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 

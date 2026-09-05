@@ -98,9 +98,9 @@ export const PAGE_SEO = {
     path: "/about",
   },
   "/finn-oss": {
-    title: "Hvor serveres Gold of Sicily",
+    title: "Hvor serveres Gold of Sicily?",
     description:
-      "Finn Gold of Sicily hos utvalgte serveringssteder. Samme produkt, samme uttrykk, samme standard.",
+      "Finn barer, restauranter, hoteller og andre steder som serverer Gold of Sicily. Kart og oversikt over alle offentlige serveringssteder.",
     path: "/finn-oss",
   },
   "/samarbeid": {
@@ -162,9 +162,9 @@ export const PAGE_SEO = {
     locale: "en_GB",
   },
   "/en/find-us": {
-    title: "Where is Gold of Sicily served",
+    title: "Where is Gold of Sicily served?",
     description:
-      "Find Gold of Sicily at selected venues in Oslo. Same product, same look, same standard.",
+      "Find bars, restaurants, hotels and other places that serve Gold of Sicily. Map and directory of public venues.",
     path: "/en/find-us",
     noindex: true,
     locale: "en_GB",

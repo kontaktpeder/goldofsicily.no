@@ -66,7 +66,8 @@ export const BRAND = {
       titleAfter: "?",
       body: "Finn Gold of Sicily hos utvalgte serveringssteder.",
       more: "Se alle serveringssteder",
-      pageBody: "Finn Gold of Sicily hos utvalgte serveringssteder.",
+      pageBody:
+        "Finn barer, restauranter, hoteller og andre steder som serverer Gold of Sicily.",
     },
     serve: {
       eyebrowBefore: "For ditt ",
@@ -169,7 +170,8 @@ export const BRAND = {
       titleAfter: " served?",
       body: "Find Gold of Sicily at selected venues.",
       more: "See all venues",
-      pageBody: "Find Gold of Sicily at selected venues.",
+      pageBody:
+        "Find bars, restaurants, hotels and other places that serve Gold of Sicily.",
     },
     serve: {
       eyebrowBefore: "For your ",
