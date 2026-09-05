@@ -466,7 +466,26 @@ html.pilot-lock #app {
   transform: scale(1.22);
 }
 
-.gold-map-popup .maplibregl-popup-content {
+.gold-map-canvas.leaflet-container {
+  background: var(--paper);
+  font-family: inherit;
+}
+
+.gold-map-canvas .leaflet-tile-pane {
+  filter: sepia(0.18) saturate(0.78) hue-rotate(350deg) brightness(1.03) contrast(0.97);
+}
+
+.gold-map-fallback {
+  border: 0;
+  display: block;
+}
+
+.gold-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.gold-map-popup .leaflet-popup-content-wrapper {
   padding: 0;
   background: var(--cream);
   color: var(--espresso);
@@ -475,8 +494,42 @@ html.pilot-lock #app {
   box-shadow: 0 10px 28px color-mix(in oklch, var(--espresso) 16%, transparent);
 }
 
-.gold-map-popup .maplibregl-popup-tip {
-  border-top-color: var(--cream);
+.gold-map-popup .leaflet-popup-content {
+  margin: 0;
+  width: 240px !important;
+}
+
+.gold-map-popup .leaflet-popup-tip {
+  background: var(--cream);
+  box-shadow: none;
+}
+
+.gold-map .leaflet-bar {
+  overflow: hidden;
+  border: 1px solid color-mix(in oklch, var(--olive) 25%, var(--cream));
+  background: var(--cream);
+  box-shadow: none;
+}
+
+.gold-map .leaflet-bar a {
+  background: var(--cream);
+  color: var(--espresso);
+  border-bottom-color: color-mix(in oklch, var(--olive) 18%, var(--cream));
+}
+
+.gold-map .leaflet-bar a:hover,
+.gold-map .leaflet-bar a:focus {
+  background: var(--paper);
+}
+
+.gold-map .leaflet-control-attribution {
+  background: color-mix(in oklch, var(--cream) 88%, transparent);
+  color: color-mix(in oklch, var(--espresso) 45%, transparent);
+  font-size: 0.62rem;
+}
+
+.gold-map .leaflet-control-attribution a {
+  color: inherit;
 }
 
 .gold-map-card-image {
@@ -533,28 +586,3 @@ html.pilot-lock #app {
   text-decoration: underline;
 }
 
-.gold-map .maplibregl-ctrl-group {
-  overflow: hidden;
-  border: 1px solid color-mix(in oklch, var(--olive) 25%, var(--cream));
-  background: var(--cream);
-  box-shadow: none;
-}
-
-.gold-map .maplibregl-ctrl-group button {
-  background: var(--cream);
-  border-color: color-mix(in oklch, var(--olive) 18%, var(--cream));
-}
-
-.gold-map .maplibregl-ctrl-group button + button {
-  border-top-color: color-mix(in oklch, var(--olive) 18%, var(--cream));
-}
-
-.gold-map .maplibregl-ctrl-attrib {
-  background: color-mix(in oklch, var(--cream) 88%, transparent);
-  color: color-mix(in oklch, var(--espresso) 45%, transparent);
-  font-size: 0.62rem;
-}
-
-.gold-map .maplibregl-ctrl-attrib a {
-  color: inherit;
-}
