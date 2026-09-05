@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useRef } from "react";
-import type { Map as MapLibreMap, Marker, Popup } from "maplibre-gl";
+import { useEffect, useMemo, useRef, useState } from "react";
 import logoCharacters from "@/assets/brand/logo-characters.png";
-import { createGoldPinElement, goldPinSvg } from "@/components/gold-map-pin";
-import { goldMapStyle } from "@/lib/gold-map-style";
+import { goldPinSvg } from "@/components/gold-map-pin";
 import { isGoldPartner, type PublicVenue } from "@/lib/portal-venues";
 import type { BrandLang } from "@/lib/brand-copy";
 
-import "maplibre-gl/dist/maplibre-gl.css";
+const OSM_RASTER = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 function venuePath(lang: BrandLang, slug: string) {
   return lang === "en" ? `/en/venues/${slug}` : `/steder/${slug}`;
@@ -16,6 +14,14 @@ function venueAddress(venue: PublicVenue) {
   return [venue.address, venue.city].filter(Boolean).join(", ");
 }
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function popupHtml(venue: PublicVenue, lang: BrandLang) {
   const partner = isGoldPartner(venue);
   const badge = partner
@@ -23,36 +29,30 @@ function popupHtml(venue: PublicVenue, lang: BrandLang) {
     : `<p class="gold-map-card-status">${lang === "en" ? "Serves Gold" : "Serverer Gold"}</p>`;
   const cta = lang === "en" ? "See venue" : "Se stedet";
   const image = venue.imageUrl
-    ? `<img src="${venue.imageUrl.replace(/"/g, "&quot;")}" alt="" class="gold-map-card-image" />`
+    ? `<img src="${escapeHtml(venue.imageUrl)}" alt="" class="gold-map-card-image" />`
     : "";
   const address = venueAddress(venue);
-  const name = venue.name.replace(/</g, "&lt;");
   return `<div class="gold-map-card">
     ${image}
     <div class="gold-map-card-body">
-      <p class="gold-map-card-name">${name}</p>
+      <p class="gold-map-card-name">${escapeHtml(venue.name)}</p>
       ${badge}
-      ${address ? `<p class="gold-map-card-addr">${address.replace(/</g, "&lt;")}</p>` : ""}
+      ${address ? `<p class="gold-map-card-addr">${escapeHtml(address)}</p>` : ""}
       <a class="gold-map-card-cta" href="${venuePath(lang, venue.slug)}">${cta} →</a>
     </div>
   </div>`;
 }
 
-function fitVenues(
-  map: MapLibreMap,
-  maplibregl: typeof import("maplibre-gl"),
-  venues: PublicVenue[],
-) {
-  if (venues.length === 1) {
-    map.setCenter([venues[0].longitude as number, venues[0].latitude as number]);
-    map.setZoom(13.2);
-    return;
-  }
-  const bounds = new maplibregl.LngLatBounds();
-  for (const venue of venues) {
-    bounds.extend([venue.longitude as number, venue.latitude as number]);
-  }
-  map.fitBounds(bounds, { padding: 72, maxZoom: 13.5, duration: 0 });
+function osmEmbedSrc(venues: PublicVenue[]) {
+  const lats = venues.map((venue) => venue.latitude as number);
+  const lngs = venues.map((venue) => venue.longitude as number);
+  const pad = 0.04;
+  const south = Math.min(...lats) - pad;
+  const north = Math.max(...lats) + pad;
+  const west = Math.min(...lngs) - pad;
+  const east = Math.max(...lngs) + pad;
+  const marker = `&marker=${lats[0]}%2C${lngs[0]}`;
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${west}%2C${south}%2C${east}%2C${north}&layer=mapnik${marker}`;
 }
 
 export function VenuesMap({
@@ -67,6 +67,7 @@ export function VenuesMap({
   decorate?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const [failed, setFailed] = useState(false);
   const mapped = useMemo(
     () => venues.filter((venue) => venue.latitude != null && venue.longitude != null),
     [venues],
@@ -77,68 +78,81 @@ export function VenuesMap({
     const host = hostRef.current;
     if (!host || mapped.length === 0) return;
     let cancelled = false;
-    let map: MapLibreMap | undefined;
-    const markers: Marker[] = [];
-    let openPopup: Popup | undefined;
+    let map: import("leaflet").Map | undefined;
+    let resizeTimer: number | undefined;
 
     const start = async () => {
-      const maplibregl = await import("maplibre-gl");
-      if (cancelled || !hostRef.current) return;
+      try {
+        const leafletMod = await import("leaflet");
+        await import("leaflet/dist/leaflet.css");
+        const L = leafletMod.default ?? leafletMod;
+        if (cancelled || !hostRef.current) return;
 
-      map = new maplibregl.Map({
-        container: hostRef.current,
-        style: goldMapStyle,
-        center: [mapped[0].longitude as number, mapped[0].latitude as number],
-        zoom: 12,
-        attributionControl: false,
-        cooperativeGestures: mapped.length > 1,
-      });
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-      map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+        map = L.map(hostRef.current, {
+          center: [mapped[0].latitude as number, mapped[0].longitude as number],
+          zoom: 13,
+          scrollWheelZoom: false,
+          attributionControl: false,
+          zoomControl: false,
+        });
+        L.control.zoom({ position: "topright" }).addTo(map);
+        L.control
+          .attribution({ position: "bottomright", prefix: false })
+          .addTo(map);
 
-      const setSelected = (slug: string | null) => {
-        for (const marker of markers) {
-          const el = marker.getElement();
-          const isOn = el.dataset.slug === slug;
-          el.classList.toggle("is-selected", isOn);
-          el.innerHTML = goldPinSvg(isOn);
-        }
-      };
+        L.tileLayer(OSM_RASTER, {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
 
-      map.on("load", () => {
-        if (!map) return;
-        fitVenues(map, maplibregl, mapped);
-        for (const venue of mapped) {
-          const el = createGoldPinElement(venue.name);
-          el.dataset.slug = venue.slug;
-          const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-            .setLngLat([venue.longitude as number, venue.latitude as number])
-            .addTo(map);
-          el.addEventListener("click", (event) => {
-            event.stopPropagation();
-            openPopup?.remove();
-            setSelected(venue.slug);
-            openPopup = new maplibregl.Popup({
-              closeButton: false,
-              offset: 18,
-              className: "gold-map-popup",
-              maxWidth: "260px",
-            })
-              .setLngLat([venue.longitude as number, venue.latitude as number])
-              .setHTML(popupHtml(venue, lang))
-              .addTo(map!);
-            openPopup.on("close", () => setSelected(null));
+        const pinIcon = (selected: boolean) =>
+          L.divIcon({
+            className: "gold-map-marker",
+            html: `<span class="gold-map-pin${selected ? " is-selected" : ""}">${goldPinSvg(selected)}</span>`,
+            iconSize: [28, 35],
+            iconAnchor: [14, 35],
+            popupAnchor: [0, -30],
           });
-          markers.push(marker);
+
+        for (const venue of mapped) {
+          const marker = L.marker([venue.latitude as number, venue.longitude as number], {
+            icon: pinIcon(false),
+            title: venue.name,
+            alt: venue.name,
+          }).addTo(map);
+          marker.bindPopup(popupHtml(venue, lang), {
+            className: "gold-map-popup",
+            maxWidth: 260,
+            closeButton: false,
+            autoPanPadding: [28, 28],
+          });
+          marker.on("popupopen", () => marker.setIcon(pinIcon(true)));
+          marker.on("popupclose", () => marker.setIcon(pinIcon(false)));
         }
-      });
+
+        if (mapped.length === 1) {
+          map.setView([mapped[0].latitude as number, mapped[0].longitude as number], 13);
+        } else {
+          const bounds = L.latLngBounds(
+            mapped.map((venue) => [venue.latitude as number, venue.longitude as number] as [number, number]),
+          );
+          map.fitBounds(bounds, { padding: [64, 64], maxZoom: 13 });
+        }
+
+        const refreshSize = () => map?.invalidateSize();
+        requestAnimationFrame(refreshSize);
+        resizeTimer = window.setTimeout(refreshSize, 180);
+      } catch (error) {
+        console.error("Gold map failed to start", error);
+        if (!cancelled) setFailed(true);
+      }
     };
 
     void start();
     return () => {
       cancelled = true;
-      openPopup?.remove();
-      for (const marker of markers) marker.remove();
+      if (resizeTimer) window.clearTimeout(resizeTimer);
       map?.remove();
     };
   }, [lang, mapKey, mapped]);
@@ -148,7 +162,16 @@ export function VenuesMap({
   return (
     <div className={`gold-map ${decorate ? "gold-map-decorated" : ""}`}>
       <div className="gold-map-frame">
-        <div ref={hostRef} className="gold-map-canvas" role="region" aria-label={title} />
+        {failed ? (
+          <iframe
+            title={title}
+            className="gold-map-canvas gold-map-fallback"
+            src={osmEmbedSrc(mapped)}
+            loading="lazy"
+          />
+        ) : (
+          <div ref={hostRef} className="gold-map-canvas" role="region" aria-label={title} />
+        )}
       </div>
       {decorate ? (
         <img src={logoCharacters} alt="" aria-hidden className="gold-map-character" />
