@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
-import { counterpartPath } from "@/components/lang-switch";
+import { LanguageSwitchLink } from "@/components/lang-switch";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
 
@@ -21,7 +21,6 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
   ] as const;
 
   const switchTo = lang === "no" ? "EN" : "NO";
-  const switchHref = counterpartPath(lang, pathname);
   const switchLabel = lang === "no" ? "Switch to English" : "Bytt til norsk";
 
   const overlay = tone === "overlay";
@@ -58,13 +57,14 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
           >
             <Instagram className="h-4 w-4" />
           </a>
-          <Link
-            to={switchHref}
+          <LanguageSwitchLink
+            lang={lang}
+            pathname={pathname}
             aria-label={switchLabel}
             className="text-[1.05rem] italic tracking-tight text-current opacity-70 transition hover:opacity-100"
           >
             {switchTo}
-          </Link>
+          </LanguageSwitchLink>
         </nav>
 
         <details className="lg:hidden">
@@ -93,13 +93,14 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
                 >
                   <Instagram className="h-5 w-5" />
                 </a>
-                <Link
-                  to={switchHref}
+                <LanguageSwitchLink
+                  lang={lang}
+                  pathname={pathname}
                   aria-label={switchLabel}
                   className="text-xl italic text-foreground/70"
                 >
                   {switchTo}
-                </Link>
+                </LanguageSwitchLink>
               </div>
             </nav>
           </div>

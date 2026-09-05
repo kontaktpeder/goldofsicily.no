@@ -33,7 +33,16 @@ export type PublicVenue = {
   galleryUrls?: string[];
 };
 
+export type VenuePageLoad =
+  | { status: "found"; venue: PublicVenue }
+  | { status: "missing" }
+  | { status: "unavailable" };
+
 const DEFAULT_PORTAL_URL = "https://portal.goldofsicily.no";
+const FALLBACK_PORTAL_URLS = [
+  "https://portal.goldofsicily.no",
+  "https://aranicnireport.lovable.app",
+];
 
 export function portalApiBase() {
   const fromEnv =
@@ -41,6 +50,10 @@ export function portalApiBase() {
       (process.env.PORTAL_API_URL || process.env.VITE_PORTAL_API_URL)) ||
     "";
   return (fromEnv || DEFAULT_PORTAL_URL).replace(/\/$/, "");
+}
+
+function portalBases() {
+  return [...new Set([portalApiBase(), ...FALLBACK_PORTAL_URLS])];
 }
 
 export function isGoldPartner(venue: PublicVenue) {
@@ -66,32 +79,83 @@ export function groupVenuesByCity(venues: PublicVenue[], fallbackCity: string) {
     }));
 }
 
-async function fetchJson<T>(path: string, lang: "no" | "en"): Promise<T | null> {
-  try {
-    const response = await fetch(`${portalApiBase()}${path}?lang=${lang}`, {
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) return null;
-    return (await response.json()) as T;
-  } catch {
-    return null;
+class PortalHttpError extends Error {
+  status: number;
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
   }
+}
+
+async function parseJson<T>(response: Response): Promise<T> {
+  const contentType = response.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    throw new Error(`Expected JSON from portal, got ${contentType || "unknown"}`);
+  }
+  return (await response.json()) as T;
+}
+
+async function fetchJson<T>(path: string, lang: "no" | "en"): Promise<T> {
+  let lastError: unknown;
+  for (const base of portalBases()) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const response = await fetch(`${base}${path}?lang=${lang}`, {
+          headers: { Accept: "application/json" },
+          signal: AbortSignal.timeout(8000),
+        });
+        if (response.status === 404) {
+          throw new PortalHttpError(404, `Not found: ${path}`);
+        }
+        if (!response.ok) {
+          lastError = new PortalHttpError(response.status, `HTTP ${response.status}`);
+          continue;
+        }
+        return await parseJson<T>(response);
+      } catch (error) {
+        if (error instanceof PortalHttpError && error.status === 404) throw error;
+        lastError = error;
+      }
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error("Portal request failed");
 }
 
 export async function fetchPublicVenues(lang: "no" | "en"): Promise<PublicVenue[]> {
   const data = await fetchJson<{ venues: PublicVenue[] }>("/api/public/v1/venues", lang);
-  return data?.venues ?? [];
+  return data.venues ?? [];
 }
 
 export async function fetchPublicVenue(
   slug: string,
   lang: "no" | "en",
 ): Promise<PublicVenue | null> {
-  const data = await fetchJson<{ venue: PublicVenue }>(
-    `/api/public/v1/venues/${encodeURIComponent(slug)}`,
-    lang,
-  );
-  return data?.venue ?? null;
+  try {
+    const data = await fetchJson<{ venue: PublicVenue }>(
+      `/api/public/v1/venues/${encodeURIComponent(slug)}`,
+      lang,
+    );
+    if (data.venue) return data.venue;
+  } catch (error) {
+    if (!(error instanceof PortalHttpError) || error.status !== 404) {
+      throw error;
+    }
+  }
+
+  const venues = await fetchPublicVenues(lang);
+  return venues.find((venue) => venue.slug === slug) ?? null;
+}
+
+export async function loadVenueForPage(
+  slug: string,
+  lang: "no" | "en",
+): Promise<VenuePageLoad> {
+  try {
+    const venue = await fetchPublicVenue(slug, lang);
+    return venue ? { status: "found", venue } : { status: "missing" };
+  } catch {
+    return { status: "unavailable" };
+  }
 }
 
 export function mapsUrl(venue: PublicVenue) {

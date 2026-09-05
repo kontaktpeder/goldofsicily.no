@@ -5,17 +5,24 @@ import { FindGoldGrid } from "@/components/find-gold-grid";
 import { VenuesMap } from "@/components/venues-map";
 import { BRAND } from "@/lib/brand-copy";
 import { fetchPublicVenues } from "@/lib/portal-venues";
+import { useHydratedVenues } from "@/lib/use-public-venues";
 import { buildPageHead, PAGE_SEO } from "@/lib/seo";
 
 export const Route = createFileRoute("/finn-oss")({
   head: () => buildPageHead(PAGE_SEO["/finn-oss"]),
-  loader: () => fetchPublicVenues("no"),
+  loader: async () => {
+    try {
+      return await fetchPublicVenues("no");
+    } catch {
+      return [];
+    }
+  },
   component: FinnOssPage,
 });
 
 function FinnOssPage() {
   const t = BRAND.no;
-  const venues = Route.useLoaderData();
+  const venues = useHydratedVenues("no", Route.useLoaderData());
   return (
     <div className="min-h-screen bg-[color:var(--cream)] font-display">
       <BrandNav lang="no" />
