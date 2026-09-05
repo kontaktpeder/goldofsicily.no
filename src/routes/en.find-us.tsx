@@ -28,7 +28,7 @@ function FindUsEn() {
           {t.find.pageBody}
         </p>
         <div className="mt-14">
-          <VenuesMap venues={venues} title="Map of Gold of Sicily venues" />
+          <VenuesMap venues={venues} title="Map of Gold of Sicily venues" lang="en" />
         </div>
         <div className="mt-10">
           <FindGoldGrid lang="en" venues={venues} />

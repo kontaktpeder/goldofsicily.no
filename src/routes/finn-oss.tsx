@@ -28,7 +28,7 @@ function FinnOssPage() {
           {t.find.pageBody}
         </p>
         <div className="mt-14">
-          <VenuesMap venues={venues} title="Kart over Gold of Sicily-steder" />
+          <VenuesMap venues={venues} title="Kart over Gold of Sicily-steder" lang="no" />
         </div>
         <div className="mt-10">
           <FindGoldGrid lang="no" venues={venues} />

@@ -60,11 +60,11 @@ export const BRAND = {
       photoAlt: "Arancini servert med kald drikke i baren",
     },
     find: {
-      title: "Find Gold",
-      body: "Gold of Sicily serveres her.",
+      title: "Hvor serveres Gold?",
+      body: "Hvor serveres Gold?",
       more: "Finn oss",
       pageBody:
-        "Gold of Sicily serveres på utvalgte steder. Samme produkt. Samme uttrykk. Samme standard.",
+        "Finn barer, restauranter, hoteller og andre steder som serverer Gold of Sicily.",
     },
     serve: {
       eyebrow: "Serve Gold",
@@ -142,11 +142,11 @@ export const BRAND = {
       photoAlt: "Arancini served with a cold drink at the bar",
     },
     find: {
-      title: "Find Gold",
-      body: "Gold of Sicily is served here.",
+      title: "Where is Gold served?",
+      body: "Where is Gold served?",
       more: "Find us",
       pageBody:
-        "Gold of Sicily is served at selected venues. Same product. Same look. Same standard.",
+        "Find bars, restaurants, hotels and other places that serve Gold of Sicily.",
     },
     serve: {
       eyebrow: "Serve Gold",
