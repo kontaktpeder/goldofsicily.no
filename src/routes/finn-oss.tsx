@@ -36,8 +36,13 @@ function FinnOssPage() {
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/70">
           {t.find.pageBody}
         </p>
-        <div className="mt-14">
-          <VenuesMap venues={venues} title="Kart over Gold of Sicily-steder" lang="no" />
+        <div className="mt-14 md:-mx-4 lg:-mx-8">
+          <VenuesMap
+            venues={venues}
+            title="Kart over Gold of Sicily-steder"
+            lang="no"
+            decorate
+          />
         </div>
         <div className="mt-10">
           <FindGoldGrid lang="no" venues={venues} />
