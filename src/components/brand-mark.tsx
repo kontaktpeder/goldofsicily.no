@@ -3,7 +3,7 @@ import goldMask from "@/assets/brand/inline-gold-mask.png";
 import wordmarkMask from "@/assets/brand/wordmark-script-mask.png";
 import type { BrandLang } from "@/lib/brand-copy";
 
-const GOLD_BOX = { w: 462, h: 205 };
+const GOLD_BOX = { w: 912, h: 402 };
 const WORD_BOX = { w: 1264, h: 222 };
 
 const LOCKUP: Record<BrandLang, [string, string]> = {
