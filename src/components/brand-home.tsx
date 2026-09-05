@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
-import { BrandLockup, BrandLogo, GoldMark } from "@/components/brand-mark";
+import { BrandLockup, BrandLogo, InlineGoldMark } from "@/components/brand-mark";
 import { BrandNav } from "@/components/brand-nav";
 import { FindGoldGrid } from "@/components/find-gold-grid";
 import { BRAND, type BrandLang, type ServeCardKey } from "@/lib/brand-copy";
@@ -27,8 +27,8 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
     <div className="bg-[color:var(--cream)] font-display text-foreground">
       <BrandNav lang={lang} />
 
-      <section className="px-5 pb-8 pt-5 md:px-12 md:pb-10 md:pt-6 lg:px-16">
-        <div className="mx-auto max-w-3xl text-center">
+      <section className="brand-hero px-5 md:px-12 lg:px-16">
+        <div className="brand-hero-inner mx-auto max-w-3xl text-center">
           <BrandLogo />
           <BrandLockup
             lang={lang}
@@ -39,17 +39,12 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
           <p className="mx-auto mt-3 max-w-xl text-lg leading-snug text-foreground/80 md:mt-4 md:text-xl">
             {t.hero.sub}
           </p>
-          <div className="mt-5 flex flex-col items-stretch justify-center gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-3">
+          <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-3">
             <a href="#find-gold" className="btn-gold btn-gold-solid whitespace-nowrap">
-              {t.hero.findBefore}
-              <GoldMark />
-              {t.hero.findAfter}
+              {t.hero.findCta}
             </a>
             <Link to={t.paths.venues} className="btn-gold btn-gold-ghost whitespace-nowrap">
-              {t.hero.venuesBefore.trimEnd()}{" "}
-              <em className="brand-script">{t.hero.venuesMark}</em>
-              {" "}
-              {t.hero.venuesAfter.trimStart()}
+              {t.hero.venuesCta}
             </Link>
           </div>
         </div>
@@ -118,7 +113,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
               <span className="block">{t.same.line1}</span>
               <span className="block">
                 {t.same.line2Before}
-                <GoldMark />
+                <InlineGoldMark />
                 {t.same.line2After}
               </span>
             </h2>
@@ -146,7 +141,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] leading-[0.95] tracking-tight">
             {t.find.titleBefore}
-            <GoldMark />
+            <InlineGoldMark />
             {t.find.titleAfter}
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-foreground/75 md:text-xl">

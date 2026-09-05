@@ -17,7 +17,7 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
       />
       <div className="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
         <Link to={t.paths.home} className="inline-block">
-          <BrandWordmark className="h-8 brightness-0 invert md:h-9" />
+          <BrandWordmark className="h-8 text-[#F3EBDD] md:h-9" />
         </Link>
         <p className="mt-8 font-display text-4xl tracking-tight md:text-6xl">{t.footer.places}</p>
         <BrandLockup

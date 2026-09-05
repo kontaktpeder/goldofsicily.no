@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
-import { BrandWordmark, GoldMark } from "@/components/brand-mark";
+import { BrandWordmark } from "@/components/brand-mark";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
 
@@ -13,24 +13,13 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
   const t = BRAND[lang];
 
   const links = [
-    { key: "arancini", label: t.nav.arancini, to: t.paths.arancini },
-    { key: "find", label: t.nav.find, to: t.paths.find },
-    { key: "about", label: t.nav.about, to: t.paths.about },
-    { key: "venues", label: t.nav.venues, to: t.paths.venues },
+    { label: t.nav.arancini, to: t.paths.arancini },
+    { label: t.nav.find, to: t.paths.find },
+    { label: t.nav.about, to: t.paths.about },
+    { label: t.nav.venues, to: t.paths.venues },
   ] as const;
 
   const overlay = tone === "overlay";
-
-  function linkLabel(key: (typeof links)[number]["key"], label: string) {
-    if (key !== "find") return label;
-    return (
-      <>
-        {t.hero.findBefore}
-        <GoldMark />
-        {t.hero.findAfter}
-      </>
-    );
-  }
 
   return (
     <header
@@ -42,7 +31,7 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
     >
       <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8 md:py-4">
         <Link to={t.paths.home} className="text-current">
-          <BrandWordmark className={overlay ? "brightness-0 invert" : ""} />
+          <BrandWordmark />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
@@ -52,7 +41,7 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
               to={item.to}
               className="text-[1.05rem] italic tracking-tight text-current transition hover:text-[color:var(--sea)]"
             >
-              {linkLabel(item.key, item.label)}
+              {item.label}
             </Link>
           ))}
           <a
@@ -79,7 +68,7 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
                   to={item.to}
                   className="font-display text-3xl italic tracking-tight text-foreground"
                 >
-                  {linkLabel(item.key, item.label)}
+                  {item.label}
                 </Link>
               ))}
               <div className="mt-4 flex items-center gap-5">

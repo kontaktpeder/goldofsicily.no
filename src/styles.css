@@ -47,6 +47,7 @@
 
 :root {
   --radius: 0.25rem;
+  --header-height: 4.25rem;
 
   /* Gold of Sicily — cream, sea, lemon, espresso, tomato */
   --cream: #f3ebdd;
@@ -78,6 +79,12 @@
   --border: oklch(0.85 0.02 50);
   --input: oklch(0.85 0.02 50);
   --ring: var(--espresso);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 5rem;
+  }
 }
 
 .dark {
@@ -173,6 +180,39 @@
     white-space: nowrap;
   }
 
+  .inline-gold {
+    display: inline-block;
+    height: 0.82em;
+    width: auto;
+    vertical-align: -0.08em;
+    margin-inline: 0.08em;
+    overflow: visible;
+  }
+
+  .brand-wordmark {
+    display: block;
+    height: 1.75rem;
+    width: auto;
+  }
+
+  .brand-logo {
+    display: block;
+    margin-inline: auto;
+    width: min(100%, 18.5rem);
+    height: auto;
+  }
+
+  .brand-hero {
+    display: flex;
+    align-items: center;
+    min-height: calc(100svh - var(--header-height));
+  }
+
+  .brand-hero-inner {
+    width: 100%;
+    transform: translateY(-3%);
+  }
+
   .arched {
     font-family: var(--font-display);
     letter-spacing: 0.35em;
@@ -217,10 +257,26 @@
     margin-left: 0.15em;
   }
 
+  @media (min-width: 768px) {
+    .brand-wordmark {
+      height: 2rem;
+    }
+    .brand-logo {
+      width: min(100%, 20rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .brand-hero {
+      min-height: clamp(640px, calc(100svh - var(--header-height)), 820px);
+    }
+  }
+
   .btn-gold {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.28em;
     font-family: var(--font-display);
     font-size: 1.1rem;
     font-weight: 500;

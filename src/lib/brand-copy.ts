@@ -32,6 +32,8 @@ export const BRAND = {
     },
     hero: {
       sub: "Sicilianske arancini. Klare for ditt serveringssted.",
+      findCta: "Hvor serveres Gold?",
+      venuesCta: "For ditt serveringssted",
       findBefore: "Hvor serveres ",
       findAfter: "?",
       venuesBefore: "For ",
@@ -131,6 +133,8 @@ export const BRAND = {
     },
     hero: {
       sub: "Sicilian arancini. Ready for your venue.",
+      findCta: "Where is Gold served?",
+      venuesCta: "For your venue",
       findBefore: "Where is ",
       findAfter: " served?",
       venuesBefore: "For ",

@@ -1,39 +1,76 @@
-import logo from "@/assets/brand/logo-characters.png";
-import wordmark from "@/assets/brand/wordmark-script.png";
-import goldMark from "@/assets/brand/mark-gold.png";
+import { useId } from "react";
+import goldMask from "@/assets/brand/inline-gold-mask.png";
+import wordmarkMask from "@/assets/brand/wordmark-script-mask.png";
 import type { BrandLang } from "@/lib/brand-copy";
+
+const GOLD_BOX = { w: 462, h: 205 };
+const WORD_BOX = { w: 1264, h: 222 };
 
 const LOCKUP: Record<BrandLang, [string, string]> = {
   no: ["italiensk enkelhet.", "norsk utførelse."],
   en: ["italian simplicity.", "norwegian craft."],
 };
 
+function ScriptFill({
+  src,
+  box,
+  className,
+  label,
+}: {
+  src: string;
+  box: { w: number; h: number };
+  className?: string;
+  label: string;
+}) {
+  const id = useId().replace(/:/g, "");
+  return (
+    <svg
+      className={className}
+      viewBox={`0 0 ${box.w} ${box.h}`}
+      role="img"
+      aria-label={label}
+      focusable="false"
+    >
+      <title>{label}</title>
+      <defs>
+        <mask id={id} maskUnits="userSpaceOnUse">
+          <image href={src} width={box.w} height={box.h} />
+        </mask>
+      </defs>
+      <rect width={box.w} height={box.h} fill="currentColor" mask={`url(#${id})`} />
+    </svg>
+  );
+}
+
 export function BrandLogo({ className = "" }: { className?: string }) {
   return (
-    <img
-      src={logo}
-      alt="Gold of Sicily"
-      className={`mx-auto h-auto w-full max-w-[13.5rem] object-contain sm:max-w-[16rem] md:max-w-[18rem] ${className}`}
+    <ScriptFill
+      src={wordmarkMask}
+      box={WORD_BOX}
+      className={`brand-logo ${className}`}
+      label="Gold of Sicily"
     />
   );
 }
 
 export function BrandWordmark({ className = "" }: { className?: string }) {
   return (
-    <img
-      src={wordmark}
-      alt="Gold of Sicily"
-      className={`h-7 w-auto object-contain md:h-8 ${className}`}
+    <ScriptFill
+      src={wordmarkMask}
+      box={WORD_BOX}
+      className={`brand-wordmark ${className}`}
+      label="Gold of Sicily"
     />
   );
 }
 
-export function GoldMark({ className = "" }: { className?: string }) {
+export function InlineGoldMark({ className = "" }: { className?: string }) {
   return (
-    <img
-      src={goldMark}
-      alt="Gold"
-      className={`inline-block h-[0.92em] w-auto translate-y-[-0.06em] object-contain object-left align-baseline ${className}`}
+    <ScriptFill
+      src={goldMask}
+      box={GOLD_BOX}
+      className={`inline-gold ${className}`}
+      label="Gold"
     />
   );
 }
