@@ -8,6 +8,8 @@ export type PublicMenuItem = {
   imageUrl: string | null;
 };
 
+export type PublicVenueProfile = "partner" | "listing";
+
 export type PublicVenue = {
   slug: string;
   name: string;
@@ -23,6 +25,12 @@ export type PublicVenue = {
   menuIntro: string | null;
   hasMenu: boolean;
   menu: PublicMenuItem[];
+  profile?: PublicVenueProfile;
+  collaborationText?: string | null;
+  servingStory?: string | null;
+  videoUrl?: string | null;
+  menuMaterialUrl?: string | null;
+  galleryUrls?: string[];
 };
 
 const DEFAULT_PORTAL_URL = "https://portal.goldofsicily.no";
@@ -33,6 +41,29 @@ export function portalApiBase() {
       (process.env.PORTAL_API_URL || process.env.VITE_PORTAL_API_URL)) ||
     "";
   return (fromEnv || DEFAULT_PORTAL_URL).replace(/\/$/, "");
+}
+
+export function isGoldPartner(venue: PublicVenue) {
+  return venue.profile === "partner";
+}
+
+export function groupVenuesByCity(venues: PublicVenue[], fallbackCity: string) {
+  const groups = new Map<string, PublicVenue[]>();
+  for (const venue of venues) {
+    const city = venue.city?.trim() || fallbackCity;
+    const list = groups.get(city) ?? [];
+    list.push(venue);
+    groups.set(city, list);
+  }
+  return [...groups.entries()]
+    .sort(([a], [b]) => a.localeCompare(b, "nb"))
+    .map(([city, items]) => ({
+      city,
+      venues: items.slice().sort((left, right) => {
+        if (isGoldPartner(left) !== isGoldPartner(right)) return isGoldPartner(left) ? -1 : 1;
+        return left.name.localeCompare(right.name, "nb");
+      }),
+    }));
 }
 
 async function fetchJson<T>(path: string, lang: "no" | "en"): Promise<T | null> {
