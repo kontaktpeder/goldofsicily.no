@@ -3,7 +3,7 @@ import { BrandFooter } from "@/components/brand-footer";
 import { BrandNav } from "@/components/brand-nav";
 import { FindGoldGrid } from "@/components/find-gold-grid";
 import { VenuesMap } from "@/components/venues-map";
-import { BrandScript } from "@/components/brand-mark";
+import { GoldMark } from "@/components/brand-mark";
 import { BRAND } from "@/lib/brand-copy";
 import { fetchPublicVenues } from "@/lib/portal-venues";
 import { useHydratedVenues } from "@/lib/use-public-venues";
@@ -30,7 +30,7 @@ function FinnOssPage() {
       <main className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
         <h1 className="font-display text-[clamp(2.6rem,7vw,5rem)] leading-[0.95] tracking-tight">
           {t.find.titleBefore}
-          <BrandScript>{t.find.titleMark}</BrandScript>
+          <GoldMark />
           {t.find.titleAfter}
         </h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-foreground/70">

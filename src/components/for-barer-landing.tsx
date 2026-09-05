@@ -10,6 +10,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AllergenInformation } from "@/components/allergen-information";
+import { BrandFooter } from "@/components/brand-footer";
+import { BrandLockup } from "@/components/brand-mark";
 import { BrandNav } from "@/components/brand-nav";
 import { SITE } from "@/lib/site";
 
@@ -198,9 +200,9 @@ const COPY = {
       },
     ],
     aboutEyebrow: "Om Gold of Sicily",
-    aboutTitle: "Et ferdig siciliansk streetfood-konsept.",
+    aboutTitle: "italiensk enkelhet. norsk utførelse.",
     aboutBody:
-      "Vi startet med arancini. Nå pakker vi samme håndverk som et komplett Gold of Sicily-konsept — produkt, tilberedning, menyer og uttrykk — for steder som vil servere mer enn en eske mat.",
+      "Vi tar med oss mer enn en siciliansk mattradisjon. Gold of Sicily er vår versjon av den italienske, uanstrengte elegansen: gode råvarer, tydelige smaker og enkel servering. Utviklet og produsert i Norge, med Sicilia som utgangspunkt.",
     contactEyebrow: "Kontakt",
     contactTitle: "Ring eller send mail.",
     contactAccent: "Vi booker smaking.",
@@ -398,9 +400,9 @@ const COPY = {
       },
     ],
     aboutEyebrow: "About Gold of Sicily",
-    aboutTitle: "A complete Sicilian street food concept.",
+    aboutTitle: "italian simplicity. norwegian craft.",
     aboutBody:
-      "We started with arancini. Now we package the same craft as a complete Gold of Sicily concept — product, prep, menus and look — for venues that want to serve more than a box of food.",
+      "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and simple service. Developed and produced in Norway, with Sicily as the starting point.",
     contactEyebrow: "Contact",
     contactTitle: "Call or email.",
     contactAccent: "We'll book a tasting.",
@@ -832,9 +834,12 @@ export function ForBarerLanding({ lang = "no" }: { lang?: Lang }) {
           <p className="mb-3 text-[0.65rem] uppercase tracking-[0.24em] text-foreground/60 sm:mb-4 sm:text-[0.7rem] sm:tracking-[0.28em]">
             {t.aboutEyebrow}
           </p>
-          <h2 className="font-display text-[clamp(1.55rem,5vw,2.5rem)] leading-[1.08] tracking-tight">
-            {t.aboutTitle}
-          </h2>
+          <BrandLockup
+            lang={lang}
+            as="h2"
+            align="left"
+            className="text-[clamp(1.7rem,4.5vw,2.8rem)]"
+          />
           <p className="mt-5 text-base leading-relaxed text-foreground/80 sm:mt-6 sm:text-lg">
             {t.aboutBody}
           </p>
@@ -875,9 +880,7 @@ export function ForBarerLanding({ lang = "no" }: { lang?: Lang }) {
         </div>
       </section>
 
-      <footer className="bg-background px-5 py-8 text-center text-[0.65rem] uppercase tracking-[0.24em] text-foreground/50 sm:text-xs sm:tracking-[0.28em]">
-        {t.footer}
-      </footer>
+      <BrandFooter lang={lang} />
     </main>
   );
 }

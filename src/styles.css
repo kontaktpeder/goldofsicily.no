@@ -153,6 +153,26 @@
     letter-spacing: -0.03em;
   }
 
+  .brand-lockup {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.06;
+  }
+  .brand-lockup-center {
+    text-align: center;
+  }
+  .brand-lockup-left {
+    text-align: left;
+  }
+  .brand-lockup-invert {
+    color: #f3ebdd;
+  }
+  .brand-lockup-line {
+    display: block;
+    white-space: nowrap;
+  }
+
   .arched {
     font-family: var(--font-display);
     letter-spacing: 0.35em;

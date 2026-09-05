@@ -1,9 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
+import { BrandLockup } from "@/components/brand-mark";
 import { BrandNav } from "@/components/brand-nav";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
-
 
 export function AboutView({ lang }: { lang: BrandLang }) {
   const t = BRAND[lang];
@@ -11,16 +11,15 @@ export function AboutView({ lang }: { lang: BrandLang }) {
   return (
     <div className="min-h-screen bg-[color:var(--cream)] font-display">
       <BrandNav lang={lang} />
-    <article className="relative overflow-hidden">
-      <div className="relative mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
+      <article className="relative overflow-hidden">
+        <div className="relative mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
           <p className="eyebrow">{t.about.eyebrow}</p>
-          <h1 className="mt-4 font-display text-[clamp(2.6rem,8vw,5.2rem)] leading-[0.95] tracking-tight">
-            {t.about.title.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </h1>
+          <BrandLockup
+            lang={lang}
+            as="h1"
+            align="left"
+            className="mt-4 text-[clamp(2rem,6vw,4rem)]"
+          />
 
           <div className="mt-12 flex flex-col gap-6 text-lg leading-relaxed text-foreground/80 md:text-xl">
             {t.about.manifesto.map((p) => (
@@ -49,6 +48,14 @@ export function AboutView({ lang }: { lang: BrandLang }) {
               className="underline-offset-4 hover:underline"
             >
               {t.about.ctaIg} →
+            </a>
+            <a
+              href={SITE.tiktok}
+              target="_blank"
+              rel="noreferrer"
+              className="underline-offset-4 hover:underline"
+            >
+              TikTok →
             </a>
           </p>
         </div>

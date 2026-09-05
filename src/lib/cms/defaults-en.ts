@@ -31,7 +31,7 @@ export const CMS_DEFAULTS_EN: CmsContentMap = {
     eyebrow: "About",
     title: "italian simplicity. norwegian craft.",
     intro_1:
-      "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and less fuss.",
+      "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and simple service.",
     intro_2:
       "Developed and produced in Norway, with Sicily as the starting point. Not a tourist brochure — an Italian way of thinking about food and service, given a Norwegian execution.",
     section_1_heading: "Sicily is the starting point. Norway is the craft.",

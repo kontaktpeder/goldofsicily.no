@@ -31,25 +31,22 @@ export const BRAND = {
       venues: "/for-barer",
     },
     hero: {
-      line: "italiensk enkelhet. norsk utførelse.",
       sub: "Sicilianske arancini. Klare for ditt serveringssted.",
       findBefore: "Hvor serveres ",
-      findMark: "Gold",
       findAfter: "?",
-      venuesBefore: "For ditt ",
-      venuesMark: "serveringssted",
+      venuesBefore: "For ",
+      venuesMark: "ditt",
+      venuesAfter: " serveringssted",
     },
     gold: {
       title: "Arancini",
-      body: "Sprø utenpå.\nKremet inni.\nSiciliansk hele veien.",
+      body: "Sprø utenpå. Myk inni.",
       flavors: ["'Nduja", "Trøffel & sjampinjong"],
       cta: "Hva er arancini?",
       photoAlt: "Seks sprø arancini på et mørkt brett",
     },
     world: {
-      title: "italiensk enkelhet. norsk utførelse.",
-      body: "Vi tar med oss mer enn en siciliansk mattradisjon. Gold of Sicily er vår versjon av den italienske, uanstrengte elegansen: gode råvarer, tydelige smaker og mindre styr. Utviklet og produsert i Norge, med Sicilia som utgangspunkt.",
-      whisper: "Tutto passa.",
+      body: "Vi tar med oss mer enn en siciliansk mattradisjon. Gold of Sicily er vår versjon av den italienske, uanstrengte elegansen: gode råvarer, tydelige smaker og enkel servering. Utviklet og produsert i Norge, med Sicilia som utgangspunkt.",
       photoAlt: "Arancini holdt i hendene, klar til å spises",
     },
     same: {
@@ -70,8 +67,9 @@ export const BRAND = {
         "Finn barer, restauranter, hoteller og andre steder som serverer Gold of Sicily.",
     },
     serve: {
-      eyebrowBefore: "For ditt ",
-      eyebrowMark: "serveringssted",
+      eyebrowBefore: "For ",
+      eyebrowMark: "ditt",
+      eyebrowAfter: " serveringssted",
       title: "Mer enn arancini.",
       body: "Et gjennomført produkt, med et enkelt system rundt.",
       cards: [
@@ -100,16 +98,13 @@ export const BRAND = {
     },
     footer: {
       places: "Oslo / Sicilia",
-      line: "italiensk enkelhet. norsk utførelse.",
-      handle: "@goldofsicily",
+      instagram: "Instagram",
+      tiktok: "TikTok",
     },
     about: {
       eyebrow: "Om oss",
-      title: ["italiensk enkelhet.", "norsk utførelse."],
       manifesto: [
-        "Vi tar med oss mer enn en siciliansk mattradisjon.",
-        "Gold of Sicily er vår versjon av den italienske, uanstrengte elegansen: gode råvarer, tydelige smaker og mindre styr.",
-        "Utviklet og produsert i Norge, med Sicilia som utgangspunkt.",
+        "Vi tar med oss mer enn en siciliansk mattradisjon. Gold of Sicily er vår versjon av den italienske, uanstrengte elegansen: gode råvarer, tydelige smaker og enkel servering. Utviklet og produsert i Norge, med Sicilia som utgangspunkt.",
       ],
       storyHeading: "Historien",
       story: [
@@ -135,25 +130,22 @@ export const BRAND = {
       venues: "/en/for-bars",
     },
     hero: {
-      line: "italian simplicity. norwegian craft.",
       sub: "Sicilian arancini. Ready for your venue.",
       findBefore: "Where is ",
-      findMark: "Gold",
       findAfter: " served?",
-      venuesBefore: "For your ",
-      venuesMark: "venue",
+      venuesBefore: "For ",
+      venuesMark: "your",
+      venuesAfter: " venue",
     },
     gold: {
       title: "Arancini",
-      body: "Crisp outside.\nCreamy inside.\nSicilian all the way.",
+      body: "Crisp outside. Soft inside.",
       flavors: ["'Nduja", "Truffle & champignon"],
       cta: "What is arancini?",
       photoAlt: "Six crisp arancini on a dark tray",
     },
     world: {
-      title: "italian simplicity. norwegian craft.",
-      body: "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and less fuss. Developed and produced in Norway, with Sicily as the starting point.",
-      whisper: "Tutto passa.",
+      body: "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and simple service. Developed and produced in Norway, with Sicily as the starting point.",
       photoAlt: "Arancini held in hands, ready to eat",
     },
     same: {
@@ -174,8 +166,9 @@ export const BRAND = {
         "Find bars, restaurants, hotels and other places that serve Gold of Sicily.",
     },
     serve: {
-      eyebrowBefore: "For your ",
-      eyebrowMark: "venue",
+      eyebrowBefore: "For ",
+      eyebrowMark: "your",
+      eyebrowAfter: " venue",
       title: "More than arancini.",
       body: "A complete product, with a simple system around it.",
       cards: [
@@ -204,16 +197,13 @@ export const BRAND = {
     },
     footer: {
       places: "Oslo / Sicily",
-      line: "italian simplicity. norwegian craft.",
-      handle: "@goldofsicily",
+      instagram: "Instagram",
+      tiktok: "TikTok",
     },
     about: {
       eyebrow: "About",
-      title: ["italian simplicity.", "norwegian craft."],
       manifesto: [
-        "We bring more than a Sicilian food tradition.",
-        "Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and less fuss.",
-        "Developed and produced in Norway, with Sicily as the starting point.",
+        "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and simple service. Developed and produced in Norway, with Sicily as the starting point.",
       ],
       storyHeading: "The story",
       story: [

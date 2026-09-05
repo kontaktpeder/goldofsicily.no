@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
-import { BrandLogo, BrandScript } from "@/components/brand-mark";
+import { BrandLockup, BrandLogo, GoldMark } from "@/components/brand-mark";
 import { BrandNav } from "@/components/brand-nav";
 import { FindGoldGrid } from "@/components/find-gold-grid";
 import { BRAND, type BrandLang, type ServeCardKey } from "@/lib/brand-copy";
@@ -9,14 +9,12 @@ import photoGold from "@/assets/brand/photo-the-gold.jpg";
 import photoHands from "@/assets/brand/photo-hands.jpg";
 import drawBite from "@/assets/brand/draw-arancini-bite.webp";
 import drawVespa from "@/assets/brand/draw-vespa.webp";
-import iconArancini from "@/assets/brand/icon-arancini.png";
 import iconAirfryer from "@/assets/brand/icon-airfryer.png";
 import iconMenu from "@/assets/brand/icon-menu.png";
 import iconBox from "@/assets/brand/icon-box.png";
-import iconPair from "@/assets/brand/icon-arancini-pair.png";
 
 const SERVE_ICONS: Record<ServeCardKey, string> = {
-  product: iconArancini,
+  product: drawBite,
   serve: iconAirfryer,
   menu: iconMenu,
   follow: iconBox,
@@ -29,36 +27,40 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
     <div className="bg-[color:var(--cream)] font-display text-foreground">
       <BrandNav lang={lang} />
 
-      <section className="px-5 pb-16 pt-10 md:px-12 md:pb-24 md:pt-16 lg:px-16">
+      <section className="px-5 pb-8 pt-5 md:px-12 md:pb-10 md:pt-6 lg:px-16">
         <div className="mx-auto max-w-3xl text-center">
           <BrandLogo />
-          <h1 className="mt-10 font-display text-[clamp(1.85rem,5.4vw,3.4rem)] leading-[1.08] tracking-tight">
-            {t.hero.line}
-          </h1>
-          <p className="mx-auto mt-5 max-w-xl text-xl leading-snug text-foreground/80 md:text-2xl">
+          <BrandLockup
+            lang={lang}
+            as="h1"
+            align="center"
+            className="mt-5 text-[clamp(1.55rem,3.4vw,2.45rem)] md:mt-6"
+          />
+          <p className="mx-auto mt-3 max-w-xl text-lg leading-snug text-foreground/80 md:mt-4 md:text-xl">
             {t.hero.sub}
           </p>
-          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-4">
-            <a href="#find-gold" className="btn-gold btn-gold-solid">
+          <div className="mt-5 flex flex-col items-stretch justify-center gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-3">
+            <a href="#find-gold" className="btn-gold btn-gold-solid whitespace-nowrap">
               {t.hero.findBefore}
-              <BrandScript>{t.hero.findMark}</BrandScript>
+              <GoldMark />
               {t.hero.findAfter}
             </a>
-            <Link to={t.paths.venues} className="btn-gold btn-gold-ghost">
+            <Link to={t.paths.venues} className="btn-gold btn-gold-ghost whitespace-nowrap">
               {t.hero.venuesBefore}
-              <BrandScript>{t.hero.venuesMark}</BrandScript>
+              <em className="brand-script">{t.hero.venuesMark}</em>
+              {t.hero.venuesAfter}
             </Link>
           </div>
         </div>
       </section>
 
-      <section id="the-gold" className="px-5 py-20 md:px-12 md:py-28 lg:px-16 lg:pb-32">
+      <section id="the-gold" className="px-5 py-16 md:px-12 md:py-24 lg:px-16">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div>
             <h2 className="font-display text-[clamp(3.2rem,10vw,7rem)] leading-[0.9] tracking-tight">
               {t.gold.title}
             </h2>
-            <p className="mt-6 max-w-xs whitespace-pre-line text-xl leading-snug text-foreground/80 md:text-2xl">
+            <p className="mt-6 max-w-sm text-xl leading-snug text-foreground/80 md:text-2xl">
               {t.gold.body}
             </p>
             <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2">
@@ -78,19 +80,11 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
               {t.gold.cta} →
             </Link>
           </div>
-          <div className="relative pb-10 md:pb-12">
-            <img
-              src={photoGold}
-              alt={t.gold.photoAlt}
-              className="aspect-[3/4] w-full object-cover md:aspect-[4/5]"
-            />
-            <img
-              src={drawBite}
-              alt=""
-              aria-hidden
-              className="pointer-events-none absolute -bottom-2 left-0 w-[min(46vw,15rem)] md:-bottom-4 md:-left-6 md:w-[17rem]"
-            />
-          </div>
+          <img
+            src={photoGold}
+            alt={t.gold.photoAlt}
+            className="aspect-[4/5] w-full object-cover md:aspect-[5/6] lg:max-h-[70vh]"
+          />
         </div>
       </section>
 
@@ -99,26 +93,19 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
           <img
             src={photoHands}
             alt={t.world.photoAlt}
-            className="aspect-[3/4] w-full object-cover object-center md:aspect-[4/5] lg:max-h-[82vh]"
+            className="aspect-[3/4] w-full object-cover object-center md:aspect-[4/5] lg:max-h-[72vh]"
           />
           <div>
-            <h2 className="font-display text-[clamp(2.2rem,5.5vw,3.8rem)] leading-[1.05] tracking-tight text-[#F3EBDD]">
-              {t.world.title}
-            </h2>
+            <BrandLockup
+              lang={lang}
+              as="h2"
+              align="left"
+              invert
+              className="text-[clamp(1.7rem,4vw,2.8rem)]"
+            />
             <p className="mt-8 max-w-md text-lg leading-relaxed text-[#F3EBDD]/80 md:text-xl">
               {t.world.body}
             </p>
-            <div className="mt-12 flex items-end gap-4">
-              <img
-                src={iconPair}
-                alt=""
-                aria-hidden
-                className="h-14 w-auto opacity-80 md:h-16"
-              />
-              <p className="brand-script text-lg text-[color:var(--olive-line)] md:text-xl">
-                {t.world.whisper}
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -130,7 +117,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
               <span className="block">{t.same.line1}</span>
               <span className="block">
                 {t.same.line2Before}
-                <BrandScript>{t.same.line2Mark}</BrandScript>
+                <GoldMark />
                 {t.same.line2After}
               </span>
             </h2>
@@ -158,7 +145,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] leading-[0.95] tracking-tight">
             {t.find.titleBefore}
-            <BrandScript>{t.find.titleMark}</BrandScript>
+            <GoldMark />
             {t.find.titleAfter}
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-foreground/75 md:text-xl">
@@ -177,7 +164,8 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
         <div className="mx-auto max-w-7xl">
           <p className="eyebrow">
             {t.serve.eyebrowBefore}
-            <BrandScript>{t.serve.eyebrowMark}</BrandScript>
+            <em className="brand-script">{t.serve.eyebrowMark}</em>
+            {t.serve.eyebrowAfter}
           </p>
           <h2 className="mt-3 font-display text-[clamp(2.6rem,7vw,5.5rem)] leading-[0.95] tracking-tight">
             {t.serve.title}
