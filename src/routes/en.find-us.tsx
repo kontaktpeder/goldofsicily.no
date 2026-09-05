@@ -6,17 +6,24 @@ import { VenuesMap } from "@/components/venues-map";
 import { BrandScript } from "@/components/brand-mark";
 import { BRAND } from "@/lib/brand-copy";
 import { fetchPublicVenues } from "@/lib/portal-venues";
+import { useHydratedVenues } from "@/lib/use-public-venues";
 import { buildPageHead, PAGE_SEO } from "@/lib/seo";
 
 export const Route = createFileRoute("/en/find-us")({
   head: () => buildPageHead(PAGE_SEO["/en/find-us"]),
-  loader: () => fetchPublicVenues("en"),
+  loader: async () => {
+    try {
+      return await fetchPublicVenues("en");
+    } catch {
+      return [];
+    }
+  },
   component: FindUsEn,
 });
 
 function FindUsEn() {
   const t = BRAND.en;
-  const venues = Route.useLoaderData();
+  const venues = useHydratedVenues("en", Route.useLoaderData());
   return (
     <div className="min-h-screen bg-[color:var(--cream)] font-display">
       <BrandNav lang="en" />

@@ -30,13 +30,23 @@ export function VenuesMap({
             <span className="w-3 text-center" aria-hidden>
               {isGoldPartner(venue) ? "●" : "○"}
             </span>
-            <Link
-              to={lang === "en" ? "/en/venues/$slug" : "/steder/$slug"}
-              params={{ slug: venue.slug }}
-              className="italic underline-offset-4 hover:underline"
-            >
-              {venue.name}
-            </Link>
+            {lang === "en" ? (
+              <Link
+                to="/en/venues/$slug"
+                params={{ slug: venue.slug }}
+                className="italic underline-offset-4 hover:underline"
+              >
+                {venue.name}
+              </Link>
+            ) : (
+              <Link
+                to="/steder/$slug"
+                params={{ slug: venue.slug }}
+                className="italic underline-offset-4 hover:underline"
+              >
+                {venue.name}
+              </Link>
+            )}
             <span className="text-foreground/50">{venue.city}</span>
             {isGoldPartner(venue) ? (
               <span className="text-[0.65rem] tracking-[0.16em] text-foreground/45 uppercase">
