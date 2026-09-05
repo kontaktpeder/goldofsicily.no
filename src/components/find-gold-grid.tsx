@@ -63,7 +63,39 @@ export function FindGoldGrid({
 }
 
 function VenueCard({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
-  const body = (
+  const menuLabel = lang === "en" ? "See the menu" : "Se menyen";
+  const venueLink =
+    lang === "en" ? (
+      <Link to="/en/venues/$slug" params={{ slug: venue.slug }} className="block">
+        <VenueCardBody lang={lang} venue={venue} />
+      </Link>
+    ) : (
+      <Link to="/steder/$slug" params={{ slug: venue.slug }} className="block">
+        <VenueCardBody lang={lang} venue={venue} />
+      </Link>
+    );
+
+  return (
+    <article className="group h-full border border-foreground/15 bg-[color:var(--paper)] transition hover:border-foreground/40">
+      {venueLink}
+      {venue.menuMaterialUrl ? (
+        <div className="border-t border-foreground/15 px-6 py-4">
+          <a
+            href={venue.menuMaterialUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm italic underline-offset-4 hover:underline"
+          >
+            {menuLabel} ↓
+          </a>
+        </div>
+      ) : null}
+    </article>
+  );
+}
+
+function VenueCardBody({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
+  return (
     <>
       {venue.imageUrl ? (
         <img src={venue.imageUrl} alt="" className="h-40 w-full object-cover" />
@@ -89,22 +121,5 @@ function VenueCard({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
         </p>
       </div>
     </>
-  );
-
-  const className =
-    "group block h-full border border-foreground/15 bg-[color:var(--paper)] transition hover:border-foreground/40";
-
-  if (lang === "en") {
-    return (
-      <Link to="/en/venues/$slug" params={{ slug: venue.slug }} className={className}>
-        {body}
-      </Link>
-    );
-  }
-
-  return (
-    <Link to="/steder/$slug" params={{ slug: venue.slug }} className={className}>
-      {body}
-    </Link>
   );
 }

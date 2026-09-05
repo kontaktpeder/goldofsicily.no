@@ -151,7 +151,7 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
           </div>
         ) : null}
 
-        {partner && venue.menuMaterialUrl ? (
+        {venue.menuMaterialUrl ? (
           <a
             href={venue.menuMaterialUrl}
             target="_blank"
