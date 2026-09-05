@@ -2,10 +2,10 @@ import { SITE } from "./site";
 
 export const SITE_URL = SITE.domain;
 
-export const DEFAULT_TITLE = "Gold of Sicily — Stay a little longer";
+export const DEFAULT_TITLE = "Gold of Sicily — italiensk enkelhet. norsk utførelse.";
 
 export const DEFAULT_DESCRIPTION =
-  "Siciliansk street food, laget i Oslo. For lange bord, kalde øl og kvelder som varer litt lenger enn planlagt.";
+  "Sicilianske arancini. Klare for ditt serveringssted. Italiensk enkelhet, norsk utførelse.";
 
 export const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
 export const THEME_COLOR = "#F3EBDD";
@@ -74,9 +74,9 @@ export const LOCAL_BUSINESS_JSON_LD = {
 
 export const PAGE_SEO = {
   "/": {
-    title: "Gold of Sicily — Stay a little longer",
+    title: "Gold of Sicily — italiensk enkelhet. norsk utførelse.",
     description:
-      "Siciliansk street food, laget i Oslo. For lange bord, kalde øl og kvelder som varer litt lenger enn planlagt.",
+      "Sicilianske arancini. Klare for ditt serveringssted. Italiensk enkelhet, norsk utførelse.",
     path: "/",
   } satisfies PageSeo,
   "/next-popup": {
@@ -92,14 +92,15 @@ export const PAGE_SEO = {
     path: "/what-is-arancini",
   },
   "/about": {
-    title: "Om Gold of Sicily — A little more Italy. Right here.",
-    description: "Gold of Sicily startet med arancini. Sicilia er utgangspunktet. Norge er hjemme.",
+    title: "Om Gold of Sicily — italiensk enkelhet. norsk utførelse.",
+    description:
+      "Vi tar en italiensk måte å tenke mat og servering på og gir den en norsk utførelse.",
     path: "/about",
   },
   "/finn-oss": {
-    title: "Finn Gold of Sicily — hvor vi serveres",
+    title: "Hvor serveres Gold of Sicily",
     description:
-      "Gold of Sicily serveres på utvalgte steder i Oslo. Samme produkt, samme uttrykk, samme standard.",
+      "Finn Gold of Sicily hos utvalgte serveringssteder. Samme produkt, samme uttrykk, samme standard.",
     path: "/finn-oss",
   },
   "/samarbeid": {
@@ -115,7 +116,7 @@ export const PAGE_SEO = {
     path: "/for-barer",
   },
   "/en/for-bars": {
-    title: "For venues — Put Gold of Sicily on your menu",
+    title: "For venues — Put Gold of Sicily on your menu.",
     description:
       "A complete Sicilian street food concept for bars, hotels and venues. Product, prep, menus and serve materials.",
     path: "/en/for-bars",
@@ -130,9 +131,8 @@ export const PAGE_SEO = {
     locale: "en_GB",
   },
   "/en": {
-    title: "Gold of Sicily — Stay a little longer",
-    description:
-      "Sicilian street food, made in Oslo. For long tables, cold beers and evenings that last a little longer than planned.",
+    title: "Gold of Sicily — italian simplicity. norwegian craft.",
+    description: "Sicilian arancini. Ready for your venue. Italian simplicity, Norwegian craft.",
     path: "/en",
     noindex: true,
     locale: "en_GB",
@@ -154,17 +154,17 @@ export const PAGE_SEO = {
     locale: "en_GB",
   },
   "/en/about": {
-    title: "About Gold of Sicily — A little more Italy. Right here.",
+    title: "About Gold of Sicily — italian simplicity. norwegian craft.",
     description:
-      "Gold of Sicily started with arancini. Sicily is the starting point. Norway is home.",
+      "We take an Italian way of thinking about food and service and give it a Norwegian execution.",
     path: "/en/about",
     noindex: true,
     locale: "en_GB",
   },
   "/en/find-us": {
-    title: "Find Gold of Sicily — where we are served",
+    title: "Where is Gold of Sicily served",
     description:
-      "Gold of Sicily is served at selected venues in Oslo. Same product, same look, same standard.",
+      "Find Gold of Sicily at selected venues in Oslo. Same product, same look, same standard.",
     path: "/en/find-us",
     noindex: true,
     locale: "en_GB",

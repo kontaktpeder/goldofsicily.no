@@ -22,19 +22,19 @@ export const CMS_DEFAULTS_EN: CmsContentMap = {
     section_3_heading: "Can you make arancini at home?",
     section_3_body:
       "Yes, arancini can be made at home with risotto, filling, breading and frying. The hard part is the balance: a crisp shell, juicy rice and a filling that's still hot when served. That's exactly what we test and refine in small batches.",
-    cta_label: "Find Gold of Sicily →",
+    cta_label: "Where is Gold served? →",
   },
   about: {
     seo_title: "About Gold of Sicily",
     seo_description:
-      "Gold of Sicily started with arancini. Sicily is the starting point. Norway is home.",
+      "We take an Italian way of thinking about food and service and give it a Norwegian execution.",
     eyebrow: "About",
-    title: "A little more Italy. Right here.",
+    title: "italian simplicity. norwegian craft.",
     intro_1:
-      "Gold of Sicily started with arancini. But the aim was never just to introduce another Italian dish.",
+      "We bring more than a Sicilian food tradition. Gold of Sicily is our version of that Italian, unforced elegance: good ingredients, clear flavours and less fuss.",
     intro_2:
-      "We want to bring something of how Italians meet, eat and spend their time. Long tables. Good food. Espresso. Cold beer. A little more style. A little less hurry.",
-    section_1_heading: "Sicily is the starting point. Norway is home.",
+      "Developed and produced in Norway, with Sicily as the starting point. Not a tourist brochure — an Italian way of thinking about food and service, given a Norwegian execution.",
+    section_1_heading: "Sicily is the starting point. Norway is the craft.",
     section_1_body:
       "It began when Denis came to Norway and wondered why pizza and pasta were a given — while arancini barely existed. The first night in Oslo confirmed what we hoped: people want to sit with this.",
     section_2_heading: "A complete concept",
@@ -42,7 +42,7 @@ export const CMS_DEFAULTS_EN: CmsContentMap = {
       "Now we make Gold of Sicily as a complete concept for venues that want to serve that feeling, not just a box of food. Same product, same look, same standard.",
     proof_heading: "First tasting",
     proof_body: "4.5/5. That's the signal we build on.",
-    cta_popup_label: "Find us →",
+    cta_popup_label: "Where is Gold served? →",
     cta_instagram_label: "Instagram",
   },
   "next-popup": {

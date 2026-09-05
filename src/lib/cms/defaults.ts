@@ -22,19 +22,19 @@ export const CMS_DEFAULTS: CmsContentMap = {
     section_3_heading: "Kan man lage arancini hjemme?",
     section_3_body:
       "Ja, arancini kan lages hjemme med risotto, fyll, panering og fritering. Det vanskelige er balansen: sprø skorpe, saftig ris og fyll som fortsatt er varmt når den serveres. Det er akkurat dette vi tester og forbedrer i små batcher.",
-    cta_label: "Finn Gold of Sicily →",
+    cta_label: "Hvor serveres Gold? →",
   },
   about: {
     seo_title: "Om Gold of Sicily",
     seo_description:
-      "Gold of Sicily startet med arancini. Sicilia er utgangspunktet. Norge er hjemme.",
+      "Vi tar en italiensk måte å tenke mat og servering på og gir den en norsk utførelse.",
     eyebrow: "Om oss",
-    title: "A little more Italy. Right here.",
+    title: "italiensk enkelhet. norsk utførelse.",
     intro_1:
-      "Gold of Sicily startet med arancini. Men målet har aldri bare vært å introdusere enda en italiensk rett.",
+      "Vi tar med oss mer enn en siciliansk mattradisjon. Gold of Sicily er vår versjon av den italienske, uanstrengte elegansen: gode råvarer, tydelige smaker og mindre styr.",
     intro_2:
-      "Vi vil ta med oss noe av måten italienerne møtes, spiser og bruker tiden sin på. Lange bord. God mat. Espresso. Kalde øl. Litt mer stil. Litt mindre hastverk.",
-    section_1_heading: "Sicilia er utgangspunktet. Norge er hjemme.",
+      "Utviklet og produsert i Norge, med Sicilia som utgangspunkt. Ikke en turistbrosjyre — en italiensk måte å tenke mat og servering på, med norsk utførelse.",
+    section_1_heading: "Sicilia er utgangspunktet. Norge er utførelsen.",
     section_1_body:
       "Den begynte da Denis kom til Norge og lurte på hvorfor pizza og pasta var selvsagt — mens arancini nesten ikke fantes. Første kveld i Oslo bekreftet det vi håpet: folk vil sitte med dette.",
     section_2_heading: "Et ferdig konsept",
@@ -42,7 +42,7 @@ export const CMS_DEFAULTS: CmsContentMap = {
       "Nå lager vi Gold of Sicily som et ferdig konsept for steder som vil servere den følelsen, ikke bare en eske mat. Samme produkt, samme uttrykk, samme standard.",
     proof_heading: "Første smaking",
     proof_body: "4,5/5. Det er signalet vi bygger videre på.",
-    cta_popup_label: "Finn oss →",
+    cta_popup_label: "Hvor serveres Gold? →",
     cta_instagram_label: "Instagram",
   },
   "next-popup": {

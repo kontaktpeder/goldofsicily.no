@@ -38,7 +38,7 @@ export const allergenProducts: AllergenProduct[] = [
   {
     id: "truffle-mushroom",
     name: {
-      no: "Trøffel og sopp",
+      no: "Trøffel og sjampinjong",
       en: "Truffle & mushroom",
     },
     confirmed: {

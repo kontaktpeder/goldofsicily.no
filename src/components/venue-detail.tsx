@@ -7,7 +7,7 @@ import { mapsUrl, type PublicVenue } from "@/lib/portal-venues";
 export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicVenue }) {
   const findPath = lang === "en" ? "/en/find-us" : "/finn-oss";
   const serveLabel = lang === "en" ? "Serves" : "Serverer";
-  const backLabel = lang === "en" ? "Find us" : "Finn oss";
+  const backLabel = lang === "en" ? "Where is Gold served?" : "Hvor serveres Gold?";
   const websiteLabel = lang === "en" ? "Website" : "Nettside";
   const mapLabel = lang === "en" ? "Map" : "Kart";
 

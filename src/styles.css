@@ -56,7 +56,8 @@
   --espresso: #28201b;
   --tomato: #bd493a;
   --golden: #e9c52d;
-  --olive: #167fb5;
+  --olive: #3f4c24;
+  --olive-line: #5a6b38;
 
   --background: var(--blush);
   --foreground: var(--espresso);
@@ -143,6 +144,13 @@
     font-size: 1.15rem;
     font-weight: 400;
     color: var(--color-sea);
+  }
+
+  .brand-script {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.03em;
   }
 
   .arched {

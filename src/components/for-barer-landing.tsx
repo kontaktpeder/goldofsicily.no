@@ -26,8 +26,8 @@ const VIMEO_SRC =
 const COPY = {
   no: {
     eyebrow: "For serveringssteder",
-    heroTitleBefore: "PUT GOLD OF SICILY",
-    heroTitleAccent: "ON YOUR MENU.",
+    heroTitleBefore: "Sett Gold of Sicily",
+    heroTitleAccent: "på menyen.",
     heroBody:
       "Et ferdig siciliansk streetfood-konsept for barer, hoteller og serveringssteder. Produkt, tilberedning, menyer, serveringsmateriell og markedsføring. Vi gjør det enkelt å komme i gang.",
     stats: [
@@ -96,7 +96,7 @@ const COPY = {
         alt: "Arancini servert med drikke på bar",
       },
       {
-        name: "Trøffel med sopp",
+        name: "Trøffel & sjampinjong",
         img: imgSpiseklar,
         alt: "Arancini klar til å spises",
       },
@@ -195,8 +195,8 @@ const COPY = {
   },
   en: {
     eyebrow: "For venues",
-    heroTitleBefore: "PUT GOLD OF SICILY",
-    heroTitleAccent: "ON YOUR MENU.",
+    heroTitleBefore: "Put Gold of Sicily",
+    heroTitleAccent: "on your menu.",
     heroBody:
       "A complete Sicilian street food concept for bars, hotels and venues. Product, prep, menus, serve materials and marketing. We make it simple to get started.",
     stats: [
@@ -281,7 +281,7 @@ const COPY = {
         alt: "Arancini served with a drink at the bar",
       },
       {
-        name: "Truffle & mushroom",
+        name: "Truffle & champignon",
         img: imgSpiseklar,
         alt: "Arancini ready to eat",
       },

@@ -1,6 +1,6 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
-import { counterpartPath } from "@/components/lang-switch";
+import { BrandWordmark } from "@/components/brand-mark";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
 
@@ -10,7 +10,6 @@ type Props = {
 };
 
 export function BrandNav({ lang, tone = "solid" }: Props) {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const t = BRAND[lang];
 
   const links = [
@@ -19,10 +18,6 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
     { label: t.nav.about, to: t.paths.about },
     { label: t.nav.venues, to: t.paths.venues },
   ] as const;
-
-  const switchTo = lang === "no" ? "EN" : "NO";
-  const switchHref = counterpartPath(lang, pathname);
-  const switchLabel = lang === "no" ? "Switch to English" : "Bytt til norsk";
 
   const overlay = tone === "overlay";
 
@@ -35,8 +30,8 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
       }`}
     >
       <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 md:px-8 md:py-5">
-        <Link to={t.paths.home} className="text-lg italic tracking-tight text-current md:text-xl">
-          Gold of Sicily
+        <Link to={t.paths.home} className="text-current">
+          <BrandWordmark className={overlay ? "brightness-0 invert" : ""} />
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
@@ -58,13 +53,6 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
           >
             <Instagram className="h-4 w-4" />
           </a>
-          <Link
-            to={switchHref}
-            aria-label={switchLabel}
-            className="text-[1.05rem] italic tracking-tight text-current opacity-70 transition hover:opacity-100"
-          >
-            {switchTo}
-          </Link>
         </nav>
 
         <details className="lg:hidden">
@@ -93,13 +81,6 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
                 >
                   <Instagram className="h-5 w-5" />
                 </a>
-                <Link
-                  to={switchHref}
-                  aria-label={switchLabel}
-                  className="text-xl italic text-foreground/70"
-                >
-                  {switchTo}
-                </Link>
               </div>
             </nav>
           </div>
