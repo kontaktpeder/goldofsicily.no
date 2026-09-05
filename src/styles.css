@@ -472,7 +472,7 @@ html.pilot-lock #app {
 }
 
 .gold-map-canvas .leaflet-tile-pane {
-  filter: sepia(0.18) saturate(0.78) hue-rotate(350deg) brightness(1.03) contrast(0.97);
+  filter: sepia(0.32) saturate(0.55) hue-rotate(348deg) brightness(1.06) contrast(0.94);
 }
 
 .gold-map-fallback {

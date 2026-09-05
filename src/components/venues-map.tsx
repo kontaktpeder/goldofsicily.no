@@ -4,8 +4,6 @@ import { goldPinSvg } from "@/components/gold-map-pin";
 import { isGoldPartner, type PublicVenue } from "@/lib/portal-venues";
 import type { BrandLang } from "@/lib/brand-copy";
 
-const CARTO_VOYAGER =
-  "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
 const OSM_RASTER = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 function venuePath(lang: BrandLang, slug: string) {
@@ -102,24 +100,11 @@ export function VenuesMap({
           .attribution({ position: "bottomright", prefix: false })
           .addTo(map);
 
-        let usingOsm = false;
-        const carto = L.tileLayer(CARTO_VOYAGER, {
+        L.tileLayer(OSM_RASTER, {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: "abcd",
-          maxZoom: 20,
-        });
-        carto.on("tileerror", () => {
-          if (usingOsm || !map) return;
-          usingOsm = true;
-          map.removeLayer(carto);
-          L.tileLayer(OSM_RASTER, {
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            maxZoom: 19,
-          }).addTo(map);
-        });
-        carto.addTo(map);
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
 
         const pinIcon = (selected: boolean) =>
           L.divIcon({
