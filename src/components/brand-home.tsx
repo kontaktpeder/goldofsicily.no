@@ -46,9 +46,10 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
               {t.hero.findAfter}
             </a>
             <Link to={t.paths.venues} className="btn-gold btn-gold-ghost whitespace-nowrap">
-              {t.hero.venuesBefore}
+              {t.hero.venuesBefore.trimEnd()}{" "}
               <em className="brand-script">{t.hero.venuesMark}</em>
-              {t.hero.venuesAfter}
+              {" "}
+              {t.hero.venuesAfter.trimStart()}
             </Link>
           </div>
         </div>
