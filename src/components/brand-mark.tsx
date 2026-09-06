@@ -1,5 +1,6 @@
 import { useId } from "react";
 import goldMask from "@/assets/brand/inline-gold-mask.png";
+import logoCharacters from "@/assets/brand/logo-characters.png";
 import wordmarkMask from "@/assets/brand/wordmark-script-mask.png";
 import type { BrandLang } from "@/lib/brand-copy";
 
@@ -44,11 +45,10 @@ function ScriptFill({
 
 export function BrandLogo({ className = "" }: { className?: string }) {
   return (
-    <ScriptFill
-      src={wordmarkMask}
-      box={WORD_BOX}
+    <img
+      src={logoCharacters}
+      alt="Gold of Sicily"
       className={`brand-logo ${className}`}
-      label="Gold of Sicily"
     />
   );
 }

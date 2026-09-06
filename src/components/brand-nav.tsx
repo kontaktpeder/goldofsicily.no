@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram } from "lucide-react";
+import { useEffect, useState } from "react";
 import { BrandWordmark } from "@/components/brand-mark";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
@@ -7,10 +8,23 @@ import { SITE } from "@/lib/site";
 type Props = {
   lang: BrandLang;
   tone?: "overlay" | "solid";
+  revealLogoOnScroll?: boolean;
 };
 
-export function BrandNav({ lang, tone = "solid" }: Props) {
+export function BrandNav({ lang, tone = "solid", revealLogoOnScroll = false }: Props) {
   const t = BRAND[lang];
+  const [logoVisible, setLogoVisible] = useState(!revealLogoOnScroll);
+
+  useEffect(() => {
+    if (!revealLogoOnScroll) {
+      setLogoVisible(true);
+      return;
+    }
+    const update = () => setLogoVisible(window.scrollY > 72);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, [revealLogoOnScroll]);
 
   const links = [
     { label: t.nav.arancini, to: t.paths.arancini },
@@ -30,7 +44,14 @@ export function BrandNav({ lang, tone = "solid" }: Props) {
       }`}
     >
       <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8 md:py-4">
-        <Link to={t.paths.home} className="text-current">
+        <Link
+          to={t.paths.home}
+          aria-hidden={!logoVisible}
+          tabIndex={logoVisible ? undefined : -1}
+          className={`text-current transition-opacity duration-300 ${
+            logoVisible ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+        >
           <BrandWordmark />
         </Link>
 

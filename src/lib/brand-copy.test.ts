@@ -18,6 +18,14 @@ test("hero CTAs are plain Gold text", () => {
   assert.equal(BRAND.en.hero.findCta, "Where is Gold served?");
 });
 
+test("homepage hero uses the character logo and hides the header wordmark until scroll", () => {
+  const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
+  const mark = readFileSync(new URL("../components/brand-mark.tsx", import.meta.url), "utf8");
+  assert.match(home, /revealLogoOnScroll/);
+  assert.match(mark, /logo-characters\.png/);
+  assert.match(mark, /alt="Gold of Sicily"/);
+});
+
 test("inline Gold is not used in nav or hero CTAs", () => {
   const nav = readFileSync(new URL("../components/brand-nav.tsx", import.meta.url), "utf8");
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");

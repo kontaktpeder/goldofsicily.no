@@ -25,7 +25,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
 
   return (
     <div className="bg-[color:var(--cream)] font-display text-foreground">
-      <BrandNav lang={lang} />
+      <BrandNav lang={lang} revealLogoOnScroll />
 
       <section className="brand-hero px-5 md:px-12 lg:px-16">
         <div className="brand-hero-inner mx-auto max-w-3xl text-center">

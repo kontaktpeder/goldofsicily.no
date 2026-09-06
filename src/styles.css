@@ -198,8 +198,11 @@
   .brand-logo {
     display: block;
     margin-inline: auto;
-    width: min(100%, 18.5rem);
+    width: auto;
+    max-width: min(100%, 16.5rem);
     height: auto;
+    max-height: min(14.25rem, 32svh);
+    object-fit: contain;
   }
 
   .brand-hero {
@@ -262,7 +265,8 @@
       height: 2rem;
     }
     .brand-logo {
-      width: min(100%, 20rem);
+      max-width: min(100%, 18.5rem);
+      max-height: min(16.25rem, 34svh);
     }
   }
 
