@@ -59,6 +59,12 @@ function osmEmbedSrc(venues: PublicVenue[]) {
   return `https://www.openstreetmap.org/export/embed.html?bbox=${west}%2C${south}%2C${east}%2C${north}&layer=mapnik${marker}`;
 }
 
+function resolveMapLibre(mod: typeof import("maplibre-gl") & { default?: typeof import("maplibre-gl") }) {
+  if (typeof mod.Map === "function") return mod;
+  if (typeof mod.default?.Map === "function") return mod.default;
+  throw new Error("MapLibre Map constructor missing");
+}
+
 function waitForMapLoad(map: { once: (event: "load", cb: () => void) => void }) {
   return new Promise<void>((resolve, reject) => {
     const timer = window.setTimeout(() => reject(new Error("map style timeout")), 8000);
@@ -109,6 +115,13 @@ export function VenuesMap({
         attributionControl: false,
         zoomControl: false,
       });
+      teardown = () => {
+        map.remove();
+      };
+      if (cancelled) {
+        teardown();
+        return;
+      }
       L.control.zoom({ position: "topright" }).addTo(map);
       L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
       L.tileLayer(OSM_RASTER, {
@@ -164,7 +177,7 @@ export function VenuesMap({
     const startMapLibre = async () => {
       const maplibreMod = await import("maplibre-gl");
       await import("maplibre-gl/dist/maplibre-gl.css");
-      const maplibregl = (maplibreMod as { default?: typeof import("maplibre-gl") }).default ?? maplibreMod;
+      const maplibregl = resolveMapLibre(maplibreMod);
       if (cancelled || !hostRef.current) return;
 
       const map = new maplibregl.Map({
@@ -180,6 +193,13 @@ export function VenuesMap({
         pitchWithRotate: false,
         maxPitch: 0,
       });
+      teardown = () => {
+        map.remove();
+      };
+      if (cancelled) {
+        teardown();
+        return;
+      }
       map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
       map.addControl(
         new maplibregl.AttributionControl({ compact: true, customAttribution: ATTRIBUTION }),
@@ -203,6 +223,7 @@ export function VenuesMap({
         map.remove();
         return;
       }
+      hostRef.current.dataset.engine = "maplibre";
 
       if (mapped.length === 1) {
         map.setCenter([mapped[0].longitude as number, mapped[0].latitude as number]);
