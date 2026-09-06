@@ -66,7 +66,7 @@ export const goldMapStyle: StyleSpecification = {
       paint: {
         "line-color": WATERWAY,
         "line-opacity": 0.7,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 0.6, 13, 1.4],
+        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 0.6, 13, 1.4, 16, 2.2],
       },
     },
     {
@@ -87,7 +87,7 @@ export const goldMapStyle: StyleSpecification = {
       paint: {
         "line-color": ROAD_EDGE,
         "line-opacity": 0.55,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1.6, 13, 3.2],
+        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1.6, 13, 3.2, 16, 5],
       },
     },
     {
@@ -100,7 +100,7 @@ export const goldMapStyle: StyleSpecification = {
       paint: {
         "line-color": ROAD,
         "line-opacity": 0.9,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1, 13, 2.1],
+        "line-width": ["interpolate", ["linear"], ["zoom"], 11, 1, 13, 2.1, 16, 3.4],
       },
     },
     {
@@ -117,7 +117,7 @@ export const goldMapStyle: StyleSpecification = {
       paint: {
         "line-color": ROAD_EDGE,
         "line-opacity": 0.5,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.8, 13, 5],
+        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.8, 13, 5, 16, 8],
       },
     },
     {
@@ -133,7 +133,20 @@ export const goldMapStyle: StyleSpecification = {
       ],
       paint: {
         "line-color": ROAD,
-        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.1, 13, 3.2],
+        "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.1, 13, 3.2, 16, 5.4],
+      },
+    },
+    {
+      id: "road-tertiary",
+      type: "line",
+      source: "openmaptiles",
+      "source-layer": "transportation",
+      minzoom: 14,
+      filter: ["all", lineGeom, ["==", ["get", "class"], "tertiary"]],
+      paint: {
+        "line-color": ROAD,
+        "line-opacity": 0.7,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 14, 1.2, 16, 2.4],
       },
     },
     {

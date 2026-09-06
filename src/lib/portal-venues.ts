@@ -162,12 +162,29 @@ export async function loadVenueForPage(
   }
 }
 
+function venueQuery(venue: PublicVenue) {
+  return [venue.address, venue.city, venue.name].filter(Boolean).join(", ");
+}
+
 export function mapsUrl(venue: PublicVenue) {
   if (venue.latitude != null && venue.longitude != null) {
     return `https://www.openstreetmap.org/?mlat=${venue.latitude}&mlon=${venue.longitude}#map=16/${venue.latitude}/${venue.longitude}`;
   }
-  const q = [venue.address, venue.city, venue.name].filter(Boolean).join(", ");
-  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(q)}`;
+  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(venueQuery(venue))}`;
+}
+
+export function googleMapsUrl(venue: PublicVenue) {
+  if (venue.latitude != null && venue.longitude != null) {
+    return `https://www.google.com/maps/search/?api=1&query=${venue.latitude},${venue.longitude}`;
+  }
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueQuery(venue))}`;
+}
+
+export function appleMapsUrl(venue: PublicVenue) {
+  if (venue.latitude != null && venue.longitude != null) {
+    return `https://maps.apple.com/?ll=${venue.latitude},${venue.longitude}&q=${encodeURIComponent(venue.name)}`;
+  }
+  return `https://maps.apple.com/?q=${encodeURIComponent(venueQuery(venue))}`;
 }
 
 export function osmEmbedUrl(venues: PublicVenue[]) {

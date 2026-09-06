@@ -2,11 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import logoCharacters from "@/assets/brand/logo-characters.png";
 import { createGoldPinElement, goldPinSvg } from "@/components/gold-map-pin";
 import { goldMapStyle } from "@/lib/gold-map-style";
-import { isGoldPartner, type PublicVenue } from "@/lib/portal-venues";
+import {
+  appleMapsUrl,
+  googleMapsUrl,
+  isGoldPartner,
+  type PublicVenue,
+} from "@/lib/portal-venues";
 import type { BrandLang } from "@/lib/brand-copy";
 
 const OSM_RASTER = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-const MAX_ZOOM = 13;
+const MAX_ZOOM = 16;
+const FIT_ZOOM = 13;
 const ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://openfreemap.org">OpenFreeMap</a>';
 
@@ -16,35 +22,6 @@ function venuePath(lang: BrandLang, slug: string) {
 
 function venueAddress(venue: PublicVenue) {
   return [venue.address, venue.city].filter(Boolean).join(", ");
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function popupHtml(venue: PublicVenue, lang: BrandLang) {
-  const partner = isGoldPartner(venue);
-  const badge = partner
-    ? `<p class="gold-map-card-badge">Gold Partner</p>`
-    : `<p class="gold-map-card-status">${lang === "en" ? "Serves Gold" : "Serverer Gold"}</p>`;
-  const cta = lang === "en" ? "See venue" : "Se stedet";
-  const image = venue.imageUrl
-    ? `<img src="${escapeHtml(venue.imageUrl)}" alt="" class="gold-map-card-image" />`
-    : "";
-  const address = venueAddress(venue);
-  return `<div class="gold-map-card">
-    ${image}
-    <div class="gold-map-card-body">
-      <p class="gold-map-card-name">${escapeHtml(venue.name)}</p>
-      ${badge}
-      ${address ? `<p class="gold-map-card-addr">${escapeHtml(address)}</p>` : ""}
-      <a class="gold-map-card-cta" href="${venuePath(lang, venue.slug)}">${cta} →</a>
-    </div>
-  </div>`;
 }
 
 function osmEmbedSrc(venues: PublicVenue[]) {
@@ -75,6 +52,56 @@ function waitForMapLoad(map: { once: (event: "load", cb: () => void) => void }) 
   });
 }
 
+function VenueDock({
+  venue,
+  lang,
+  onClose,
+}: {
+  venue: PublicVenue;
+  lang: BrandLang;
+  onClose: () => void;
+}) {
+  const partner = isGoldPartner(venue);
+  const address = venueAddress(venue);
+  const closeLabel = lang === "en" ? "Close" : "Lukk";
+  const cta = lang === "en" ? "See venue" : "Se stedet";
+  const openLabel = lang === "en" ? "Open in maps?" : "Åpne i kart?";
+  const appleLabel = lang === "en" ? "Apple Maps" : "Apple Kart";
+
+  return (
+    <aside className="gold-map-dock" aria-label={venue.name}>
+      <button type="button" className="gold-map-dock-close" onClick={onClose} aria-label={closeLabel}>
+        ×
+      </button>
+      {venue.imageUrl ? <img src={venue.imageUrl} alt="" className="gold-map-card-image" /> : null}
+      <div className="gold-map-card-body">
+        <p className="gold-map-card-name">{venue.name}</p>
+        {partner ? (
+          <p className="gold-map-card-badge">Gold Partner</p>
+        ) : (
+          <p className="gold-map-card-status">{lang === "en" ? "Serves Gold" : "Serverer Gold"}</p>
+        )}
+        {address ? <p className="gold-map-card-addr">{address}</p> : null}
+        <a className="gold-map-card-cta" href={venuePath(lang, venue.slug)}>
+          {cta} →
+        </a>
+        <div className="gold-map-open">
+          <p className="gold-map-open-q">{openLabel}</p>
+          <p className="gold-map-open-apps">
+            <a href={googleMapsUrl(venue)} target="_blank" rel="noreferrer">
+              Google Maps
+            </a>
+            <span aria-hidden> · </span>
+            <a href={appleMapsUrl(venue)} target="_blank" rel="noreferrer">
+              {appleLabel}
+            </a>
+          </p>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
 export function VenuesMap({
   venues,
   title,
@@ -87,12 +114,21 @@ export function VenuesMap({
   decorate?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<(slug: string | null) => void>(() => {});
+  const paintPinsRef = useRef<(slug: string | null) => void>(() => {});
   const [failed, setFailed] = useState(false);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const mapped = useMemo(
     () => venues.filter((venue) => venue.latitude != null && venue.longitude != null),
     [venues],
   );
+  const selected = mapped.find((venue) => venue.slug === selectedSlug) ?? null;
   const mapKey = mapped.map((venue) => `${venue.slug}:${venue.latitude}:${venue.longitude}`).join("|");
+  selectRef.current = setSelectedSlug;
+
+  useEffect(() => {
+    paintPinsRef.current(selectedSlug);
+  }, [selectedSlug]);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -122,21 +158,29 @@ export function VenuesMap({
         teardown();
         return;
       }
-      L.control.zoom({ position: "topright" }).addTo(map);
+      L.control.zoom({ position: "topleft" }).addTo(map);
       L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
       L.tileLayer(OSM_RASTER, {
         attribution: ATTRIBUTION,
         maxZoom: MAX_ZOOM,
       }).addTo(map);
 
-      const pinIcon = (selected: boolean) =>
+      const pinIcon = (on: boolean) =>
         L.divIcon({
           className: "gold-map-marker",
-          html: `<span class="gold-map-pin${selected ? " is-selected" : ""}">${goldPinSvg(selected)}</span>`,
+          html: `<span class="gold-map-pin${on ? " is-selected" : ""}">${goldPinSvg(on)}</span>`,
           iconSize: [36, 45],
           iconAnchor: [18, 45],
-          popupAnchor: [0, -38],
         });
+
+      const markers = new Map<string, import("leaflet").Marker>();
+      paintPinsRef.current = (slug) => {
+        for (const [itemSlug, marker] of markers) {
+          marker.setIcon(pinIcon(itemSlug === slug));
+          const el = marker.getElement();
+          if (el) el.dataset.slug = itemSlug;
+        }
+      };
 
       for (const venue of mapped) {
         const marker = L.marker([venue.latitude as number, venue.longitude as number], {
@@ -144,15 +188,19 @@ export function VenuesMap({
           title: venue.name,
           alt: venue.name,
         }).addTo(map);
-        marker.bindPopup(popupHtml(venue, lang), {
-          className: "gold-map-popup",
-          maxWidth: 260,
-          closeButton: false,
-          autoPanPadding: [28, 28],
+        const el = marker.getElement();
+        if (el) el.dataset.slug = venue.slug;
+        marker.on("click", (event) => {
+          L.DomEvent.stopPropagation(event);
+          selectRef.current(venue.slug);
+          map.flyTo([venue.latitude as number, venue.longitude as number], Math.max(map.getZoom(), 14), {
+            duration: 0.55,
+          });
         });
-        marker.on("popupopen", () => marker.setIcon(pinIcon(true)));
-        marker.on("popupclose", () => marker.setIcon(pinIcon(false)));
+        markers.set(venue.slug, marker);
       }
+
+      map.on("click", () => selectRef.current(null));
 
       if (mapped.length === 1) {
         map.setView([mapped[0].latitude as number, mapped[0].longitude as number], 12);
@@ -161,7 +209,7 @@ export function VenuesMap({
           L.latLngBounds(
             mapped.map((venue) => [venue.latitude as number, venue.longitude as number] as [number, number]),
           ),
-          { padding: [72, 72], maxZoom: MAX_ZOOM },
+          { padding: [72, 72], maxZoom: FIT_ZOOM },
         );
       }
 
@@ -200,16 +248,14 @@ export function VenuesMap({
         teardown();
         return;
       }
-      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-left");
       map.addControl(
         new maplibregl.AttributionControl({ compact: true, customAttribution: ATTRIBUTION }),
         "bottom-right",
       );
 
       const markers: InstanceType<typeof maplibregl.Marker>[] = [];
-      let openPopup: InstanceType<typeof maplibregl.Popup> | undefined;
-
-      const setSelected = (slug: string | null) => {
+      paintPinsRef.current = (slug) => {
         for (const marker of markers) {
           const el = marker.getElement();
           const isOn = el.dataset.slug === slug;
@@ -233,7 +279,7 @@ export function VenuesMap({
         for (const venue of mapped) {
           bounds.extend([venue.longitude as number, venue.latitude as number]);
         }
-        map.fitBounds(bounds, { padding: 80, maxZoom: MAX_ZOOM, duration: 0 });
+        map.fitBounds(bounds, { padding: 80, maxZoom: FIT_ZOOM, duration: 0 });
       }
 
       for (const venue of mapped) {
@@ -244,24 +290,20 @@ export function VenuesMap({
           .addTo(map);
         el.addEventListener("click", (event) => {
           event.stopPropagation();
-          openPopup?.remove();
-          setSelected(venue.slug);
-          openPopup = new maplibregl.Popup({
-            closeButton: false,
-            offset: 20,
-            className: "gold-map-popup",
-            maxWidth: "260px",
-          })
-            .setLngLat([venue.longitude as number, venue.latitude as number])
-            .setHTML(popupHtml(venue, lang))
-            .addTo(map);
-          openPopup.on("close", () => setSelected(null));
+          selectRef.current(venue.slug);
+          map.easeTo({
+            center: [venue.longitude as number, venue.latitude as number],
+            zoom: Math.max(map.getZoom(), 14),
+            padding: { top: 48, bottom: 48, left: 48, right: 300 },
+            duration: 500,
+          });
         });
         markers.push(marker);
       }
 
+      map.on("click", () => selectRef.current(null));
+
       teardown = () => {
-        openPopup?.remove();
         for (const marker of markers) marker.remove();
         map.remove();
       };
@@ -286,9 +328,10 @@ export function VenuesMap({
     void start();
     return () => {
       cancelled = true;
+      paintPinsRef.current = () => {};
       teardown();
     };
-  }, [lang, mapKey, mapped]);
+  }, [mapKey, mapped]);
 
   if (mapped.length === 0) return null;
 
@@ -305,6 +348,7 @@ export function VenuesMap({
         ) : (
           <div ref={hostRef} className="gold-map-canvas" role="region" aria-label={title} />
         )}
+        {selected ? <VenueDock venue={selected} lang={lang} onClose={() => setSelectedSlug(null)} /> : null}
       </div>
       {decorate ? (
         <img src={logoCharacters} alt="" aria-hidden className="gold-map-character" />
