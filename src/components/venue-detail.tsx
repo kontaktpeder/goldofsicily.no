@@ -4,6 +4,7 @@ import { BrandNav } from "@/components/brand-nav";
 import { VenuesMap } from "@/components/venues-map";
 import { VenueMenuFile } from "@/components/venue-menu-file";
 import { isGoldPartner, isPublicMenuUrl, mapsUrl, type PublicVenue } from "@/lib/portal-venues";
+import { venueSeoCopy } from "@/lib/seo";
 
 function visitUrl(venue: PublicVenue) {
   if (venue.websiteUrl) return venue.websiteUrl;
@@ -32,6 +33,7 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
   const storyLabel = lang === "en" ? `Gold at ${venue.name}` : `Gold på ${venue.name}`;
   const embed = venue.videoUrl ? videoEmbedSrc(venue.videoUrl) : null;
   const hasMenuFile = isPublicMenuUrl(venue.menuMaterialUrl);
+  const seo = venueSeoCopy(venue, lang);
 
   return (
     <div className="min-h-screen bg-[color:var(--cream)] font-display">
@@ -41,7 +43,7 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
           ← {backLabel}
         </Link>
         <h1 className="mt-6 font-display text-[clamp(2.6rem,7vw,4.6rem)] leading-[0.95] tracking-tight">
-          {venue.name}
+          {seo.heading}
         </h1>
         {partner ? (
           <p className="mt-3 text-[0.7rem] tracking-[0.2em] text-foreground/55 uppercase">
@@ -69,11 +71,7 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
         {venue.imageUrl ? (
           <img
             src={venue.imageUrl}
-            alt={
-              lang === "en"
-                ? `Gold of Sicily at ${venue.name}${venue.city ? ` in ${venue.city}` : ""}`
-                : `Gold of Sicily hos ${venue.name}${venue.city ? ` i ${venue.city}` : ""}`
-            }
+            alt={seo.imageAlt}
             loading="lazy"
             className="mt-10 w-full border border-foreground/15 object-cover"
           />

@@ -58,6 +58,7 @@ test("homepage venue cards fill with photo and show the venue logo", () => {
   assert.match(grid, /min-h-\[21rem\]/);
   assert.match(grid, /absolute inset-0 h-full w-full object-cover/);
   assert.match(grid, /venue\.logoUrl/);
+  assert.match(grid, /venueSeoCopy/);
 });
 
 test("homepage rhythm keeps one product photo and a matching product line icon", () => {

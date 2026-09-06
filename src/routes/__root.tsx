@@ -10,7 +10,12 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { htmlLangFromPath, ORGANIZATION_JSON_LD, THEME_COLOR } from "@/lib/seo";
+import {
+  googleSiteVerificationMeta,
+  htmlLangFromPath,
+  ORGANIZATION_JSON_LD,
+  THEME_COLOR,
+} from "@/lib/seo";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -89,6 +94,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: THEME_COLOR },
+      ...googleSiteVerificationMeta(),
     ],
     links: [
       { rel: "stylesheet", href: appCss },

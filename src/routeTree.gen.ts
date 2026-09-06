@@ -19,6 +19,7 @@ import { Route as FinnOssRouteImport } from './routes/finn-oss'
 import { Route as EnRouteImport } from './routes/en'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as A3f8c91e7b4d2f60goldofsicilyDottxtRouteImport } from './routes/a3f8c91e7b4d2f60goldofsicily[.]txt'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PilotIndexRouteImport } from './routes/pilot.index'
 import { Route as EnIndexRouteImport } from './routes/en.index'
@@ -37,6 +38,7 @@ import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
 import { Route as AdminAccountingRouteImport } from './routes/admin/accounting'
 import { Route as AdminSlugRouteImport } from './routes/admin/$slug'
 import { Route as EnVenuesSlugRouteImport } from './routes/en.venues.$slug'
+import { Route as ApiSeoNotifyRouteImport } from './routes/api/seo.notify'
 import { Route as ApiPublicV1ModuleWidgetsRouteImport } from './routes/api/public/v1/module.widgets'
 import { Route as ApiPublicV1ModuleOrganizationRouteImport } from './routes/api/public/v1/module.organization'
 import { Route as ApiPublicV1ModuleInfoRouteImport } from './routes/api/public/v1/module.info'
@@ -93,6 +95,12 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const A3f8c91e7b4d2f60goldofsicilyDottxtRoute =
+  A3f8c91e7b4d2f60goldofsicilyDottxtRouteImport.update({
+    id: '/a3f8c91e7b4d2f60goldofsicily.txt',
+    path: '/a3f8c91e7b4d2f60goldofsicily.txt',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -183,6 +191,11 @@ const EnVenuesSlugRoute = EnVenuesSlugRouteImport.update({
   path: '/venues/$slug',
   getParentRoute: () => EnRoute,
 } as any)
+const ApiSeoNotifyRoute = ApiSeoNotifyRouteImport.update({
+  id: '/api/seo/notify',
+  path: '/api/seo/notify',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicV1ModuleWidgetsRoute =
   ApiPublicV1ModuleWidgetsRouteImport.update({
     id: '/api/public/v1/module/widgets',
@@ -214,6 +227,7 @@ const ApiPublicV1ModuleOrganizationOrgIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/a3f8c91e7b4d2f60goldofsicily.txt': typeof A3f8c91e7b4d2f60goldofsicilyDottxtRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/en': typeof EnRouteWithChildren
@@ -240,6 +254,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/en/': typeof EnIndexRoute
   '/pilot/': typeof PilotIndexRoute
+  '/api/seo/notify': typeof ApiSeoNotifyRoute
   '/en/venues/$slug': typeof EnVenuesSlugRoute
   '/api/public/v1/module/health': typeof ApiPublicV1ModuleHealthRoute
   '/api/public/v1/module/info': typeof ApiPublicV1ModuleInfoRoute
@@ -249,6 +264,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/a3f8c91e7b4d2f60goldofsicily.txt': typeof A3f8c91e7b4d2f60goldofsicilyDottxtRoute
   '/about': typeof AboutRoute
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
@@ -272,6 +288,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/en': typeof EnIndexRoute
   '/pilot': typeof PilotIndexRoute
+  '/api/seo/notify': typeof ApiSeoNotifyRoute
   '/en/venues/$slug': typeof EnVenuesSlugRoute
   '/api/public/v1/module/health': typeof ApiPublicV1ModuleHealthRoute
   '/api/public/v1/module/info': typeof ApiPublicV1ModuleInfoRoute
@@ -282,6 +299,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/a3f8c91e7b4d2f60goldofsicily.txt': typeof A3f8c91e7b4d2f60goldofsicilyDottxtRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
   '/en': typeof EnRouteWithChildren
@@ -308,6 +326,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/en/': typeof EnIndexRoute
   '/pilot/': typeof PilotIndexRoute
+  '/api/seo/notify': typeof ApiSeoNotifyRoute
   '/en/venues/$slug': typeof EnVenuesSlugRoute
   '/api/public/v1/module/health': typeof ApiPublicV1ModuleHealthRoute
   '/api/public/v1/module/info': typeof ApiPublicV1ModuleInfoRoute
@@ -319,6 +338,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/a3f8c91e7b4d2f60goldofsicily.txt'
     | '/about'
     | '/admin'
     | '/en'
@@ -345,6 +365,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/en/'
     | '/pilot/'
+    | '/api/seo/notify'
     | '/en/venues/$slug'
     | '/api/public/v1/module/health'
     | '/api/public/v1/module/info'
@@ -354,6 +375,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/a3f8c91e7b4d2f60goldofsicily.txt'
     | '/about'
     | '/finn-oss'
     | '/for-barer'
@@ -377,6 +399,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/en'
     | '/pilot'
+    | '/api/seo/notify'
     | '/en/venues/$slug'
     | '/api/public/v1/module/health'
     | '/api/public/v1/module/info'
@@ -386,6 +409,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/a3f8c91e7b4d2f60goldofsicily.txt'
     | '/about'
     | '/admin'
     | '/en'
@@ -412,6 +436,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/en/'
     | '/pilot/'
+    | '/api/seo/notify'
     | '/en/venues/$slug'
     | '/api/public/v1/module/health'
     | '/api/public/v1/module/info'
@@ -422,6 +447,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  A3f8c91e7b4d2f60goldofsicilyDottxtRoute: typeof A3f8c91e7b4d2f60goldofsicilyDottxtRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
   EnRoute: typeof EnRouteWithChildren
@@ -433,6 +459,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WhatIsAranciniRoute: typeof WhatIsAranciniRoute
   StederSlugRoute: typeof StederSlugRoute
+  ApiSeoNotifyRoute: typeof ApiSeoNotifyRoute
   ApiPublicV1ModuleHealthRoute: typeof ApiPublicV1ModuleHealthRoute
   ApiPublicV1ModuleInfoRoute: typeof ApiPublicV1ModuleInfoRoute
   ApiPublicV1ModuleOrganizationRoute: typeof ApiPublicV1ModuleOrganizationRouteWithChildren
@@ -509,6 +536,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/a3f8c91e7b4d2f60goldofsicily.txt': {
+      id: '/a3f8c91e7b4d2f60goldofsicily.txt'
+      path: '/a3f8c91e7b4d2f60goldofsicily.txt'
+      fullPath: '/a3f8c91e7b4d2f60goldofsicily.txt'
+      preLoaderRoute: typeof A3f8c91e7b4d2f60goldofsicilyDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -637,6 +671,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnVenuesSlugRouteImport
       parentRoute: typeof EnRoute
     }
+    '/api/seo/notify': {
+      id: '/api/seo/notify'
+      path: '/api/seo/notify'
+      fullPath: '/api/seo/notify'
+      preLoaderRoute: typeof ApiSeoNotifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/v1/module/widgets': {
       id: '/api/public/v1/module/widgets'
       path: '/api/public/v1/module/widgets'
@@ -748,6 +789,8 @@ const ApiPublicV1ModuleOrganizationRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  A3f8c91e7b4d2f60goldofsicilyDottxtRoute:
+    A3f8c91e7b4d2f60goldofsicilyDottxtRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
   EnRoute: EnRouteWithChildren,
@@ -759,6 +802,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   WhatIsAranciniRoute: WhatIsAranciniRoute,
   StederSlugRoute: StederSlugRoute,
+  ApiSeoNotifyRoute: ApiSeoNotifyRoute,
   ApiPublicV1ModuleHealthRoute: ApiPublicV1ModuleHealthRoute,
   ApiPublicV1ModuleInfoRoute: ApiPublicV1ModuleInfoRoute,
   ApiPublicV1ModuleOrganizationRoute:

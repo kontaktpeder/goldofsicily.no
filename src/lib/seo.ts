@@ -30,6 +30,9 @@ export type PageSeo = {
   locale?: PageLocale;
   alternates?: HrefLangAlternate[];
   jsonLd?: unknown;
+  ogImage?: string;
+  ogImageAlt?: string;
+  heading?: string;
 };
 
 export function canonicalUrl(path = "/") {
@@ -47,12 +50,21 @@ const FOR_BARS_ALTERNATES: HrefLangAlternate[] = [
   { hrefLang: "x-default", path: "/for-barer" },
 ];
 
+export function googleSiteVerificationMeta() {
+  const content =
+    (typeof process !== "undefined" && process.env.GOOGLE_SITE_VERIFICATION) || "";
+  if (!content.trim()) return [];
+  return [{ name: "google-site-verification", content: content.trim() }];
+}
+
 export function buildPageHead(seo: PageSeo = {}) {
   const title = seo.title ?? DEFAULT_TITLE;
   const description = seo.description ?? DEFAULT_DESCRIPTION;
   const url = canonicalUrl(seo.path ?? "/");
   const ogType = seo.ogType ?? "website";
   const locale = seo.locale ?? "nb_NO";
+  const ogImage = seo.ogImage || OG_IMAGE;
+  const ogImageAlt = seo.ogImageAlt || OG_IMAGE_ALT;
 
   const meta: Array<Record<string, string>> = [
     { title },
@@ -62,16 +74,16 @@ export function buildPageHead(seo: PageSeo = {}) {
     { property: "og:description", content: description },
     { property: "og:type", content: ogType },
     { property: "og:url", content: url },
-    { property: "og:image", content: OG_IMAGE },
+    { property: "og:image", content: ogImage },
     { property: "og:image:width", content: OG_IMAGE_WIDTH },
     { property: "og:image:height", content: OG_IMAGE_HEIGHT },
-    { property: "og:image:alt", content: OG_IMAGE_ALT },
+    { property: "og:image:alt", content: ogImageAlt },
     { property: "og:locale", content: locale },
     { property: "og:site_name", content: SITE.name },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
-    { name: "twitter:image", content: OG_IMAGE },
+    { name: "twitter:image", content: ogImage },
   ];
 
   if (seo.noindex) {
@@ -114,17 +126,41 @@ export const ORGANIZATION_JSON_LD = {
   sameAs: [SITE.instagram, SITE.tiktok],
 };
 
+export function venueSeoCopy(venue: PublicVenue, lang: "no" | "en") {
+  const city = venue.city?.trim() || "";
+  if (lang === "en") {
+    return {
+      title: `Arancini at ${venue.name} | Gold of Sicily`,
+      description: city
+        ? `Find Gold of Sicily arancini at ${venue.name} in ${city}. See flavours, menu and venue information.`
+        : `Find Gold of Sicily arancini at ${venue.name}. See flavours, menu and venue information.`,
+      heading: `Gold of Sicily at ${venue.name}`,
+      imageAlt: city
+        ? `Gold of Sicily at ${venue.name} in ${city}`
+        : `Gold of Sicily at ${venue.name}`,
+    };
+  }
+  return {
+    title: `Arancini hos ${venue.name} | Gold of Sicily`,
+    description: city
+      ? `Finn Gold of Sicily-arancini hos ${venue.name} i ${city}. Se smaker, meny og informasjon om serveringsstedet.`
+      : `Finn Gold of Sicily-arancini hos ${venue.name}. Se smaker, meny og informasjon om serveringsstedet.`,
+    heading: `Gold of Sicily hos ${venue.name}`,
+    imageAlt: city
+      ? `Gold of Sicily hos ${venue.name} i ${city}`
+      : `Gold of Sicily hos ${venue.name}`,
+  };
+}
+
 export function venueJsonLd(venue: PublicVenue, path: string) {
+  const copy = venueSeoCopy(venue, path.startsWith("/en") ? "en" : "no");
   const jsonLd: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "FoodEstablishment",
     name: venue.name,
     url: canonicalUrl(path),
     image: venue.imageUrl ?? OG_IMAGE,
-    description:
-      venue.city != null && venue.city !== ""
-        ? `Gold of Sicily hos ${venue.name} i ${venue.city}.`
-        : `Gold of Sicily hos ${venue.name}.`,
+    description: copy.description,
     servesCuisine: ["Sicilian", "Italian"],
     brand: { "@type": "Brand", "@id": `${SITE_URL}/#organization`, name: SITE.name },
   };
@@ -175,18 +211,16 @@ export function venuePageSeo(venue: PublicVenue | null | undefined, lang: "no" |
         noindex: true,
       };
     }
-    const city = venue.city?.trim();
+    const copy = venueSeoCopy(venue, "en");
+    const path = `/en/venues/${venue.slug}`;
     return {
-      title: city
-        ? `Gold of Sicily at ${venue.name} | Arancini in ${city}`
-        : `Gold of Sicily at ${venue.name}`,
-      description: city
-        ? `Sicilian arancini at ${venue.name} in ${city}. See flavours, menu and where to find Gold of Sicily.`
-        : `Sicilian arancini at ${venue.name}. See flavours, menu and where to find Gold of Sicily.`,
-      path: `/en/venues/${venue.slug}`,
+      ...copy,
+      path,
       locale: "en_GB",
       noindex: true,
-      jsonLd: venueJsonLd(venue, `/en/venues/${venue.slug}`),
+      jsonLd: venueJsonLd(venue, path),
+      ogImage: venue.imageUrl || undefined,
+      ogImageAlt: copy.imageAlt,
     };
   }
 
@@ -198,17 +232,14 @@ export function venuePageSeo(venue: PublicVenue | null | undefined, lang: "no" |
     };
   }
 
-  const city = venue.city?.trim();
+  const copy = venueSeoCopy(venue, "no");
   const path = `/steder/${venue.slug}`;
   return {
-    title: city
-      ? `Gold of Sicily hos ${venue.name} | Arancini i ${city}`
-      : `Gold of Sicily hos ${venue.name}`,
-    description: city
-      ? `Sicilianske arancini hos ${venue.name} i ${city}. Se smaker, meny og hvor du finner Gold of Sicily.`
-      : `Sicilianske arancini hos ${venue.name}. Se smaker, meny og hvor du finner Gold of Sicily.`,
+    ...copy,
     path,
     jsonLd: venueJsonLd(venue, path),
+    ogImage: venue.imageUrl || undefined,
+    ogImageAlt: copy.imageAlt,
   };
 }
 
