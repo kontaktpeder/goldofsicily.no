@@ -82,31 +82,54 @@ function VenueCard({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
 }
 
 function VenueCardBody({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
+  const onPhoto = Boolean(venue.imageUrl);
+
   return (
-    <>
+    <div className="relative min-h-[21rem] overflow-hidden">
       {venue.imageUrl ? (
-        <img src={venue.imageUrl} alt="" className="h-40 w-full object-cover" />
+        <img src={venue.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      ) : (
+        <div className="absolute inset-0 bg-[color:var(--cream)]" />
+      )}
+      {venue.logoUrl ? (
+        <img
+          src={venue.logoUrl}
+          alt=""
+          className="absolute top-3 left-3 z-10 h-12 w-auto max-w-[7.5rem] object-contain bg-[color:var(--paper)]/92 p-1.5"
+        />
       ) : null}
-      <div className="px-6 py-7">
+      <div
+        className={
+          onPhoto
+            ? "absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[color:var(--espresso)]/85 via-[color:var(--espresso)]/40 to-transparent px-6 pb-5 pt-16 text-[#F3EBDD]"
+            : "absolute inset-x-0 bottom-0 z-10 px-6 pb-5 pt-8"
+        }
+      >
         <p className="font-display text-2xl tracking-tight">{venue.name}</p>
         {isGoldPartner(venue) ? (
-          <p className="mt-2 text-[0.7rem] tracking-[0.18em] text-foreground/55 uppercase">
+          <p
+            className={`mt-2 text-[0.7rem] tracking-[0.18em] uppercase ${onPhoto ? "text-[#F3EBDD]/70" : "text-foreground/55"}`}
+          >
             Gold Partner
           </p>
         ) : null}
-        <p className="mt-2 text-lg italic text-foreground/60">{venue.city ?? ""}</p>
+        <p className={`mt-1 text-lg italic ${onPhoto ? "text-[#F3EBDD]/75" : "text-foreground/60"}`}>
+          {venue.city ?? ""}
+        </p>
         {venue.menu.length > 0 ? (
-          <p className="mt-4 text-sm text-foreground/70">
+          <p className={`mt-3 text-sm ${onPhoto ? "text-[#F3EBDD]/70" : "text-foreground/70"}`}>
             {venue.menu
               .slice(0, 3)
               .map((item) => item.name)
               .join(" · ")}
           </p>
         ) : null}
-        <p className="mt-5 text-sm italic underline-offset-4 group-hover:underline">
+        <p
+          className={`mt-4 text-sm italic underline-offset-4 group-hover:underline ${onPhoto ? "text-[#F3EBDD]/85" : ""}`}
+        >
           {lang === "en" ? "See venue" : "Se sted"} →
         </p>
       </div>
-    </>
+    </div>
   );
 }

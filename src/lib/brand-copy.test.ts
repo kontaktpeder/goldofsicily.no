@@ -39,6 +39,13 @@ test("uploaded menu files render only on venue pages, beside dishes", () => {
   assert.match(menuFile, /max-w-\[16rem\]/);
 });
 
+test("homepage venue cards fill with photo and show the venue logo", () => {
+  const grid = readFileSync(new URL("../components/find-gold-grid.tsx", import.meta.url), "utf8");
+  assert.match(grid, /min-h-\[21rem\]/);
+  assert.match(grid, /absolute inset-0 h-full w-full object-cover/);
+  assert.match(grid, /venue\.logoUrl/);
+});
+
 test("inline gold logo is gone; headings use plain Gold", () => {
   const nav = readFileSync(new URL("../components/brand-nav.tsx", import.meta.url), "utf8");
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
