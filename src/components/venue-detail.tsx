@@ -81,31 +81,38 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
         ) : null}
 
         <h2 className="mt-12 font-display text-3xl tracking-tight">{serveLabel}</h2>
-        {venue.menu.length > 0 ? (
-          <ul className="mt-6 divide-y divide-foreground/15 border-y border-foreground/15">
-            {venue.menu.map((item) => (
-              <li key={item.productSlug} className="flex items-baseline justify-between gap-4 py-4">
-                <div>
-                  <p className="font-display text-xl">{item.name}</p>
-                  {item.description ? (
-                    <p className="mt-1 text-sm text-foreground/60">{item.description}</p>
-                  ) : null}
-                </div>
-                {item.priceLabel ? <p className="tabular-nums">{item.priceLabel}</p> : null}
-              </li>
-            ))}
-          </ul>
-        ) : null}
-        {hasMenuFile ? (
-          <div className="mt-6">
-            <VenueMenuFile lang={lang} url={venue.menuMaterialUrl} venueName={venue.name} />
-          </div>
-        ) : null}
         {venue.menu.length === 0 && !hasMenuFile ? (
           <p className="mt-4 text-foreground/70">
             {lang === "en" ? "Menu coming soon." : "Meny kommer."}
           </p>
-        ) : null}
+        ) : (
+          <div
+            className={
+              hasMenuFile && venue.menu.length > 0
+                ? "mt-6 grid items-start gap-8 md:grid-cols-[minmax(11rem,16rem)_minmax(0,1fr)]"
+                : "mt-6"
+            }
+          >
+            {hasMenuFile ? (
+              <VenueMenuFile lang={lang} url={venue.menuMaterialUrl} venueName={venue.name} />
+            ) : null}
+            {venue.menu.length > 0 ? (
+              <ul className="divide-y divide-foreground/15 border-y border-foreground/15">
+                {venue.menu.map((item) => (
+                  <li key={item.productSlug} className="flex items-baseline justify-between gap-4 py-4">
+                    <div>
+                      <p className="font-display text-xl">{item.name}</p>
+                      {item.description ? (
+                        <p className="mt-1 text-sm text-foreground/60">{item.description}</p>
+                      ) : null}
+                    </div>
+                    {item.priceLabel ? <p className="tabular-nums">{item.priceLabel}</p> : null}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        )}
 
         {venue.servingMethod ? (
           <p className="mt-6 text-sm text-foreground/65">
