@@ -200,8 +200,6 @@ export function VenuesMap({
         markers.set(venue.slug, marker);
       }
 
-      map.on("click", () => selectRef.current(null));
-
       if (mapped.length === 1) {
         map.setView([mapped[0].latitude as number, mapped[0].longitude as number], 12);
       } else {
@@ -300,8 +298,6 @@ export function VenuesMap({
         });
         markers.push(marker);
       }
-
-      map.on("click", () => selectRef.current(null));
 
       teardown = () => {
         for (const marker of markers) marker.remove();
