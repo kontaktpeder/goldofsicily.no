@@ -2,7 +2,7 @@ export function goldPinSvg(selected = false) {
   const ring = selected
     ? `<circle cx="16" cy="13.4" r="12.4" fill="none" stroke="#3f4c24" stroke-width="1.7" />`
     : "";
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" width="28" height="35" aria-hidden="true">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 40" width="36" height="45" aria-hidden="true">
   ${ring}
   <path d="M16 2.8c5.7-.2 10.2 3.8 10.5 9.6.3 4.6-2.7 8.8-9.6 9.2C9.8 21.5 5.8 17 6 12.2 6.2 6.8 10.5 3 16 2.8Z" fill="#e9c52d" stroke="#3f4c24" stroke-width="1.7" stroke-linejoin="round"/>
   <circle cx="12.6" cy="10.8" r="0.7" fill="#3f4c24" opacity=".38"/>
