@@ -1,10 +1,8 @@
 import { useId } from "react";
-import goldMask from "@/assets/brand/inline-gold-mask.png";
 import logoCharacters from "@/assets/brand/logo-characters.png";
 import wordmarkMask from "@/assets/brand/wordmark-script-mask.png";
 import type { BrandLang } from "@/lib/brand-copy";
 
-const GOLD_BOX = { w: 912, h: 402 };
 const WORD_BOX = { w: 1264, h: 222 };
 
 const LOCKUP: Record<BrandLang, [string, string]> = {
@@ -60,17 +58,6 @@ export function BrandWordmark({ className = "" }: { className?: string }) {
       box={WORD_BOX}
       className={`brand-wordmark ${className}`}
       label="Gold of Sicily"
-    />
-  );
-}
-
-export function InlineGoldMark({ className = "" }: { className?: string }) {
-  return (
-    <ScriptFill
-      src={goldMask}
-      box={GOLD_BOX}
-      className={`inline-gold ${className}`}
-      label="Gold"
     />
   );
 }

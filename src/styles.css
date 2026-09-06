@@ -180,15 +180,6 @@
     white-space: nowrap;
   }
 
-  .inline-gold {
-    display: inline-block;
-    height: 1em;
-    width: auto;
-    vertical-align: -0.16em;
-    margin-inline: 0.04em 0;
-    overflow: visible;
-  }
-
   .brand-wordmark {
     display: block;
     height: 1.75rem;
@@ -199,9 +190,9 @@
     display: block;
     margin-inline: auto;
     width: auto;
-    max-width: min(100%, 16.5rem);
+    max-width: min(100%, 26rem);
     height: auto;
-    max-height: min(14.25rem, 32svh);
+    max-height: min(22rem, 46svh);
     object-fit: contain;
   }
 
@@ -265,8 +256,8 @@
       height: 2rem;
     }
     .brand-logo {
-      max-width: min(100%, 18.5rem);
-      max-height: min(16.25rem, 34svh);
+      max-width: min(100%, 32rem);
+      max-height: min(26rem, 52svh);
     }
   }
 
@@ -447,10 +438,6 @@ html.pilot-lock #app {
   position: relative;
 }
 
-.gold-map-decorated {
-  padding-bottom: 1.25rem;
-}
-
 .gold-map-frame {
   position: relative;
   overflow: hidden;
@@ -521,22 +508,6 @@ html.pilot-lock #app {
 @media (min-width: 768px) {
   .gold-map-canvas {
     height: 540px;
-  }
-}
-
-.gold-map-character {
-  pointer-events: none;
-  position: absolute;
-  bottom: -0.4rem;
-  left: -0.6rem;
-  width: min(38vw, 9.5rem);
-  transform: rotate(-6deg);
-}
-
-@media (min-width: 768px) {
-  .gold-map-character {
-    left: -1.25rem;
-    width: 11.5rem;
   }
 }
 

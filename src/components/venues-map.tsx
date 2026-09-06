@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import logoCharacters from "@/assets/brand/logo-characters.png";
 import { createGoldPinElement, goldPinSvg } from "@/components/gold-map-pin";
 import { goldMapStyle } from "@/lib/gold-map-style";
 import {
@@ -106,12 +105,10 @@ export function VenuesMap({
   venues,
   title,
   lang = "no",
-  decorate = false,
 }: {
   venues: PublicVenue[];
   title: string;
   lang?: BrandLang;
-  decorate?: boolean;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const selectRef = useRef<(slug: string | null) => void>(() => {});
@@ -332,7 +329,7 @@ export function VenuesMap({
   if (mapped.length === 0) return null;
 
   return (
-    <div className={`gold-map ${decorate ? "gold-map-decorated" : ""}`}>
+    <div className="gold-map">
       <div className="gold-map-frame">
         {failed ? (
           <iframe
@@ -346,9 +343,6 @@ export function VenuesMap({
         )}
         {selected ? <VenueDock venue={selected} lang={lang} onClose={() => setSelectedSlug(null)} /> : null}
       </div>
-      {decorate ? (
-        <img src={logoCharacters} alt="" aria-hidden className="gold-map-character" />
-      ) : null}
       {mapped.length > 1 ? (
         <p className="gold-map-legend">
           <span>Gold Partner</span>

@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
-import { BrandLockup, BrandLogo, InlineGoldMark } from "@/components/brand-mark";
+import { BrandLockup, BrandLogo } from "@/components/brand-mark";
 import { BrandNav } from "@/components/brand-nav";
 import { FindGoldGrid } from "@/components/find-gold-grid";
 import { BRAND, type BrandLang, type ServeCardKey } from "@/lib/brand-copy";
@@ -113,7 +113,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
               <span className="block">{t.same.line1}</span>
               <span className="block">
                 {t.same.line2Before}
-                <InlineGoldMark />
+                {t.same.line2Mark}
                 {t.same.line2After}
               </span>
             </h2>
@@ -141,7 +141,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] leading-[0.95] tracking-tight">
             {t.find.titleBefore}
-            <InlineGoldMark />
+            {t.find.titleMark}
             {t.find.titleAfter}
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-foreground/75 md:text-xl">
