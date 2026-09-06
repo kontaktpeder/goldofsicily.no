@@ -18,13 +18,27 @@ test("hero CTAs are plain Gold text", () => {
   assert.equal(BRAND.en.hero.findCta, "Where is Gold served?");
 });
 
+test("hero keeps the brand lockup words and names the product in Oslo", () => {
+  assert.match(BRAND.no.hero.kicker, /Gold of Sicily/);
+  assert.match(BRAND.no.hero.kicker, /arancini/i);
+  assert.match(BRAND.no.hero.sub, /Oslo/);
+  assert.match(BRAND.no.hero.sub, /arancini/i);
+  assert.match(BRAND.no.find.pageBody, /Oslo/);
+  assert.match(BRAND.en.hero.kicker, /Gold of Sicily/);
+  assert.match(BRAND.en.hero.sub, /Oslo/);
+});
+
 test("homepage hero uses the character logo and hides the header wordmark until scroll", () => {
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
   const mark = readFileSync(new URL("../components/brand-mark.tsx", import.meta.url), "utf8");
   const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
   assert.match(home, /revealLogoOnScroll/);
+  assert.match(home, /BrandLogo priority/);
+  assert.match(home, /t\.hero\.kicker/);
+  assert.match(home, /as="h1"/);
   assert.match(mark, /logo-characters\.png/);
   assert.match(mark, /alt="Gold of Sicily"/);
+  assert.match(mark, /fetchPriority/);
   assert.match(css, /max-width: min\(100%, 32rem\)/);
 });
 

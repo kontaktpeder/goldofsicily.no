@@ -2,6 +2,17 @@ import { Link } from "@tanstack/react-router";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { groupVenuesByCity, isGoldPartner, type PublicVenue } from "@/lib/portal-venues";
 
+function venuePhotoAlt(lang: BrandLang, venue: PublicVenue) {
+  if (lang === "en") {
+    return venue.city
+      ? `Gold of Sicily at ${venue.name} in ${venue.city}`
+      : `Gold of Sicily at ${venue.name}`;
+  }
+  return venue.city
+    ? `Gold of Sicily hos ${venue.name} i ${venue.city}`
+    : `Gold of Sicily hos ${venue.name}`;
+}
+
 export function FindGoldGrid({
   lang,
   compact = false,
@@ -87,14 +98,20 @@ function VenueCardBody({ lang, venue }: { lang: BrandLang; venue: PublicVenue })
   return (
     <div className="relative min-h-[21rem] overflow-hidden">
       {venue.imageUrl ? (
-        <img src={venue.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img
+          src={venue.imageUrl}
+          alt={venuePhotoAlt(lang, venue)}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       ) : (
         <div className="absolute inset-0 bg-[color:var(--cream)]" />
       )}
       {venue.logoUrl ? (
         <img
           src={venue.logoUrl}
-          alt=""
+          alt={venue.name}
+          loading="lazy"
           className="absolute top-3 left-3 z-10 h-12 w-auto max-w-[7.5rem] object-contain bg-[color:var(--paper)]/92 p-1.5"
         />
       ) : null}

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WhatIsAranciniRouteImport } from './routes/what-is-arancini'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SamarbeidRouteImport } from './routes/samarbeid'
 import { Route as PilotRouteImport } from './routes/pilot'
 import { Route as NextPopupRouteImport } from './routes/next-popup'
@@ -45,6 +46,11 @@ import { Route as ApiPublicV1ModuleOrganizationOrgIdRouteImport } from './routes
 const WhatIsAranciniRoute = WhatIsAranciniRouteImport.update({
   id: '/what-is-arancini',
   path: '/what-is-arancini',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SamarbeidRoute = SamarbeidRouteImport.update({
@@ -216,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/what-is-arancini': typeof WhatIsAranciniRoute
   '/admin/$slug': typeof AdminSlugRoute
   '/admin/accounting': typeof AdminAccountingRoute
@@ -247,6 +254,7 @@ export interface FileRoutesByTo {
   '/for-barer': typeof ForBarerRoute
   '/next-popup': typeof NextPopupRoute
   '/samarbeid': typeof SamarbeidRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/what-is-arancini': typeof WhatIsAranciniRoute
   '/admin/$slug': typeof AdminSlugRoute
   '/admin/accounting': typeof AdminAccountingRoute
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/what-is-arancini': typeof WhatIsAranciniRoute
   '/admin/$slug': typeof AdminSlugRoute
   '/admin/accounting': typeof AdminAccountingRoute
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
     | '/next-popup'
     | '/pilot'
     | '/samarbeid'
+    | '/sitemap.xml'
     | '/what-is-arancini'
     | '/admin/$slug'
     | '/admin/accounting'
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/for-barer'
     | '/next-popup'
     | '/samarbeid'
+    | '/sitemap.xml'
     | '/what-is-arancini'
     | '/admin/$slug'
     | '/admin/accounting'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/next-popup'
     | '/pilot'
     | '/samarbeid'
+    | '/sitemap.xml'
     | '/what-is-arancini'
     | '/admin/$slug'
     | '/admin/accounting'
@@ -418,6 +430,7 @@ export interface RootRouteChildren {
   NextPopupRoute: typeof NextPopupRoute
   PilotRoute: typeof PilotRouteWithChildren
   SamarbeidRoute: typeof SamarbeidRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   WhatIsAranciniRoute: typeof WhatIsAranciniRoute
   StederSlugRoute: typeof StederSlugRoute
   ApiPublicV1ModuleHealthRoute: typeof ApiPublicV1ModuleHealthRoute
@@ -433,6 +446,13 @@ declare module '@tanstack/react-router' {
       path: '/what-is-arancini'
       fullPath: '/what-is-arancini'
       preLoaderRoute: typeof WhatIsAranciniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/samarbeid': {
@@ -736,6 +756,7 @@ const rootRouteChildren: RootRouteChildren = {
   NextPopupRoute: NextPopupRoute,
   PilotRoute: PilotRouteWithChildren,
   SamarbeidRoute: SamarbeidRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   WhatIsAranciniRoute: WhatIsAranciniRoute,
   StederSlugRoute: StederSlugRoute,
   ApiPublicV1ModuleHealthRoute: ApiPublicV1ModuleHealthRoute,
