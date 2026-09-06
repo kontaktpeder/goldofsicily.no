@@ -25,7 +25,7 @@ export const BRAND = {
     nav: navNo,
     paths: {
       home: "/",
-      arancini: "/what-is-arancini",
+      arancini: "/arancini",
       find: "/finn-oss",
       about: "/about",
       venues: "/for-barer",
@@ -126,7 +126,7 @@ export const BRAND = {
     nav: navEn,
     paths: {
       home: "/en",
-      arancini: "/en/what-is-arancini",
+      arancini: "/arancini",
       find: "/en/find-us",
       about: "/en/about",
       venues: "/en/for-bars",

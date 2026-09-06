@@ -17,6 +17,7 @@ export type PageSeo = {
   description?: string;
   path?: string;
   ogType?: "website" | "article";
+  image?: string;
   noindex?: boolean;
   locale?: PageLocale;
 };
@@ -32,6 +33,7 @@ export function buildPageHead(seo: PageSeo = {}) {
   const url = canonicalUrl(seo.path ?? "/");
   const ogType = seo.ogType ?? "website";
   const locale = seo.locale ?? "nb_NO";
+  const image = seo.image ?? OG_IMAGE;
 
   const meta: Array<Record<string, string>> = [
     { title },
@@ -41,13 +43,13 @@ export function buildPageHead(seo: PageSeo = {}) {
     { property: "og:description", content: description },
     { property: "og:type", content: ogType },
     { property: "og:url", content: url },
-    { property: "og:image", content: OG_IMAGE },
+    { property: "og:image", content: image },
     { property: "og:locale", content: locale },
     { property: "og:site_name", content: SITE.name },
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
-    { name: "twitter:image", content: OG_IMAGE },
+    { name: "twitter:image", content: image },
   ];
 
   if (seo.noindex) {
@@ -85,11 +87,13 @@ export const PAGE_SEO = {
       "Meld deg på listen for neste Gold of Sicily-popup i Oslo. Små batcher med sicilianske arancini, begrenset antall og først beskjed til listen.",
     path: "/next-popup",
   },
-  "/what-is-arancini": {
-    title: "Hva er arancini? Sicilianske risballer forklart — Gold of Sicily",
+  "/arancini": {
+    title: "Hva er arancini? Oppskrift på sicilianske risboller | Gold of Sicily",
     description:
-      "Hva er arancini? Lær om sicilianske risballer med sprø skorpe, varmt fyll og hvorfor Gold of Sicily lager dem som popup streetfood i Oslo.",
-    path: "/what-is-arancini",
+      "Hva er arancini, og hvordan lager du dem hjemme? Se vår enkle arancini-oppskrift med ’nduja og mozzarella, og finn ut hvor Gold of Sicily serveres.",
+    path: "/arancini",
+    ogType: "article",
+    image: `${SITE_URL}/arancini.jpg`,
   },
   "/about": {
     title: "Om Gold of Sicily — italiensk enkelhet. norsk utførelse.",
@@ -134,14 +138,6 @@ export const PAGE_SEO = {
     title: "Gold of Sicily — italian simplicity. norwegian craft.",
     description: "Sicilian arancini. Ready for your venue. Italian simplicity, Norwegian craft.",
     path: "/en",
-    noindex: true,
-    locale: "en_GB",
-  },
-  "/en/what-is-arancini": {
-    title: "What is arancini? — Gold of Sicily",
-    description:
-      "Sicilian rice balls with a crisp shell and filling from Palermo. How Gold of Sicily makes handmade arancini in Oslo — popup street food in small batches.",
-    path: "/en/what-is-arancini",
     noindex: true,
     locale: "en_GB",
   },

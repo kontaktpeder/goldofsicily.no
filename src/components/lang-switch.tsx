@@ -3,7 +3,6 @@ import { Link, useRouterState } from "@tanstack/react-router";
 
 type EnPath =
   | "/en"
-  | "/en/what-is-arancini"
   | "/en/next-popup"
   | "/en/about"
   | "/en/for-bars"
@@ -11,7 +10,7 @@ type EnPath =
   | "/en/collaborate";
 type NoPath =
   | "/"
-  | "/what-is-arancini"
+  | "/arancini"
   | "/next-popup"
   | "/about"
   | "/for-barer"
@@ -20,7 +19,8 @@ type NoPath =
 
 const NO_TO_EN: Record<string, EnPath> = {
   "/": "/en",
-  "/what-is-arancini": "/en/what-is-arancini",
+  "/arancini": "/en",
+  "/what-is-arancini": "/en",
   "/next-popup": "/en/next-popup",
   "/about": "/en/about",
   "/for-barer": "/en/for-bars",
@@ -31,7 +31,7 @@ const NO_TO_EN: Record<string, EnPath> = {
 const EN_TO_NO: Record<string, NoPath> = {
   "/en": "/",
   "/en/": "/",
-  "/en/what-is-arancini": "/what-is-arancini",
+  "/en/what-is-arancini": "/arancini",
   "/en/next-popup": "/next-popup",
   "/en/about": "/about",
   "/en/for-bars": "/for-barer",

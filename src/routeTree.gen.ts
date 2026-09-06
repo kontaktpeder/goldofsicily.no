@@ -16,6 +16,7 @@ import { Route as NextPopupRouteImport } from './routes/next-popup'
 import { Route as ForBarerRouteImport } from './routes/for-barer'
 import { Route as FinnOssRouteImport } from './routes/finn-oss'
 import { Route as EnRouteImport } from './routes/en'
+import { Route as AranciniRouteImport } from './routes/arancini'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -75,6 +76,11 @@ const FinnOssRoute = FinnOssRouteImport.update({
 const EnRoute = EnRouteImport.update({
   id: '/en',
   path: '/en',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AranciniRoute = AranciniRouteImport.update({
+  id: '/arancini',
+  path: '/arancini',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -210,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/arancini': typeof AranciniRoute
   '/en': typeof EnRouteWithChildren
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
@@ -243,6 +250,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/arancini': typeof AranciniRoute
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/next-popup': typeof NextPopupRoute
@@ -276,6 +284,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRouteWithChildren
+  '/arancini': typeof AranciniRoute
   '/en': typeof EnRouteWithChildren
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
@@ -312,6 +321,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/arancini'
     | '/en'
     | '/finn-oss'
     | '/for-barer'
@@ -345,6 +355,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/arancini'
     | '/finn-oss'
     | '/for-barer'
     | '/next-popup'
@@ -377,6 +388,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admin'
+    | '/arancini'
     | '/en'
     | '/finn-oss'
     | '/for-barer'
@@ -412,6 +424,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AranciniRoute: typeof AranciniRoute
   EnRoute: typeof EnRouteWithChildren
   FinnOssRoute: typeof FinnOssRoute
   ForBarerRoute: typeof ForBarerRoute
@@ -475,6 +488,13 @@ declare module '@tanstack/react-router' {
       path: '/en'
       fullPath: '/en'
       preLoaderRoute: typeof EnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arancini': {
+      id: '/arancini'
+      path: '/arancini'
+      fullPath: '/arancini'
+      preLoaderRoute: typeof AranciniRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -730,6 +750,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdminRoute: AdminRouteWithChildren,
+  AranciniRoute: AranciniRoute,
   EnRoute: EnRouteWithChildren,
   FinnOssRoute: FinnOssRoute,
   ForBarerRoute: ForBarerRoute,

@@ -1,9 +1,8 @@
 export type DiscoveryRoute =
-  | "/what-is-arancini"
+  | "/arancini"
   | "/next-popup"
   | "/about"
   | "/for-barer"
-  | "/en/what-is-arancini"
   | "/en/next-popup"
   | "/en/for-bars"
   | "/en/about";
@@ -53,7 +52,7 @@ export const DISCOVERY_NO: DiscoveryCopy = {
         title: "Hva er arancini?",
         description: "Sprø skorpe, varm ris og fyll fra Sicilia.",
         cta: "Lær mer",
-        to: "/what-is-arancini",
+        to: "/arancini",
       },
       {
         title: "For serveringssteder",
@@ -72,7 +71,7 @@ export const DISCOVERY_NO: DiscoveryCopy = {
   credits: {
     label: "Oppdag",
     links: [
-      { label: "Hva er arancini", to: "/what-is-arancini" },
+      { label: "Hva er arancini", to: "/arancini" },
       { label: "For serveringssteder", to: "/for-barer" },
       { label: "Om oss", to: "/about" },
     ],
@@ -97,7 +96,7 @@ export const DISCOVERY_EN: DiscoveryCopy = {
         title: "What is arancini?",
         description: "Crisp shell, warm rice, filling from Sicily.",
         cta: "Learn more",
-        to: "/en/what-is-arancini",
+        to: "/arancini",
       },
       {
         title: "For venues",
@@ -116,7 +115,7 @@ export const DISCOVERY_EN: DiscoveryCopy = {
   credits: {
     label: "Discover",
     links: [
-      { label: "What is arancini?", to: "/en/what-is-arancini" },
+      { label: "What is arancini?", to: "/arancini" },
       { label: "For venues", to: "/en/for-bars" },
       { label: "About", to: "/en/about" },
     ],

@@ -3,6 +3,11 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import { BRAND } from "./brand-copy.ts";
 
+test("arancini nav points at the evergreen /arancini page", () => {
+  assert.equal(BRAND.no.paths.arancini, "/arancini");
+  assert.equal(BRAND.en.paths.arancini, "/arancini");
+});
+
 test("retired copy stays gone", () => {
   const blob = JSON.stringify(BRAND);
   for (const phrase of ["Kremet inni", "mindre styr", "Tutto passa"]) {

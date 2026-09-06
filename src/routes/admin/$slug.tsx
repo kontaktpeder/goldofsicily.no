@@ -221,7 +221,7 @@ function AdminEditor() {
           <p className="text-sm text-muted-foreground">
             Redigerer{" "}
             <Link
-              to={slugTyped === "about" ? "/about" : slugTyped === "next-popup" ? "/next-popup" : "/what-is-arancini"}
+              to={slugTyped === "about" ? "/about" : slugTyped === "next-popup" ? "/next-popup" : "/arancini"}
               className="underline"
               target="_blank"
             >
