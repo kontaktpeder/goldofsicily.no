@@ -36,11 +36,12 @@ export function BrandNav({ lang, tone = "solid", revealLogoOnScroll = false }: P
   const overlay = tone === "overlay";
 
   return (
+    <>
     <header
-      className={`z-[90] font-display has-[details[open]]:fixed has-[details[open]]:inset-x-0 has-[details[open]]:top-0 has-[details[open]]:bg-[color:var(--cream)] has-[details[open]]:text-foreground ${
+      className={`fixed inset-x-0 top-0 z-[90] font-display has-[details[open]]:bg-[color:var(--cream)] has-[details[open]]:text-foreground ${
         overlay
-          ? "absolute inset-x-0 top-0 text-[#F3EBDD]"
-          : "sticky top-0 bg-[color:var(--cream)] text-foreground"
+          ? "text-[#F3EBDD]"
+          : "bg-[color:var(--cream)] text-foreground"
       }`}
     >
       <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8 md:py-4">
@@ -110,5 +111,7 @@ export function BrandNav({ lang, tone = "solid", revealLogoOnScroll = false }: P
 
       {tone === "solid" ? <div className="border-b border-foreground/15" /> : null}
     </header>
+    {overlay ? null : <div className="h-[var(--header-height)] shrink-0" aria-hidden />}
+    </>
   );
 }
