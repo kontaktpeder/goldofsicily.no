@@ -46,6 +46,18 @@ test("homepage venue cards fill with photo and show the venue logo", () => {
   assert.match(grid, /venue\.logoUrl/);
 });
 
+test("homepage rhythm keeps one product photo and a matching product line icon", () => {
+  const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
+  assert.match(home, /draw-arancini-line\.png/);
+  assert.equal(home.includes("draw-arancini-bite"), false);
+  assert.equal(home.match(/photo-the-gold/g)?.length, 1);
+  assert.equal(home.match(/photo-hands/g)?.length, 1);
+  assert.match(home, /lg:order-2/);
+  assert.match(home, /lg:order-1/);
+  assert.match(home, /w-\[32%\]/);
+  assert.match(home, /grid-cols-2/);
+});
+
 test("inline gold logo is gone; headings use plain Gold", () => {
   const nav = readFileSync(new URL("../components/brand-nav.tsx", import.meta.url), "utf8");
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
