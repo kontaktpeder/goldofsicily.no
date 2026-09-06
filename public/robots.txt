@@ -2,5 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/
+Disallow: /pilot
+Disallow: /pilot/
 
 Sitemap: https://goldofsicily.no/sitemap.xml

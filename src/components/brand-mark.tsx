@@ -41,11 +41,20 @@ function ScriptFill({
   );
 }
 
-export function BrandLogo({ className = "" }: { className?: string }) {
+export function BrandLogo({
+  className = "",
+  priority = false,
+}: {
+  className?: string;
+  priority?: boolean;
+}) {
   return (
     <img
       src={logoCharacters}
       alt="Gold of Sicily"
+      width={1278}
+      height={865}
+      fetchPriority={priority ? "high" : undefined}
       className={`brand-logo ${className}`}
     />
   );

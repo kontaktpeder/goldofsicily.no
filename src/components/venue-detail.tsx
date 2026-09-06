@@ -53,13 +53,28 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
         <p className="mt-4 text-lg italic text-foreground/60">
           {[venue.address, venue.city].filter(Boolean).join(", ")}
         </p>
+        <p className="mt-3 max-w-xl text-lg leading-relaxed text-foreground/75">
+          {lang === "en"
+            ? `Gold of Sicily arancini${venue.city ? ` in ${venue.city}` : ""}.`
+            : `Gold of Sicily-arancini${venue.city ? ` i ${venue.city}` : ""}.`}
+        </p>
         {venue.logoUrl ? (
-          <img src={venue.logoUrl} alt="" className="mt-8 h-16 w-auto object-contain" />
+          <img
+            src={venue.logoUrl}
+            alt={venue.name}
+            loading="lazy"
+            className="mt-8 h-16 w-auto object-contain"
+          />
         ) : null}
         {venue.imageUrl ? (
           <img
             src={venue.imageUrl}
-            alt=""
+            alt={
+              lang === "en"
+                ? `Gold of Sicily at ${venue.name}${venue.city ? ` in ${venue.city}` : ""}`
+                : `Gold of Sicily hos ${venue.name}${venue.city ? ` i ${venue.city}` : ""}`
+            }
+            loading="lazy"
             className="mt-10 w-full border border-foreground/15 object-cover"
           />
         ) : null}
@@ -158,7 +173,8 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
               <img
                 key={url}
                 src={url}
-                alt=""
+                alt={`${venue.name}`}
+                loading="lazy"
                 className="h-56 w-full border border-foreground/15 object-cover"
               />
             ))}
