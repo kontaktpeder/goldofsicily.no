@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ContentPage } from "@/components/content-page";
 import { NewsletterSignup } from "@/components/newsletter-signup";
 import { SocialFollow } from "@/components/social-follow";
-import { buildPageHead } from "@/lib/seo";
+import { buildPageHead, PAGE_SEO } from "@/lib/seo";
 import { getCmsPage } from "@/lib/cms/cms.functions";
 import type { NextPopupContent } from "@/lib/cms/types";
 
@@ -21,9 +21,9 @@ export const Route = createFileRoute("/next-popup")({
   head: ({ loaderData }) => {
     const c = loaderData as NextPopupContent | undefined;
     return buildPageHead({
-      title: c?.seo_title,
-      description: c?.seo_description,
-      path: "/next-popup",
+      ...PAGE_SEO["/next-popup"],
+      title: c?.seo_title || PAGE_SEO["/next-popup"].title,
+      description: c?.seo_description || PAGE_SEO["/next-popup"].description,
     });
   },
   component: NextPopupPage,

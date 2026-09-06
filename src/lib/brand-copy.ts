@@ -31,7 +31,8 @@ export const BRAND = {
       venues: "/for-barer",
     },
     hero: {
-      sub: "Sicilianske arancini. Klare for ditt serveringssted.",
+      kicker: "Gold of Sicily · Sicilianske arancini",
+      sub: "Sicilianske arancini, utviklet og produsert i Oslo. Klare for ditt serveringssted.",
       findCta: "Hvor serveres Gold?",
       venuesCta: "For ditt serveringssted",
       findBefore: "Hvor serveres ",
@@ -66,7 +67,7 @@ export const BRAND = {
       body: "Finn Gold of Sicily hos utvalgte serveringssteder.",
       more: "Se alle serveringssteder",
       pageBody:
-        "Finn barer, restauranter, hoteller og andre steder som serverer Gold of Sicily.",
+        "Finn barer, restauranter og andre serveringssteder som serverer Gold of Sicily-arancini i Oslo og resten av Norge.",
     },
     serve: {
       eyebrowBefore: "For ",
@@ -132,7 +133,8 @@ export const BRAND = {
       venues: "/en/for-bars",
     },
     hero: {
-      sub: "Sicilian arancini. Ready for your venue.",
+      kicker: "Gold of Sicily · Sicilian arancini",
+      sub: "Sicilian arancini, developed and produced in Oslo. Ready for your venue.",
       findCta: "Where is Gold served?",
       venuesCta: "For your venue",
       findBefore: "Where is ",
@@ -167,7 +169,7 @@ export const BRAND = {
       body: "Find Gold of Sicily at selected venues.",
       more: "See all venues",
       pageBody:
-        "Find bars, restaurants, hotels and other places that serve Gold of Sicily.",
+        "Find bars, restaurants and other venues serving Gold of Sicily arancini in Oslo and across Norway.",
     },
     serve: {
       eyebrowBefore: "For ",

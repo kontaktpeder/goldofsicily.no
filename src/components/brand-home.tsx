@@ -29,12 +29,15 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
 
       <section className="brand-hero px-5 md:px-12 lg:px-16">
         <div className="brand-hero-inner mx-auto max-w-3xl text-center">
-          <BrandLogo />
+          <BrandLogo priority />
+          <p className="mt-5 text-[0.62rem] uppercase tracking-[0.22em] text-foreground/50 md:mt-6">
+            {t.hero.kicker}
+          </p>
           <BrandLockup
             lang={lang}
             as="h1"
             align="center"
-            className="mt-5 text-[clamp(1.55rem,3.4vw,2.45rem)] md:mt-6"
+            className="mt-3 text-[clamp(1.55rem,3.4vw,2.45rem)] md:mt-4"
           />
           <p className="mx-auto mt-3 max-w-xl text-lg leading-snug text-foreground/80 md:mt-4 md:text-xl">
             {t.hero.sub}
@@ -79,6 +82,9 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
           <img
             src={photoGold}
             alt={t.gold.photoAlt}
+            width={1086}
+            height={1448}
+            loading="lazy"
             className="aspect-[4/5] w-full object-cover lg:max-h-[58vh]"
           />
         </div>
@@ -101,6 +107,9 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
           <img
             src={photoHands}
             alt={t.world.photoAlt}
+            width={1086}
+            height={1448}
+            loading="lazy"
             className="order-2 aspect-[4/5] w-full object-cover object-center lg:order-1 lg:max-h-[52vh]"
           />
         </div>
@@ -125,6 +134,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
             src={drawVespa}
             alt=""
             aria-hidden
+            loading="lazy"
             className="mt-10 w-36 md:w-44 lg:hidden"
           />
         </div>
@@ -143,6 +153,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
             src={drawVespa}
             alt=""
             aria-hidden
+            loading="lazy"
             className="absolute right-[-12%] bottom-[-8%] w-[118%]"
           />
         </div>
@@ -190,6 +201,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
                   src={SERVE_ICONS[card.key]}
                   alt=""
                   aria-hidden
+                  loading="lazy"
                   className="mb-4 h-10 w-auto object-contain md:mb-5 md:h-12"
                 />
                 <h3 className="font-display text-xl tracking-tight md:text-3xl">{card.title}</h3>
