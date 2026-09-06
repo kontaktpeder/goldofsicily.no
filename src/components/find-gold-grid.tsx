@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { VenueMenuFile } from "@/components/venue-menu-file";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { groupVenuesByCity, isGoldPartner, isPublicMenuUrl, type PublicVenue } from "@/lib/portal-venues";
 
@@ -63,7 +64,6 @@ export function FindGoldGrid({
 }
 
 function VenueCard({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
-  const menuLabel = lang === "en" ? "See the menu" : "Se menyen";
   const venueLink =
     lang === "en" ? (
       <Link to="/en/venues/$slug" params={{ slug: venue.slug }} className="block">
@@ -79,15 +79,8 @@ function VenueCard({ lang, venue }: { lang: BrandLang; venue: PublicVenue }) {
     <article className="group h-full border border-foreground/15 bg-[color:var(--paper)] transition hover:border-foreground/40">
       {venueLink}
       {isPublicMenuUrl(venue.menuMaterialUrl) ? (
-        <div className="border-t border-foreground/15 px-6 py-4">
-          <a
-            href={venue.menuMaterialUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm italic underline-offset-4 hover:underline"
-          >
-            {menuLabel} ↓
-          </a>
+        <div className="border-t border-foreground/15">
+          <VenueMenuFile compact lang={lang} url={venue.menuMaterialUrl} venueName={venue.name} />
         </div>
       ) : null}
     </article>

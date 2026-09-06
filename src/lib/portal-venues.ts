@@ -64,6 +64,15 @@ export function isPublicMenuUrl(url: string | null | undefined): url is string {
   return Boolean(url && /^https?:\/\//i.test(url.trim()));
 }
 
+export function isMenuImageUrl(url: string | null | undefined): url is string {
+  if (!isPublicMenuUrl(url)) return false;
+  try {
+    return /\.(png|jpe?g|webp)$/i.test(new URL(url).pathname);
+  } catch {
+    return /\.(png|jpe?g|webp)(\?|#|$)/i.test(url);
+  }
+}
+
 export function groupVenuesByCity(venues: PublicVenue[], fallbackCity: string) {
   const groups = new Map<string, PublicVenue[]>();
   for (const venue of venues) {

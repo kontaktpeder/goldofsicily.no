@@ -26,6 +26,17 @@ test("homepage hero uses the character logo and hides the header wordmark until 
   assert.match(mark, /alt="Gold of Sicily"/);
 });
 
+test("uploaded menu files render as images on homepage and venue pages", () => {
+  const grid = readFileSync(new URL("../components/find-gold-grid.tsx", import.meta.url), "utf8");
+  const detail = readFileSync(new URL("../components/venue-detail.tsx", import.meta.url), "utf8");
+  const menuFile = readFileSync(new URL("../components/venue-menu-file.tsx", import.meta.url), "utf8");
+  assert.match(grid, /VenueMenuFile/);
+  assert.match(detail, /VenueMenuFile/);
+  assert.match(detail, /hasMenuFile/);
+  assert.match(menuFile, /isMenuImageUrl/);
+  assert.match(menuFile, /<img/);
+});
+
 test("inline Gold is not used in nav or hero CTAs", () => {
   const nav = readFileSync(new URL("../components/brand-nav.tsx", import.meta.url), "utf8");
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");

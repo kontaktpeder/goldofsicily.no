@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
 import { BrandNav } from "@/components/brand-nav";
 import { VenuesMap } from "@/components/venues-map";
+import { VenueMenuFile } from "@/components/venue-menu-file";
 import { isGoldPartner, isPublicMenuUrl, mapsUrl, type PublicVenue } from "@/lib/portal-venues";
 
 function visitUrl(venue: PublicVenue) {
@@ -29,8 +30,8 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
   const visitLabel = lang === "en" ? `Visit ${venue.name}` : `Besøk ${venue.name}`;
   const listingLabel = lang === "en" ? "Gold of Sicily is served here" : "Her serveres Gold of Sicily";
   const storyLabel = lang === "en" ? `Gold at ${venue.name}` : `Gold på ${venue.name}`;
-  const menuLabel = lang === "en" ? "See the menu" : "Se menyen";
   const embed = venue.videoUrl ? videoEmbedSrc(venue.videoUrl) : null;
+  const hasMenuFile = isPublicMenuUrl(venue.menuMaterialUrl);
 
   return (
     <div className="min-h-screen bg-[color:var(--cream)] font-display">
@@ -80,11 +81,7 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
         ) : null}
 
         <h2 className="mt-12 font-display text-3xl tracking-tight">{serveLabel}</h2>
-        {venue.menu.length === 0 ? (
-          <p className="mt-4 text-foreground/70">
-            {lang === "en" ? "Menu coming soon." : "Meny kommer."}
-          </p>
-        ) : (
+        {venue.menu.length > 0 ? (
           <ul className="mt-6 divide-y divide-foreground/15 border-y border-foreground/15">
             {venue.menu.map((item) => (
               <li key={item.productSlug} className="flex items-baseline justify-between gap-4 py-4">
@@ -98,7 +95,17 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
               </li>
             ))}
           </ul>
-        )}
+        ) : null}
+        {hasMenuFile ? (
+          <div className="mt-6">
+            <VenueMenuFile lang={lang} url={venue.menuMaterialUrl} venueName={venue.name} />
+          </div>
+        ) : null}
+        {venue.menu.length === 0 && !hasMenuFile ? (
+          <p className="mt-4 text-foreground/70">
+            {lang === "en" ? "Menu coming soon." : "Meny kommer."}
+          </p>
+        ) : null}
 
         {venue.servingMethod ? (
           <p className="mt-6 text-sm text-foreground/65">
@@ -149,17 +156,6 @@ export function VenueDetail({ lang, venue }: { lang: "no" | "en"; venue: PublicV
               />
             ))}
           </div>
-        ) : null}
-
-        {isPublicMenuUrl(venue.menuMaterialUrl) ? (
-          <a
-            href={venue.menuMaterialUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-10 inline-block border border-foreground/20 px-5 py-3 text-sm italic underline-offset-4 hover:underline"
-          >
-            {menuLabel} ↓
-          </a>
         ) : null}
 
         <div className="mt-10 flex flex-wrap gap-4 text-sm">
