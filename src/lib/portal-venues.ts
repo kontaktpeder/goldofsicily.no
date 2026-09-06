@@ -111,30 +111,40 @@ async function parseJson<T>(response: Response): Promise<T> {
 async function fetchJson<T>(path: string, lang: "no" | "en"): Promise<T> {
   let lastError: unknown;
   for (const base of portalBases()) {
-    for (let attempt = 0; attempt < 3; attempt++) {
-      try {
-        const response = await fetch(`${base}${path}?lang=${lang}`, {
-          headers: { Accept: "application/json" },
-          signal: AbortSignal.timeout(8000),
-        });
-        if (response.status === 404) {
-          throw new PortalHttpError(404, `Not found: ${path}`);
-        }
-        if (!response.ok) {
-          lastError = new PortalHttpError(response.status, `HTTP ${response.status}`);
-          continue;
-        }
-        return await parseJson<T>(response);
-      } catch (error) {
-        if (error instanceof PortalHttpError && error.status === 404) throw error;
-        lastError = error;
+    try {
+      const response = await fetch(`${base}${path}?lang=${lang}`, {
+        headers: { Accept: "application/json" },
+        redirect: "manual",
+        signal: AbortSignal.timeout(2500),
+      });
+      if (response.status >= 300 && response.status < 400) {
+        lastError = new Error(`Portal redirected from ${base}`);
+        continue;
       }
+      if (response.status === 404) {
+        throw new PortalHttpError(404, `Not found: ${path}`);
+      }
+      if (!response.ok) {
+        lastError = new PortalHttpError(response.status, `HTTP ${response.status}`);
+        continue;
+      }
+      return await parseJson<T>(response);
+    } catch (error) {
+      if (error instanceof PortalHttpError && error.status === 404) throw error;
+      lastError = error;
     }
   }
   throw lastError instanceof Error ? lastError : new Error("Portal request failed");
 }
 
 export async function fetchPublicVenues(lang: "no" | "en"): Promise<PublicVenue[]> {
+  try {
+    const { loadVenuesFromPortalDb } = await import("@/lib/portal-venues-data");
+    const venues = await loadVenuesFromPortalDb(lang);
+    if (venues.length > 0) return venues;
+  } catch {
+    // Fall through to the HTTP API if the portal domain is up.
+  }
   const data = await fetchJson<{ venues: PublicVenue[] }>("/api/public/v1/venues", lang);
   return data.venues ?? [];
 }
@@ -143,6 +153,13 @@ export async function fetchPublicVenue(
   slug: string,
   lang: "no" | "en",
 ): Promise<PublicVenue | null> {
+  try {
+    const { loadVenueFromPortalDb } = await import("@/lib/portal-venues-data");
+    const venue = await loadVenueFromPortalDb(slug, lang);
+    if (venue) return venue;
+  } catch {
+    // Fall through to the HTTP API if the portal domain is up.
+  }
   try {
     const data = await fetchJson<{ venue: PublicVenue }>(
       `/api/public/v1/venues/${encodeURIComponent(slug)}`,
