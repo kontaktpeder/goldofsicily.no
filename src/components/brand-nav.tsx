@@ -38,18 +38,18 @@ export function BrandNav({ lang, tone = "solid", revealLogoOnScroll = false }: P
   return (
     <>
     <header
-      className={`fixed inset-x-0 top-0 z-[90] font-display has-[details[open]]:bg-[color:var(--cream)] has-[details[open]]:text-foreground ${
+      className={`fixed inset-x-0 top-0 z-[90] overflow-visible font-display has-[details[open]]:bg-[color:var(--cream)] has-[details[open]]:text-foreground ${
         overlay
           ? "text-[#F3EBDD]"
           : "bg-[color:var(--cream)] text-foreground"
       }`}
     >
-      <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 md:px-8 md:py-5">
+      <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 overflow-visible px-5 py-5 md:px-8 md:py-6">
         <Link
           to={t.paths.home}
           aria-hidden={!logoVisible}
           tabIndex={logoVisible ? undefined : -1}
-          className={`text-current transition-opacity duration-300 ${
+          className={`shrink-0 overflow-visible text-current transition-opacity duration-300 ${
             logoVisible ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
         >

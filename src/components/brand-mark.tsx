@@ -31,6 +31,8 @@ function ScriptFill({
       role="img"
       aria-label={label}
       focusable="false"
+      overflow="visible"
+      preserveAspectRatio="xMinYMid meet"
     >
       <title>{label}</title>
       <defs>
