@@ -44,7 +44,7 @@ export function BrandNav({ lang, tone = "solid", revealLogoOnScroll = false }: P
           : "bg-[color:var(--cream)] text-foreground"
       }`}
     >
-      <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3 md:px-8 md:py-4">
+      <div className="relative z-[80] mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 md:px-8 md:py-5">
         <Link
           to={t.paths.home}
           aria-hidden={!logoVisible}

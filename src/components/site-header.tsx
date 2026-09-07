@@ -6,7 +6,7 @@ export function SiteHeader({ tagline }: { tagline?: string }) {
       <img
         src={wordmark}
         alt="Gold of Sicily"
-        className="mx-auto block h-auto w-[220px] object-contain md:mx-0 md:w-[260px] lg:w-[300px]"
+        className="mx-auto block h-auto w-[280px] object-contain md:mx-0 md:w-[340px] lg:w-[400px]"
       />
 
       {tagline ? (

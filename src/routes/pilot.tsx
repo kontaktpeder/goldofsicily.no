@@ -68,7 +68,7 @@ function PilotShell() {
     >
       <div className="mx-auto flex h-full max-w-2xl flex-col overflow-hidden px-5 pt-[max(0.5rem,env(safe-area-inset-top))]">
         <header className="flex shrink-0 items-center gap-3 pb-3">
-          <img src={wordmark} alt="Gold of Sicily" className="h-9 w-auto object-contain" />
+          <img src={wordmark} alt="Gold of Sicily" className="h-12 w-auto object-contain" />
           <div className="min-w-0 flex-1">
             <p className="truncate text-[11px] uppercase tracking-[0.16em] text-tomato">Pilot Core</p>
             <p className="truncate text-sm font-semibold">{state.org.venueName}</p>

@@ -47,7 +47,7 @@
 
 :root {
   --radius: 0.25rem;
-  --header-height: 4.25rem;
+  --header-height: 5.25rem;
 
   /* Gold of Sicily — cream, sea, lemon, espresso, tomato */
   --cream: #f3ebdd;
@@ -83,7 +83,7 @@
 
 @media (min-width: 768px) {
   :root {
-    --header-height: 5rem;
+    --header-height: 6.25rem;
   }
 }
 
@@ -182,7 +182,7 @@
 
   .brand-wordmark {
     display: block;
-    height: 1.75rem;
+    height: 2.5rem;
     width: auto;
   }
 
@@ -196,9 +196,9 @@
     display: block;
     margin-inline: auto;
     width: auto;
-    max-width: min(100%, 26rem);
+    max-width: min(100%, 34rem);
     height: auto;
-    max-height: min(22rem, 46svh);
+    max-height: min(28rem, 58svh);
     object-fit: contain;
   }
 
@@ -259,14 +259,14 @@
 
   @media (min-width: 768px) {
     .brand-wordmark {
-      height: 2.15rem;
+      height: 3.15rem;
     }
     .brand-drawing {
       height: 7rem;
     }
     .brand-logo {
-      max-width: min(100%, 32rem);
-      max-height: min(26rem, 52svh);
+      max-width: min(100%, 42rem);
+      max-height: min(34rem, 64svh);
     }
   }
 

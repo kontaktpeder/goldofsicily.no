@@ -45,7 +45,7 @@ test("homepage hero uses the character logo and hides the header wordmark until 
   assert.match(mark, /logo-drawing-mask/);
   assert.match(mark, /alt="Gold of Sicily"/);
   assert.match(mark, /fetchPriority/);
-  assert.match(css, /max-width: min\(100%, 32rem\)/);
+  assert.match(css, /max-width: min\(100%, 42rem\)/);
 });
 
 test("footer uses the drawing without the wordmark", () => {
