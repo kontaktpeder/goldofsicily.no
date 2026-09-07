@@ -1,50 +1,89 @@
 import { Link } from "@tanstack/react-router";
-import { BrandDrawingColor, BrandLockup, BrandWordmarkColor } from "@/components/brand-mark";
+import { BrandLockup, BrandWordmarkColor } from "@/components/brand-mark";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
-import drawLemon from "@/assets/brand/draw-lemon.webp";
 
 export function BrandFooter({ lang }: { lang: BrandLang }) {
   const t = BRAND[lang];
+  const links = [
+    { to: t.paths.arancini, label: t.nav.arancini },
+    { to: t.paths.find, label: t.nav.find },
+    { to: t.paths.venues, label: t.nav.venues },
+    { to: t.paths.about, label: t.nav.about },
+  ] as const;
 
   return (
-    <footer className="relative overflow-hidden bg-[color:var(--sea)] font-display text-[#F3EBDD]">
-      <img
-        src={drawLemon}
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute -bottom-16 right-2 w-[min(48vw,18rem)] rotate-12 opacity-90 md:-bottom-20 md:right-8"
-      />
-      <div className="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
-        <Link to={t.paths.home} className="inline-block">
-          <BrandWordmarkColor className="h-10 w-auto md:h-12" />
-        </Link>
-        <BrandDrawingColor className="mt-8 h-36 w-auto md:mt-10 md:h-48" />
-        <BrandLockup
-          lang={lang}
-          as="p"
-          align="left"
-          invert
-          className="mt-6 text-xl md:text-2xl"
-        />
-        <p className="mt-10 flex flex-wrap items-baseline gap-x-3 text-xl italic">
-          <a
-            href={SITE.instagram}
-            target="_blank"
-            rel="noreferrer"
-            className="underline-offset-4 hover:underline"
-          >
-            {t.footer.instagram}
-          </a>
-          <span aria-hidden>·</span>
-          <a
-            href={SITE.tiktok}
-            target="_blank"
-            rel="noreferrer"
-            className="underline-offset-4 hover:underline"
-          >
-            {t.footer.tiktok}
-          </a>
+    <footer className="bg-[color:var(--sea)] font-display text-[#F3EBDD]">
+      <div className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+          <div className="min-w-0">
+            <Link to={t.paths.home} className="inline-block">
+              <BrandWordmarkColor className="h-10 w-auto md:h-12" />
+            </Link>
+            <BrandLockup
+              lang={lang}
+              as="p"
+              align="left"
+              invert
+              className="mt-6 text-xl md:text-2xl"
+            />
+          </div>
+
+          <nav aria-label={lang === "no" ? "Snarveier" : "Shortcuts"} className="min-w-0">
+            <ul className="flex flex-col gap-3 text-lg">
+              {links.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="underline-offset-4 hover:underline">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="min-w-0">
+            <ul className="flex flex-col gap-3 text-lg">
+              <li>
+                <a href="tel:45251280" className="underline-offset-4 hover:underline">
+                  {SITE.phoneLabel}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${SITE.email}`} className="underline-offset-4 hover:underline">
+                  {SITE.email}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="min-w-0">
+            <ul className="flex flex-col gap-3 text-lg">
+              <li>
+                <a
+                  href={SITE.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline-offset-4 hover:underline"
+                >
+                  {t.footer.instagram}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.tiktok}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline-offset-4 hover:underline"
+                >
+                  {t.footer.tiktok}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p className="mt-14 border-t border-[#F3EBDD]/20 pt-6 text-sm text-[#F3EBDD]/70">
+          {t.footer.copyright}
         </p>
       </div>
     </footer>

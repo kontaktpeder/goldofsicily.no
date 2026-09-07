@@ -38,11 +38,14 @@ test("hero keeps the brand lockup words and names the product in Oslo", () => {
   assert.equal("kicker" in BRAND.no.hero, false);
 });
 
-test("homepage flavors include mozzarella and a drawn ampersand", () => {
-  assert.equal(BRAND.no.gold.flavors[0], "'Nduja & mozzarella");
+test("homepage flavors use plain type and no decorative ampersand", () => {
+  assert.equal(BRAND.no.gold.flavors[0], "'Nduja mozzarella");
   assert.equal(BRAND.no.gold.flavors[1], "Trøffel & sjampinjong");
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
-  assert.match(home, /flavor-amp/);
+  const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+  assert.equal(home.includes("flavor-amp"), false);
+  assert.equal(home.includes("FlavorName"), false);
+  assert.equal(css.includes("flavor-amp"), false);
 });
 
 test("homepage hero uses the character logo and hides the header wordmark until scroll", () => {
@@ -65,12 +68,23 @@ test("homepage hero uses the character logo and hides the header wordmark until 
   assert.match(css, /max-height: min\(24rem, 44svh\)/);
 });
 
-test("footer uses original-color wordmark and drawing, not Oslo / Sicilia", () => {
+test("footer is a real site map with lockup, links, contact and copyright", () => {
   const footer = readFileSync(new URL("../components/brand-footer.tsx", import.meta.url), "utf8");
   assert.match(footer, /BrandWordmarkColor/);
-  assert.match(footer, /BrandDrawingColor/);
+  assert.match(footer, /BrandLockup/);
+  assert.match(footer, /t\.nav\.arancini/);
+  assert.match(footer, /t\.nav\.find/);
+  assert.match(footer, /t\.nav\.venues/);
+  assert.match(footer, /t\.nav\.about/);
+  assert.match(footer, /SITE\.phoneLabel/);
+  assert.match(footer, /SITE\.email/);
+  assert.match(footer, /t\.footer\.copyright/);
+  assert.match(footer, /lg:grid-cols-4/);
+  assert.equal(footer.includes("BrandDrawingColor"), false);
+  assert.equal(footer.includes("draw-lemon"), false);
   assert.equal(footer.includes("Oslo / Sicilia"), false);
   assert.equal(footer.includes("t.footer.places"), false);
+  assert.equal(BRAND.no.footer.copyright, "© 2026 Gold of Sicily");
 });
 
 test("uploaded menu files render only on venue pages, beside dishes", () => {

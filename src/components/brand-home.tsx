@@ -66,7 +66,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
                   key={flavor}
                   className="font-display text-2xl italic tracking-tight md:text-3xl"
                 >
-                  <FlavorName name={flavor} />
+                  {flavor}
                 </li>
               ))}
             </ul>
@@ -223,14 +223,3 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
   );
 }
 
-function FlavorName({ name }: { name: string }) {
-  const parts = name.split(" & ");
-  if (parts.length < 2) return name;
-  return (
-    <>
-      {parts[0]}{" "}
-      <span className="flavor-amp">&</span>{" "}
-      {parts.slice(1).join(" & ")}
-    </>
-  );
-}

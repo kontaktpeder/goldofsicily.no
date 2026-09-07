@@ -21,9 +21,9 @@ test("new B2B routes render the short venue landing", () => {
   assert.match(enRoute, /lang="en"/);
 });
 
-test("venue landing has a single Kontakt oss CTA and no old pitch", () => {
-  assert.match(landing, /cta: "Kontakt oss"/);
-  assert.match(landing, /cta: "Contact us"/);
+test("venue landing keeps the short page and drops leftover pitch", () => {
+  assert.equal(landing.includes("Kontakt oss"), false);
+  assert.equal(landing.includes("Contact us"), false);
   assert.equal(landing.includes("Bestill"), false);
   assert.equal(landing.includes("Bli pilot"), false);
   assert.equal(landing.includes("prøvesmaking"), false);
@@ -32,6 +32,25 @@ test("venue landing has a single Kontakt oss CTA and no old pitch", () => {
   assert.equal(landing.includes("streetfood-konsept"), false);
   assert.equal(landing.includes("vimeo"), false);
   assert.equal(landing.includes("Vimeo"), false);
+  assert.equal(landing.includes("Airfryer"), false);
+  assert.equal(landing.includes("Villa Import"), false);
+  assert.equal(landing.includes("Kontakt Peder"), false);
   assert.match(landing, /Oslo Bar & Bowling/);
   assert.match(landing, /\/steder\/oslo-bar-bowling/);
+});
+
+test("venue landing uses Partner vs Supply, concrete CTAs and a two-line H1", () => {
+  assert.match(landing, /'Nduja mozzarella/);
+  assert.match(landing, /Trøffel & sjampinjong/);
+  assert.match(landing, /Gold Partner eller Gold Supply/);
+  assert.match(landing, /Hjelp med oppstart/);
+  assert.match(landing, /Gold Supply/);
+  assert.match(landing, /Ring 45 25 12 80/);
+  assert.match(landing, /Send e-post/);
+  assert.match(landing, /tel:45251280/);
+  assert.match(landing, /mailto:\$\{SITE\.email\}/);
+  assert.match(landing, /Vil du teste Gold hos dere\?/);
+  assert.match(landing, /heroTitleLine1: "Siciliansk arancini"/);
+  assert.match(landing, /heroTitleLine2: "for serveringssteder\."/);
+  assert.match(landing, /md:whitespace-nowrap/);
 });

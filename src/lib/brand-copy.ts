@@ -44,7 +44,7 @@ export const BRAND = {
     gold: {
       title: "Arancini",
       body: "Sprø utenpå. Myk inni.",
-      flavors: ["'Nduja & mozzarella", "Trøffel & sjampinjong"],
+      flavors: ["'Nduja mozzarella", "Trøffel & sjampinjong"],
       cta: "Hva er arancini?",
       photoAlt: "Seks sprø arancini på et mørkt brett",
     },
@@ -102,6 +102,7 @@ export const BRAND = {
     footer: {
       instagram: "Instagram",
       tiktok: "TikTok",
+      copyright: "© 2026 Gold of Sicily",
     },
     about: {
       eyebrow: "Om oss",
@@ -145,7 +146,7 @@ export const BRAND = {
     gold: {
       title: "Arancini",
       body: "Crisp outside. Soft inside.",
-      flavors: ["'Nduja & mozzarella", "Truffle & champignon"],
+      flavors: ["'Nduja mozzarella", "Truffle & champignon"],
       cta: "What is arancini?",
       photoAlt: "Six crisp arancini on a dark tray",
     },
@@ -203,6 +204,7 @@ export const BRAND = {
     footer: {
       instagram: "Instagram",
       tiktok: "TikTok",
+      copyright: "© 2026 Gold of Sicily",
     },
     about: {
       eyebrow: "About",
