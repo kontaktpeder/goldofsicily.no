@@ -1,4 +1,5 @@
 import { PILOT_ORG, PILOT_SETTINGS, PILOT_VARIANTS } from "./catalog";
+import { formatGoldLotCode } from "./gold-lot";
 import { addHoursIso } from "./time";
 import type { PilotState } from "./types";
 import { PILOT_STATE_VERSION } from "./types";
@@ -41,7 +42,7 @@ export function createSeedState(): PilotState {
       {
         id: batchW1N,
         variantId: "nduja",
-        lotCode: "GOS-2608-W1-N",
+        lotCode: formatGoldLotCode(dayStamp(10), "N", 1),
         deliveredAt: week1At,
         deliveredQty: 50,
         freezerRemaining: 12,
@@ -49,7 +50,7 @@ export function createSeedState(): PilotState {
       {
         id: batchW1T,
         variantId: "truffle-mushroom",
-        lotCode: "GOS-2608-W1-T",
+        lotCode: formatGoldLotCode(dayStamp(10), "T", 1),
         deliveredAt: week1At,
         deliveredQty: 50,
         freezerRemaining: 18,
@@ -57,7 +58,7 @@ export function createSeedState(): PilotState {
       {
         id: batchW2N,
         variantId: "nduja",
-        lotCode: "GOS-2608-W2-N",
+        lotCode: formatGoldLotCode(dayStamp(3), "N", 1),
         deliveredAt: week2At,
         deliveredQty: 50,
         freezerRemaining: 50,
@@ -65,7 +66,7 @@ export function createSeedState(): PilotState {
       {
         id: batchW2T,
         variantId: "truffle-mushroom",
-        lotCode: "GOS-2608-W2-T",
+        lotCode: formatGoldLotCode(dayStamp(3), "T", 1),
         deliveredAt: week2At,
         deliveredQty: 50,
         freezerRemaining: 50,

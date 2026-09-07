@@ -34,6 +34,7 @@ export type Variant = {
 export type Batch = {
   id: string;
   variantId: string;
+  /** Gold-LOT master ID from production, e.g. L-20260907-T-01. Never a separate delivery batch. */
   lotCode: string;
   deliveredAt: string;
   deliveredQty: number;
