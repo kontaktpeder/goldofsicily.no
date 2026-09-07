@@ -30,19 +30,17 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
       <section className="brand-hero px-5 md:px-12 lg:px-16">
         <div className="brand-hero-inner mx-auto max-w-3xl text-center">
           <BrandLogo priority />
-          <p className="mt-5 text-[0.62rem] uppercase tracking-[0.22em] text-foreground/50 md:mt-6">
-            {t.hero.kicker}
-          </p>
           <BrandLockup
             lang={lang}
             as="h1"
             align="center"
-            className="mt-3 text-[clamp(1.55rem,3.4vw,2.45rem)] md:mt-4"
+            className="mt-3 text-[clamp(1.45rem,3vw,2.2rem)] md:mt-4"
           />
-          <p className="mx-auto mt-3 max-w-xl text-lg leading-snug text-foreground/80 md:mt-4 md:text-xl">
-            {t.hero.sub}
+          <p className="mx-auto mt-3 max-w-lg text-balance text-lg leading-snug text-foreground/80 md:mt-4 md:text-xl">
+            <span className="block">{t.hero.sub}</span>
+            <span className="block">{t.hero.subLine}</span>
           </p>
-          <div className="mt-6 flex flex-col items-stretch justify-center gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-3">
+          <div className="mt-5 flex flex-col items-stretch justify-center gap-3 sm:mt-6 sm:flex-row sm:items-center sm:gap-3">
             <a href="#find-gold" className="btn-gold btn-gold-solid whitespace-nowrap">
               {t.hero.findCta}
             </a>
@@ -68,7 +66,7 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
                   key={flavor}
                   className="font-display text-2xl italic tracking-tight md:text-3xl"
                 >
-                  {flavor}
+                  <FlavorName name={flavor} />
                 </li>
               ))}
             </ul>
@@ -222,5 +220,17 @@ export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVen
 
       <BrandFooter lang={lang} />
     </div>
+  );
+}
+
+function FlavorName({ name }: { name: string }) {
+  const parts = name.split(" & ");
+  if (parts.length < 2) return name;
+  return (
+    <>
+      {parts[0]}{" "}
+      <span className="flavor-amp">&</span>{" "}
+      {parts.slice(1).join(" & ")}
+    </>
   );
 }

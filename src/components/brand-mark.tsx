@@ -1,7 +1,9 @@
 import { useId } from "react";
 import logoCharacters from "@/assets/brand/logo-characters.png";
 import wordmarkMask from "@/assets/brand/wordmark-script-mask.png";
+import wordmarkColor from "@/assets/brand/wordmark-script.png";
 import drawingMask from "@/assets/brand/logo-drawing-mask.png";
+import drawingColor from "@/assets/brand/logo-drawing.png";
 import type { BrandLang } from "@/lib/brand-copy";
 
 const WORD_BOX = { w: 1380, h: 454 };
@@ -75,6 +77,18 @@ export function BrandWordmark({ className = "" }: { className?: string }) {
   );
 }
 
+export function BrandWordmarkColor({ className = "" }: { className?: string }) {
+  return (
+    <img
+      src={wordmarkColor}
+      alt="Gold of Sicily"
+      width={WORD_BOX.w}
+      height={WORD_BOX.h}
+      className={`brand-wordmark-color ${className}`}
+    />
+  );
+}
+
 export function BrandDrawing({ className = "" }: { className?: string }) {
   return (
     <ScriptFill
@@ -82,6 +96,18 @@ export function BrandDrawing({ className = "" }: { className?: string }) {
       box={DRAWING_BOX}
       className={`brand-drawing ${className}`}
       label="Gold of Sicily"
+    />
+  );
+}
+
+export function BrandDrawingColor({ className = "" }: { className?: string }) {
+  return (
+    <img
+      src={drawingColor}
+      alt=""
+      width={DRAWING_BOX.w}
+      height={DRAWING_BOX.h}
+      className={`brand-drawing-color ${className}`}
     />
   );
 }
