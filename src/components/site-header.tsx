@@ -1,4 +1,4 @@
-import wordmark from "@/assets/arancini-wordmark.png";
+import wordmark from "@/assets/brand/wordmark-script.png";
 
 export function SiteHeader({ tagline }: { tagline?: string }) {
   return (

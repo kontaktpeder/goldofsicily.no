@@ -1,9 +1,11 @@
 import { useId } from "react";
 import logoCharacters from "@/assets/brand/logo-characters.png";
 import wordmarkMask from "@/assets/brand/wordmark-script-mask.png";
+import drawingMask from "@/assets/brand/logo-drawing-mask.png";
 import type { BrandLang } from "@/lib/brand-copy";
 
-const WORD_BOX = { w: 1264, h: 222 };
+const WORD_BOX = { w: 1380, h: 454 };
+const DRAWING_BOX = { w: 1477, h: 1645 };
 
 const LOCKUP: Record<BrandLang, [string, string]> = {
   no: ["italiensk enkelhet.", "norsk utførelse."],
@@ -52,8 +54,8 @@ export function BrandLogo({
     <img
       src={logoCharacters}
       alt="Gold of Sicily"
-      width={1278}
-      height={865}
+      width={1514}
+      height={1645}
       fetchPriority={priority ? "high" : undefined}
       className={`brand-logo ${className}`}
     />
@@ -66,6 +68,17 @@ export function BrandWordmark({ className = "" }: { className?: string }) {
       src={wordmarkMask}
       box={WORD_BOX}
       className={`brand-wordmark ${className}`}
+      label="Gold of Sicily"
+    />
+  );
+}
+
+export function BrandDrawing({ className = "" }: { className?: string }) {
+  return (
+    <ScriptFill
+      src={drawingMask}
+      box={DRAWING_BOX}
+      className={`brand-drawing ${className}`}
       label="Gold of Sicily"
     />
   );

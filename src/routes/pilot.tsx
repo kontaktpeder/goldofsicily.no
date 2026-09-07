@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { z } from "zod";
 import { Settings } from "lucide-react";
-import wordmark from "@/assets/arancini-wordmark.png";
+import wordmark from "@/assets/brand/wordmark-script.png";
 import { DayStatusSheet } from "@/components/pilot/day-status-sheet";
 import { DeviationSheet } from "@/components/pilot/deviation-sheet";
 import { SettingsSheet } from "@/components/pilot/settings-sheet";

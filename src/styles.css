@@ -186,6 +186,12 @@
     width: auto;
   }
 
+  .brand-drawing {
+    display: block;
+    height: 6rem;
+    width: auto;
+  }
+
   .brand-logo {
     display: block;
     margin-inline: auto;
@@ -253,7 +259,10 @@
 
   @media (min-width: 768px) {
     .brand-wordmark {
-      height: 2rem;
+      height: 2.15rem;
+    }
+    .brand-drawing {
+      height: 7rem;
     }
     .brand-logo {
       max-width: min(100%, 32rem);

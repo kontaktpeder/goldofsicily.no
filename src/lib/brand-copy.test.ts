@@ -42,9 +42,16 @@ test("homepage hero uses the character logo and hides the header wordmark until 
   assert.match(home, /t\.hero\.kicker/);
   assert.match(home, /as="h1"/);
   assert.match(mark, /logo-characters\.png/);
+  assert.match(mark, /logo-drawing-mask/);
   assert.match(mark, /alt="Gold of Sicily"/);
   assert.match(mark, /fetchPriority/);
   assert.match(css, /max-width: min\(100%, 32rem\)/);
+});
+
+test("footer uses the drawing without the wordmark", () => {
+  const footer = readFileSync(new URL("../components/brand-footer.tsx", import.meta.url), "utf8");
+  assert.match(footer, /BrandDrawing/);
+  assert.equal(footer.includes("BrandWordmark"), false);
 });
 
 test("uploaded menu files render only on venue pages, beside dishes", () => {
