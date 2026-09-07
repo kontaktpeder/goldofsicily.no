@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BrandDrawing, BrandLockup } from "@/components/brand-mark";
+import { BrandDrawingColor, BrandLockup, BrandWordmarkColor } from "@/components/brand-mark";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
 import drawLemon from "@/assets/brand/draw-lemon.webp";
@@ -16,16 +16,16 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
         className="pointer-events-none absolute -bottom-16 right-2 w-[min(48vw,18rem)] rotate-12 opacity-90 md:-bottom-20 md:right-8"
       />
       <div className="relative mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
-        <Link to={t.paths.home} className="inline-block text-[#F3EBDD]">
-          <BrandDrawing className="h-24 w-auto md:h-28" />
+        <Link to={t.paths.home} className="inline-block">
+          <BrandWordmarkColor className="h-10 w-auto md:h-12" />
         </Link>
-        <p className="mt-8 font-display text-4xl tracking-tight md:text-6xl">{t.footer.places}</p>
+        <BrandDrawingColor className="mt-8 h-36 w-auto md:mt-10 md:h-48" />
         <BrandLockup
           lang={lang}
           as="p"
           align="left"
           invert
-          className="mt-4 text-xl md:text-2xl"
+          className="mt-6 text-xl md:text-2xl"
         />
         <p className="mt-10 flex flex-wrap items-baseline gap-x-3 text-xl italic">
           <a

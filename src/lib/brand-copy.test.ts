@@ -24,13 +24,20 @@ test("hero CTAs are plain Gold text", () => {
 });
 
 test("hero keeps the brand lockup words and names the product in Oslo", () => {
-  assert.match(BRAND.no.hero.kicker, /Gold of Sicily/);
-  assert.match(BRAND.no.hero.kicker, /arancini/i);
   assert.match(BRAND.no.hero.sub, /Oslo/);
   assert.match(BRAND.no.hero.sub, /arancini/i);
+  assert.match(BRAND.no.hero.subLine, /serveringssted/);
   assert.match(BRAND.no.find.pageBody, /Oslo/);
-  assert.match(BRAND.en.hero.kicker, /Gold of Sicily/);
   assert.match(BRAND.en.hero.sub, /Oslo/);
+  assert.match(BRAND.en.hero.subLine, /venue/);
+  assert.equal("kicker" in BRAND.no.hero, false);
+});
+
+test("homepage flavors include mozzarella and a drawn ampersand", () => {
+  assert.equal(BRAND.no.gold.flavors[0], "'Nduja & mozzarella");
+  assert.equal(BRAND.no.gold.flavors[1], "Trøffel & sjampinjong");
+  const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
+  assert.match(home, /flavor-amp/);
 });
 
 test("homepage hero uses the character logo and hides the header wordmark until scroll", () => {
@@ -39,19 +46,26 @@ test("homepage hero uses the character logo and hides the header wordmark until 
   const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
   assert.match(home, /revealLogoOnScroll/);
   assert.match(home, /BrandLogo priority/);
-  assert.match(home, /t\.hero\.kicker/);
+  assert.equal(home.includes("t.hero.kicker"), false);
+  assert.equal(home.includes("Gold of Sicily · Sicilianske arancini"), false);
   assert.match(home, /as="h1"/);
+  assert.match(home, /t\.hero\.subLine/);
   assert.match(mark, /logo-characters\.png/);
   assert.match(mark, /logo-drawing-mask/);
+  assert.match(mark, /wordmark-script\.png/);
+  assert.match(mark, /logo-drawing\.png/);
   assert.match(mark, /alt="Gold of Sicily"/);
   assert.match(mark, /fetchPriority/);
-  assert.match(css, /max-width: min\(100%, 42rem\)/);
+  assert.match(css, /max-width: min\(100%, 30rem\)/);
+  assert.match(css, /max-height: min\(24rem, 44svh\)/);
 });
 
-test("footer uses the drawing without the wordmark", () => {
+test("footer uses original-color wordmark and drawing, not Oslo / Sicilia", () => {
   const footer = readFileSync(new URL("../components/brand-footer.tsx", import.meta.url), "utf8");
-  assert.match(footer, /BrandDrawing/);
-  assert.equal(footer.includes("BrandWordmark"), false);
+  assert.match(footer, /BrandWordmarkColor/);
+  assert.match(footer, /BrandDrawingColor/);
+  assert.equal(footer.includes("Oslo / Sicilia"), false);
+  assert.equal(footer.includes("t.footer.places"), false);
 });
 
 test("uploaded menu files render only on venue pages, beside dishes", () => {

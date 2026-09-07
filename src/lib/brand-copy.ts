@@ -31,8 +31,8 @@ export const BRAND = {
       venues: "/for-barer",
     },
     hero: {
-      kicker: "Gold of Sicily · Sicilianske arancini",
-      sub: "Sicilianske arancini, utviklet og produsert i Oslo. Klare for ditt serveringssted.",
+      sub: "Sicilianske arancini, utviklet og produsert i Oslo.",
+      subLine: "Klare for ditt serveringssted.",
       findCta: "Hvor serveres Gold?",
       venuesCta: "For ditt serveringssted",
       findBefore: "Hvor serveres ",
@@ -44,7 +44,7 @@ export const BRAND = {
     gold: {
       title: "Arancini",
       body: "Sprø utenpå. Myk inni.",
-      flavors: ["'Nduja", "Trøffel & sjampinjong"],
+      flavors: ["'Nduja & mozzarella", "Trøffel & sjampinjong"],
       cta: "Hva er arancini?",
       photoAlt: "Seks sprø arancini på et mørkt brett",
     },
@@ -100,7 +100,6 @@ export const BRAND = {
       cta: "Se løsningen for serveringssteder",
     },
     footer: {
-      places: "Oslo / Sicilia",
       instagram: "Instagram",
       tiktok: "TikTok",
     },
@@ -133,8 +132,8 @@ export const BRAND = {
       venues: "/en/for-bars",
     },
     hero: {
-      kicker: "Gold of Sicily · Sicilian arancini",
-      sub: "Sicilian arancini, developed and produced in Oslo. Ready for your venue.",
+      sub: "Sicilian arancini, developed and produced in Oslo.",
+      subLine: "Ready for your venue.",
       findCta: "Where is Gold served?",
       venuesCta: "For your venue",
       findBefore: "Where is ",
@@ -146,7 +145,7 @@ export const BRAND = {
     gold: {
       title: "Arancini",
       body: "Crisp outside. Soft inside.",
-      flavors: ["'Nduja", "Truffle & champignon"],
+      flavors: ["'Nduja & mozzarella", "Truffle & champignon"],
       cta: "What is arancini?",
       photoAlt: "Six crisp arancini on a dark tray",
     },
@@ -202,7 +201,6 @@ export const BRAND = {
       cta: "See the solution for venues",
     },
     footer: {
-      places: "Oslo / Sicily",
       instagram: "Instagram",
       tiktok: "TikTok",
     },
