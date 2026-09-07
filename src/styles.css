@@ -198,14 +198,14 @@
     object-fit: contain;
   }
 
-  .footer-wordmark {
+  .brand-wordmark-color.footer-wordmark {
     width: 7.5rem;
     max-width: 7.5rem;
     height: auto;
   }
 
   @media (min-width: 768px) {
-    .footer-wordmark {
+    .brand-wordmark-color.footer-wordmark {
       width: 10rem;
       max-width: 10rem;
     }
@@ -754,5 +754,18 @@ html.pilot-lock #app {
 
 .gold-map-card-cta:hover {
   text-decoration: underline;
+}
+
+.brand-wordmark-color.footer-wordmark {
+  width: 7.5rem;
+  max-width: 7.5rem;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .brand-wordmark-color.footer-wordmark {
+    width: 10rem;
+    max-width: 10rem;
+  }
 }
 

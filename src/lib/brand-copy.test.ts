@@ -70,6 +70,7 @@ test("homepage hero uses the character logo and hides the header wordmark until 
 
 test("footer is a real site map with lockup, links, contact and copyright", () => {
   const footer = readFileSync(new URL("../components/brand-footer.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
   assert.match(footer, /BrandWordmarkColor/);
   assert.match(footer, /BrandLockup/);
   assert.match(footer, /t\.nav\.arancini/);
@@ -81,6 +82,7 @@ test("footer is a real site map with lockup, links, contact and copyright", () =
   assert.match(footer, /t\.footer\.copyright/);
   assert.match(footer, /sm:grid-cols-3/);
   assert.match(footer, /footer-wordmark/);
+  assert.match(css, /\.brand-wordmark-color\.footer-wordmark/);
   assert.match(footer, /t\.footer\.navHeading/);
   assert.match(footer, /t\.footer\.contactHeading/);
   assert.match(footer, /t\.footer\.socialHeading/);
