@@ -16,7 +16,7 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
     <footer className="bg-[color:var(--sea)] font-display text-[#F3EBDD]">
       <div className="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
         <Link to={t.paths.home} className="inline-block">
-          <BrandWordmarkColor className="h-auto w-[7.5rem] md:w-[10rem]" />
+          <BrandWordmarkColor className="footer-wordmark" />
         </Link>
         <BrandLockup
           lang={lang}

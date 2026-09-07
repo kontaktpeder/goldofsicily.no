@@ -193,8 +193,22 @@
   .brand-drawing-color {
     display: block;
     width: auto;
+    max-width: 100%;
     height: auto;
     object-fit: contain;
+  }
+
+  .footer-wordmark {
+    width: 7.5rem;
+    max-width: 7.5rem;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .footer-wordmark {
+      width: 10rem;
+      max-width: 10rem;
+    }
   }
 
   .brand-drawing {

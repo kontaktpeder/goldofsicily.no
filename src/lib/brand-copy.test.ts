@@ -80,7 +80,7 @@ test("footer is a real site map with lockup, links, contact and copyright", () =
   assert.match(footer, /SITE\.email/);
   assert.match(footer, /t\.footer\.copyright/);
   assert.match(footer, /sm:grid-cols-3/);
-  assert.match(footer, /w-\[7\.5rem\] md:w-\[10rem\]/);
+  assert.match(footer, /footer-wordmark/);
   assert.match(footer, /t\.footer\.navHeading/);
   assert.match(footer, /t\.footer\.contactHeading/);
   assert.match(footer, /t\.footer\.socialHeading/);
