@@ -5,7 +5,7 @@ type EnPath =
   | "/en"
   | "/en/next-popup"
   | "/en/about"
-  | "/en/for-bars"
+  | "/en/for-venues"
   | "/en/find-us"
   | "/en/collaborate";
 type NoPath =
@@ -13,7 +13,7 @@ type NoPath =
   | "/arancini"
   | "/next-popup"
   | "/about"
-  | "/for-barer"
+  | "/for-serveringssteder"
   | "/finn-oss"
   | "/samarbeid";
 
@@ -23,7 +23,8 @@ const NO_TO_EN: Record<string, EnPath> = {
   "/what-is-arancini": "/en",
   "/next-popup": "/en/next-popup",
   "/about": "/en/about",
-  "/for-barer": "/en/for-bars",
+  "/for-barer": "/en/for-venues",
+  "/for-serveringssteder": "/en/for-venues",
   "/finn-oss": "/en/find-us",
   "/samarbeid": "/en/collaborate",
 };
@@ -34,7 +35,8 @@ const EN_TO_NO: Record<string, NoPath> = {
   "/en/what-is-arancini": "/arancini",
   "/en/next-popup": "/next-popup",
   "/en/about": "/about",
-  "/en/for-bars": "/for-barer",
+  "/en/for-bars": "/for-serveringssteder",
+  "/en/for-venues": "/for-serveringssteder",
   "/en/find-us": "/finn-oss",
   "/en/collaborate": "/samarbeid",
 };

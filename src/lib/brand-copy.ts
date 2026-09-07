@@ -28,7 +28,7 @@ export const BRAND = {
       arancini: "/arancini",
       find: "/finn-oss",
       about: "/about",
-      venues: "/for-barer",
+      venues: "/for-serveringssteder",
     },
     hero: {
       kicker: "Gold of Sicily · Sicilianske arancini",
@@ -130,7 +130,7 @@ export const BRAND = {
       arancini: "/arancini",
       find: "/en/find-us",
       about: "/en/about",
-      venues: "/en/for-bars",
+      venues: "/en/for-venues",
     },
     hero: {
       kicker: "Gold of Sicily · Sicilian arancini",

@@ -11,10 +11,10 @@ export const SITEMAP_STATIC: SitemapEntry[] = [
   { path: "/arancini", changefreq: "monthly", priority: "0.9" },
   { path: "/finn-oss", changefreq: "weekly", priority: "0.9" },
   { path: "/about", changefreq: "monthly", priority: "0.6" },
-  { path: "/for-barer", changefreq: "weekly", priority: "0.8" },
+  { path: "/for-serveringssteder", changefreq: "weekly", priority: "0.8" },
   { path: "/samarbeid", changefreq: "monthly", priority: "0.5" },
   { path: "/next-popup", changefreq: "weekly", priority: "0.4" },
-  { path: "/en/for-bars", changefreq: "weekly", priority: "0.6" },
+  { path: "/en/for-venues", changefreq: "weekly", priority: "0.6" },
 ];
 
 export function sitemapEntries(venueSlugs: string[]): SitemapEntry[] {

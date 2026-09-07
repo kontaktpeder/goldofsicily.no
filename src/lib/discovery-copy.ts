@@ -2,9 +2,9 @@ export type DiscoveryRoute =
   | "/arancini"
   | "/next-popup"
   | "/about"
-  | "/for-barer"
+  | "/for-serveringssteder"
   | "/en/next-popup"
-  | "/en/for-bars"
+  | "/en/for-venues"
   | "/en/about";
 
 export type EditorialCard = {
@@ -36,7 +36,7 @@ export type DiscoveryCopy = {
     tagline: string;
     rights: string;
     barsLabel: string;
-    barsTo: "/for-barer" | "/en/for-bars";
+    barsTo: "/for-serveringssteder" | "/en/for-venues";
   };
 };
 
@@ -56,9 +56,9 @@ export const DISCOVERY_NO: DiscoveryCopy = {
       },
       {
         title: "For serveringssteder",
-        description: "Varm mat når kjøkkenet er stengt — eller uten fullt kjøkken.",
-        cta: "Se løsningen",
-        to: "/for-barer",
+        description: "Siciliansk arancini til menyen. Enkel tilberedning, to smaker.",
+        cta: "Les mer",
+        to: "/for-serveringssteder",
       },
       {
         title: "Om Gold of Sicily",
@@ -72,7 +72,7 @@ export const DISCOVERY_NO: DiscoveryCopy = {
     label: "Oppdag",
     links: [
       { label: "Hva er arancini", to: "/arancini" },
-      { label: "For serveringssteder", to: "/for-barer" },
+      { label: "For serveringssteder", to: "/for-serveringssteder" },
       { label: "Om oss", to: "/about" },
     ],
   },
@@ -80,7 +80,7 @@ export const DISCOVERY_NO: DiscoveryCopy = {
     tagline: "Oslo · Palermo",
     rights: "© Gold of Sicily",
     barsLabel: "For serveringssteder",
-    barsTo: "/for-barer",
+    barsTo: "/for-serveringssteder",
   },
 };
 
@@ -100,9 +100,9 @@ export const DISCOVERY_EN: DiscoveryCopy = {
       },
       {
         title: "For venues",
-        description: "Hot food after the kitchen closes — or without a full kitchen.",
-        cta: "See the solution",
-        to: "/en/for-bars",
+        description: "Sicilian arancini for the menu. Simple prep, two flavours.",
+        cta: "Read more",
+        to: "/en/for-venues",
       },
       {
         title: "About Gold of Sicily",
@@ -116,7 +116,7 @@ export const DISCOVERY_EN: DiscoveryCopy = {
     label: "Discover",
     links: [
       { label: "What is arancini?", to: "/arancini" },
-      { label: "For venues", to: "/en/for-bars" },
+      { label: "For venues", to: "/en/for-venues" },
       { label: "About", to: "/en/about" },
     ],
   },
@@ -124,6 +124,6 @@ export const DISCOVERY_EN: DiscoveryCopy = {
     tagline: "Oslo · Palermo",
     rights: "© Gold of Sicily",
     barsLabel: "For venues",
-    barsTo: "/en/for-bars",
+    barsTo: "/en/for-venues",
   },
 };

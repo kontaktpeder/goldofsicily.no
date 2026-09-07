@@ -19,16 +19,16 @@ test("homepage metadata names the brand, the product and Oslo", () => {
 
 test("each public page type has its own search intent", () => {
   assert.equal(
-    PAGE_SEO["/for-barer"].title,
+    PAGE_SEO["/for-serveringssteder"].title,
     "Arancini til barer og serveringssteder | Gold of Sicily",
   );
-  assert.match(PAGE_SEO["/for-barer"].description, /barer/);
+  assert.match(PAGE_SEO["/for-serveringssteder"].description, /barer/);
   assert.equal(PAGE_SEO["/finn-oss"].title, "Hvor får du arancini i Oslo? | Gold of Sicily");
   assert.match(PAGE_SEO["/arancini"].title, /Hva er arancini/);
   assert.match(PAGE_SEO["/arancini"].title, /Oppskrift/);
   assert.equal(PAGE_SEO["/en"].noindex, true);
   assert.equal(PAGE_SEO["/en/find-us"].noindex, true);
-  assert.equal("noindex" in PAGE_SEO["/en/for-bars"], false);
+  assert.equal("noindex" in PAGE_SEO["/en/for-venues"], false);
 });
 
 test("root head no longer ships homepage canonical on every page", () => {
@@ -42,7 +42,7 @@ test("html lang follows the URL", () => {
   assert.equal(htmlLangFromPath("/"), "nb");
   assert.equal(htmlLangFromPath("/finn-oss"), "nb");
   assert.equal(htmlLangFromPath("/en"), "en");
-  assert.equal(htmlLangFromPath("/en/for-bars"), "en");
+  assert.equal(htmlLangFromPath("/en/for-venues"), "en");
 });
 
 test("organization schema is a brand, not a restaurant", () => {
@@ -103,11 +103,11 @@ test("venue pages get local titles, canonicals and structured data", () => {
 });
 
 test("page head is scoped to the route path", () => {
-  const head = buildPageHead(PAGE_SEO["/for-barer"]);
+  const head = buildPageHead(PAGE_SEO["/for-serveringssteder"]);
   const canonical = head.links.find((link) => link.rel === "canonical");
   const ogUrl = head.meta.find((item) => item.property === "og:url");
-  assert.equal(canonical?.href, "https://goldofsicily.no/for-barer");
-  assert.equal(ogUrl?.content, "https://goldofsicily.no/for-barer");
+  assert.equal(canonical?.href, "https://goldofsicily.no/for-serveringssteder");
+  assert.equal(ogUrl?.content, "https://goldofsicily.no/for-serveringssteder");
   assert.ok(head.links.some((link) => link.rel === "alternate" && link.hrefLang === "en"));
 });
 
@@ -115,7 +115,10 @@ test("sitemap includes venue URLs and the indexed English B2B page", () => {
   const xml = renderSitemapXml(sitemapEntries(["oslo-bar-bowling", "villa-grossista", "oslo-bar-bowling"]));
   assert.match(xml, /https:\/\/goldofsicily\.no\/steder\/oslo-bar-bowling/);
   assert.match(xml, /https:\/\/goldofsicily\.no\/steder\/villa-grossista/);
-  assert.match(xml, /https:\/\/goldofsicily\.no\/en\/for-bars/);
+  assert.match(xml, /https:\/\/goldofsicily\.no\/en\/for-venues/);
+  assert.match(xml, /https:\/\/goldofsicily\.no\/for-serveringssteder/);
+  assert.equal(xml.includes("/for-barer"), false);
+  assert.equal(xml.includes("/en/for-bars"), false);
   assert.match(xml, /https:\/\/goldofsicily\.no\/arancini/);
   assert.match(xml, /https:\/\/goldofsicily\.no\/finn-oss/);
   assert.equal(xml.includes("/what-is-arancini"), false);

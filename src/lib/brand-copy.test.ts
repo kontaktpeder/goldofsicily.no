@@ -8,6 +8,11 @@ test("arancini nav points at the evergreen /arancini page", () => {
   assert.equal(BRAND.en.paths.arancini, "/arancini");
 });
 
+test("venue nav points at the B2B page, not the old /for-barer URL", () => {
+  assert.equal(BRAND.no.paths.venues, "/for-serveringssteder");
+  assert.equal(BRAND.en.paths.venues, "/en/for-venues");
+});
+
 test("retired copy stays gone", () => {
   const blob = JSON.stringify(BRAND);
   for (const phrase of ["Kremet inni", "mindre styr", "Tutto passa"]) {

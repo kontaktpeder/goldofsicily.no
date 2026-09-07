@@ -14,6 +14,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SamarbeidRouteImport } from './routes/samarbeid'
 import { Route as PilotRouteImport } from './routes/pilot'
 import { Route as NextPopupRouteImport } from './routes/next-popup'
+import { Route as ForServeringsstederRouteImport } from './routes/for-serveringssteder'
 import { Route as ForBarerRouteImport } from './routes/for-barer'
 import { Route as FinnOssRouteImport } from './routes/finn-oss'
 import { Route as EnRouteImport } from './routes/en'
@@ -28,6 +29,7 @@ import { Route as StederSlugRouteImport } from './routes/steder.$slug'
 import { Route as PilotLeverandorRouteImport } from './routes/pilot.leverandor'
 import { Route as EnWhatIsAranciniRouteImport } from './routes/en.what-is-arancini'
 import { Route as EnNextPopupRouteImport } from './routes/en.next-popup'
+import { Route as EnForVenuesRouteImport } from './routes/en.for-venues'
 import { Route as EnForBarsRouteImport } from './routes/en.for-bars'
 import { Route as EnFindUsRouteImport } from './routes/en.find-us'
 import { Route as EnCollaborateRouteImport } from './routes/en.collaborate'
@@ -67,6 +69,11 @@ const PilotRoute = PilotRouteImport.update({
 const NextPopupRoute = NextPopupRouteImport.update({
   id: '/next-popup',
   path: '/next-popup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForServeringsstederRoute = ForServeringsstederRouteImport.update({
+  id: '/for-serveringssteder',
+  path: '/for-serveringssteder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForBarerRoute = ForBarerRouteImport.update({
@@ -137,6 +144,11 @@ const EnWhatIsAranciniRoute = EnWhatIsAranciniRouteImport.update({
 const EnNextPopupRoute = EnNextPopupRouteImport.update({
   id: '/next-popup',
   path: '/next-popup',
+  getParentRoute: () => EnRoute,
+} as any)
+const EnForVenuesRoute = EnForVenuesRouteImport.update({
+  id: '/for-venues',
+  path: '/for-venues',
   getParentRoute: () => EnRoute,
 } as any)
 const EnForBarsRoute = EnForBarsRouteImport.update({
@@ -226,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/en': typeof EnRouteWithChildren
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
+  '/for-serveringssteder': typeof ForServeringsstederRoute
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
@@ -240,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
+  '/en/for-venues': typeof EnForVenuesRoute
   '/en/next-popup': typeof EnNextPopupRoute
   '/en/what-is-arancini': typeof EnWhatIsAranciniRoute
   '/pilot/leverandor': typeof PilotLeverandorRoute
@@ -260,6 +274,7 @@ export interface FileRoutesByTo {
   '/arancini': typeof AranciniRoute
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
+  '/for-serveringssteder': typeof ForServeringsstederRoute
   '/next-popup': typeof NextPopupRoute
   '/samarbeid': typeof SamarbeidRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -273,6 +288,7 @@ export interface FileRoutesByTo {
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
+  '/en/for-venues': typeof EnForVenuesRoute
   '/en/next-popup': typeof EnNextPopupRoute
   '/en/what-is-arancini': typeof EnWhatIsAranciniRoute
   '/pilot/leverandor': typeof PilotLeverandorRoute
@@ -296,6 +312,7 @@ export interface FileRoutesById {
   '/en': typeof EnRouteWithChildren
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
+  '/for-serveringssteder': typeof ForServeringsstederRoute
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
@@ -310,6 +327,7 @@ export interface FileRoutesById {
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
+  '/en/for-venues': typeof EnForVenuesRoute
   '/en/next-popup': typeof EnNextPopupRoute
   '/en/what-is-arancini': typeof EnWhatIsAranciniRoute
   '/pilot/leverandor': typeof PilotLeverandorRoute
@@ -334,6 +352,7 @@ export interface FileRouteTypes {
     | '/en'
     | '/finn-oss'
     | '/for-barer'
+    | '/for-serveringssteder'
     | '/next-popup'
     | '/pilot'
     | '/samarbeid'
@@ -348,6 +367,7 @@ export interface FileRouteTypes {
     | '/en/collaborate'
     | '/en/find-us'
     | '/en/for-bars'
+    | '/en/for-venues'
     | '/en/next-popup'
     | '/en/what-is-arancini'
     | '/pilot/leverandor'
@@ -368,6 +388,7 @@ export interface FileRouteTypes {
     | '/arancini'
     | '/finn-oss'
     | '/for-barer'
+    | '/for-serveringssteder'
     | '/next-popup'
     | '/samarbeid'
     | '/sitemap.xml'
@@ -381,6 +402,7 @@ export interface FileRouteTypes {
     | '/en/collaborate'
     | '/en/find-us'
     | '/en/for-bars'
+    | '/en/for-venues'
     | '/en/next-popup'
     | '/en/what-is-arancini'
     | '/pilot/leverandor'
@@ -403,6 +425,7 @@ export interface FileRouteTypes {
     | '/en'
     | '/finn-oss'
     | '/for-barer'
+    | '/for-serveringssteder'
     | '/next-popup'
     | '/pilot'
     | '/samarbeid'
@@ -417,6 +440,7 @@ export interface FileRouteTypes {
     | '/en/collaborate'
     | '/en/find-us'
     | '/en/for-bars'
+    | '/en/for-venues'
     | '/en/next-popup'
     | '/en/what-is-arancini'
     | '/pilot/leverandor'
@@ -440,6 +464,7 @@ export interface RootRouteChildren {
   EnRoute: typeof EnRouteWithChildren
   FinnOssRoute: typeof FinnOssRoute
   ForBarerRoute: typeof ForBarerRoute
+  ForServeringsstederRoute: typeof ForServeringsstederRoute
   NextPopupRoute: typeof NextPopupRoute
   PilotRoute: typeof PilotRouteWithChildren
   SamarbeidRoute: typeof SamarbeidRoute
@@ -487,6 +512,13 @@ declare module '@tanstack/react-router' {
       path: '/next-popup'
       fullPath: '/next-popup'
       preLoaderRoute: typeof NextPopupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-serveringssteder': {
+      id: '/for-serveringssteder'
+      path: '/for-serveringssteder'
+      fullPath: '/for-serveringssteder'
+      preLoaderRoute: typeof ForServeringsstederRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/for-barer': {
@@ -585,6 +617,13 @@ declare module '@tanstack/react-router' {
       path: '/next-popup'
       fullPath: '/en/next-popup'
       preLoaderRoute: typeof EnNextPopupRouteImport
+      parentRoute: typeof EnRoute
+    }
+    '/en/for-venues': {
+      id: '/en/for-venues'
+      path: '/for-venues'
+      fullPath: '/en/for-venues'
+      preLoaderRoute: typeof EnForVenuesRouteImport
       parentRoute: typeof EnRoute
     }
     '/en/for-bars': {
@@ -720,6 +759,7 @@ interface EnRouteChildren {
   EnCollaborateRoute: typeof EnCollaborateRoute
   EnFindUsRoute: typeof EnFindUsRoute
   EnForBarsRoute: typeof EnForBarsRoute
+  EnForVenuesRoute: typeof EnForVenuesRoute
   EnNextPopupRoute: typeof EnNextPopupRoute
   EnWhatIsAranciniRoute: typeof EnWhatIsAranciniRoute
   EnIndexRoute: typeof EnIndexRoute
@@ -731,6 +771,7 @@ const EnRouteChildren: EnRouteChildren = {
   EnCollaborateRoute: EnCollaborateRoute,
   EnFindUsRoute: EnFindUsRoute,
   EnForBarsRoute: EnForBarsRoute,
+  EnForVenuesRoute: EnForVenuesRoute,
   EnNextPopupRoute: EnNextPopupRoute,
   EnWhatIsAranciniRoute: EnWhatIsAranciniRoute,
   EnIndexRoute: EnIndexRoute,
@@ -774,6 +815,7 @@ const rootRouteChildren: RootRouteChildren = {
   EnRoute: EnRouteWithChildren,
   FinnOssRoute: FinnOssRoute,
   ForBarerRoute: ForBarerRoute,
+  ForServeringsstederRoute: ForServeringsstederRoute,
   NextPopupRoute: NextPopupRoute,
   PilotRoute: PilotRouteWithChildren,
   SamarbeidRoute: SamarbeidRoute,

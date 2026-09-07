@@ -42,10 +42,10 @@ export function htmlLangFromPath(pathname: string) {
   return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "nb";
 }
 
-const FOR_BARS_ALTERNATES: HrefLangAlternate[] = [
-  { hrefLang: "nb", path: "/for-barer" },
-  { hrefLang: "en", path: "/en/for-bars" },
-  { hrefLang: "x-default", path: "/for-barer" },
+const FOR_VENUES_ALTERNATES: HrefLangAlternate[] = [
+  { hrefLang: "nb", path: "/for-serveringssteder" },
+  { hrefLang: "en", path: "/en/for-venues" },
+  { hrefLang: "x-default", path: "/for-serveringssteder" },
 ];
 
 export function buildPageHead(seo: PageSeo = {}) {
@@ -252,20 +252,20 @@ export const PAGE_SEO = {
       "Bryllup, firmafest, festival eller popup-samarbeid i Oslo? Ta kontakt med Gold of Sicily for sicilianske arancini til ditt arrangement.",
     path: "/samarbeid",
   },
-  "/for-barer": {
+  "/for-serveringssteder": {
     title: "Arancini til barer og serveringssteder | Gold of Sicily",
     description:
-      "Håndlagde sicilianske arancini for barer, restauranter og hoteller. Enkel tilberedning, rask servering og materiell tilpasset ditt serveringssted.",
-    path: "/for-barer",
-    alternates: FOR_BARS_ALTERNATES,
+      "Håndlagde sicilianske arancini for barer, restauranter og hoteller. Enkel tilberedning, to smaker og materiell tilpasset ditt serveringssted.",
+    path: "/for-serveringssteder",
+    alternates: FOR_VENUES_ALTERNATES,
   },
-  "/en/for-bars": {
+  "/en/for-venues": {
     title: "Arancini for bars and venues | Gold of Sicily",
     description:
-      "Handmade Sicilian arancini for bars, restaurants and hotels. Simple prep, fast service and materials adapted to your venue.",
-    path: "/en/for-bars",
+      "Handmade Sicilian arancini for bars, restaurants and hotels. Simple prep, two flavours and materials adapted to your venue.",
+    path: "/en/for-venues",
     locale: "en_GB",
-    alternates: FOR_BARS_ALTERNATES,
+    alternates: FOR_VENUES_ALTERNATES,
   },
   "/en/collaborate": {
     title: "Arancini for your event — collaborate with Gold of Sicily",

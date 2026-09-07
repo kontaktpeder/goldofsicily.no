@@ -1,12 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { ForBarerLanding } from "@/components/for-barer-landing";
-import { buildPageHead, PAGE_SEO } from "@/lib/seo";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/en/for-bars")({
-  head: () => buildPageHead(PAGE_SEO["/en/for-bars"]),
-  component: ForBarsEn,
+  beforeLoad: () => {
+    throw redirect({
+      href: "/en/for-venues",
+      statusCode: 301,
+      replace: true,
+    });
+  },
 });
-
-function ForBarsEn() {
-  return <ForBarerLanding lang="en" />;
-}
