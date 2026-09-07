@@ -74,7 +74,10 @@ test("homepage venue cards fill with photo and show the venue logo", () => {
 
 test("homepage rhythm keeps one product photo and a matching product line icon", () => {
   const home = readFileSync(new URL("../components/brand-home.tsx", import.meta.url), "utf8");
-  assert.match(home, /draw-arancini-line\.png/);
+  assert.match(home, /icon-serve-product\.png/);
+  assert.match(home, /icon-serve-airfryer\.png/);
+  assert.match(home, /icon-serve-menu\.png/);
+  assert.match(home, /icon-serve-follow\.png/);
   assert.equal(home.includes("draw-arancini-bite"), false);
   assert.equal(home.match(/photo-the-gold/g)?.length, 1);
   assert.equal(home.match(/photo-hands/g)?.length, 1);

@@ -7,17 +7,17 @@ import { BRAND, type BrandLang, type ServeCardKey } from "@/lib/brand-copy";
 import type { PublicVenue } from "@/lib/portal-venues";
 import photoGold from "@/assets/brand/photo-the-gold.jpg";
 import photoHands from "@/assets/brand/photo-hands.jpg";
-import drawAranciniLine from "@/assets/brand/draw-arancini-line.png";
 import drawVespa from "@/assets/brand/draw-vespa.webp";
-import iconAirfryer from "@/assets/brand/icon-airfryer.png";
-import iconMenu from "@/assets/brand/icon-menu.png";
-import iconBox from "@/assets/brand/icon-box.png";
+import iconServeProduct from "@/assets/brand/icon-serve-product.png";
+import iconServeAirfryer from "@/assets/brand/icon-serve-airfryer.png";
+import iconServeMenu from "@/assets/brand/icon-serve-menu.png";
+import iconServeFollow from "@/assets/brand/icon-serve-follow.png";
 
 const SERVE_ICONS: Record<ServeCardKey, string> = {
-  product: drawAranciniLine,
-  serve: iconAirfryer,
-  menu: iconMenu,
-  follow: iconBox,
+  product: iconServeProduct,
+  serve: iconServeAirfryer,
+  menu: iconServeMenu,
+  follow: iconServeFollow,
 };
 
 export function BrandHome({ lang, venues }: { lang: BrandLang; venues: PublicVenue[] }) {
