@@ -100,6 +100,9 @@ export const BRAND = {
       cta: "Se løsningen for serveringssteder",
     },
     footer: {
+      navHeading: "Navigasjon",
+      contactHeading: "Kontakt",
+      socialHeading: "Følg oss",
       instagram: "Instagram",
       tiktok: "TikTok",
       copyright: "© 2026 Gold of Sicily",
@@ -202,6 +205,9 @@ export const BRAND = {
       cta: "See the solution for venues",
     },
     footer: {
+      navHeading: "Navigation",
+      contactHeading: "Contact",
+      socialHeading: "Follow us",
       instagram: "Instagram",
       tiktok: "TikTok",
       copyright: "© 2026 Gold of Sicily",

@@ -79,7 +79,11 @@ test("footer is a real site map with lockup, links, contact and copyright", () =
   assert.match(footer, /SITE\.phoneLabel/);
   assert.match(footer, /SITE\.email/);
   assert.match(footer, /t\.footer\.copyright/);
-  assert.match(footer, /lg:grid-cols-4/);
+  assert.match(footer, /sm:grid-cols-3/);
+  assert.match(footer, /w-\[7\.5rem\] md:w-\[10rem\]/);
+  assert.match(footer, /t\.footer\.navHeading/);
+  assert.match(footer, /t\.footer\.contactHeading/);
+  assert.match(footer, /t\.footer\.socialHeading/);
   assert.equal(footer.includes("BrandDrawingColor"), false);
   assert.equal(footer.includes("draw-lemon"), false);
   assert.equal(footer.includes("Oslo / Sicilia"), false);

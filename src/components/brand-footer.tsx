@@ -14,23 +14,22 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
 
   return (
     <footer className="bg-[color:var(--sea)] font-display text-[#F3EBDD]">
-      <div className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-20">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
-          <div className="min-w-0">
-            <Link to={t.paths.home} className="inline-block">
-              <BrandWordmarkColor className="h-10 w-auto md:h-12" />
-            </Link>
-            <BrandLockup
-              lang={lang}
-              as="p"
-              align="left"
-              invert
-              className="mt-6 text-xl md:text-2xl"
-            />
-          </div>
+      <div className="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
+        <Link to={t.paths.home} className="inline-block">
+          <BrandWordmarkColor className="h-auto w-[7.5rem] md:w-[10rem]" />
+        </Link>
+        <BrandLockup
+          lang={lang}
+          as="p"
+          align="left"
+          invert
+          className="mt-5 text-lg md:text-xl"
+        />
 
-          <nav aria-label={lang === "no" ? "Snarveier" : "Shortcuts"} className="min-w-0">
-            <ul className="flex flex-col gap-3 text-lg">
+        <div className="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-10">
+          <nav aria-label={t.footer.navHeading} className="min-w-0">
+            <p className="text-sm tracking-wide text-[#F3EBDD]/55">{t.footer.navHeading}</p>
+            <ul className="mt-3 flex flex-col gap-2.5">
               {links.map((link) => (
                 <li key={link.to}>
                   <Link to={link.to} className="underline-offset-4 hover:underline">
@@ -42,7 +41,8 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
           </nav>
 
           <div className="min-w-0">
-            <ul className="flex flex-col gap-3 text-lg">
+            <p className="text-sm tracking-wide text-[#F3EBDD]/55">{t.footer.contactHeading}</p>
+            <ul className="mt-3 flex flex-col gap-2.5">
               <li>
                 <a href="tel:45251280" className="underline-offset-4 hover:underline">
                   {SITE.phoneLabel}
@@ -57,7 +57,8 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
           </div>
 
           <div className="min-w-0">
-            <ul className="flex flex-col gap-3 text-lg">
+            <p className="text-sm tracking-wide text-[#F3EBDD]/55">{t.footer.socialHeading}</p>
+            <ul className="mt-3 flex flex-col gap-2.5">
               <li>
                 <a
                   href={SITE.instagram}
@@ -82,7 +83,7 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
           </div>
         </div>
 
-        <p className="mt-14 border-t border-[#F3EBDD]/20 pt-6 text-sm text-[#F3EBDD]/70">
+        <p className="mt-10 border-t border-[#F3EBDD]/20 pt-5 text-sm text-[#F3EBDD]/70">
           {t.footer.copyright}
         </p>
       </div>
