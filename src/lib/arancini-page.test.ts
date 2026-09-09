@@ -30,6 +30,12 @@ test("home recipe stays simpler than a production recipe", () => {
     "krydrede panko",
     "produksjonsoppskrift",
     "draw-arancini-bite",
+    "buljong",
+    "grønnsaksbuljong",
+    "Kan arancini lages i airfryer",
+    "Kan arancini lages i ovn",
+    "190 °C",
+    "210 °C",
   ]) {
     assert.equal(copyBlob.includes(phrase), false, phrase);
     assert.equal(pageSource.includes(phrase), false, phrase);
@@ -41,7 +47,7 @@ test("Recipe JSON-LD mirrors the visible home recipe", () => {
   assert.equal(ld["@type"], "Recipe");
   assert.equal(ld.name, ARANCINI_PAGE.recipe.heading);
   assert.equal(ld.description, ARANCINI_PAGE.recipe.description);
-  assert.equal(ld.recipeYield, "ca. 12 stk.");
+  assert.equal(ld.recipeYield, "ca. 6–9 stk., etter størrelse");
   assert.equal(ld.recipeCategory, ARANCINI_PAGE.recipe.category);
   assert.equal(ld.recipeCuisine, ARANCINI_PAGE.recipe.cuisine);
   assert.deepEqual(ld.recipeIngredient, [...ARANCINI_PAGE.recipe.ingredients]);
@@ -94,4 +100,23 @@ test("Recipe JSON-LD fills Search Console HowToStep fields without inventing nut
   assert.match(pageSource, /step\.name/);
   assert.match(pageSource, /step\.text/);
   assert.equal(recipeStepId(0), "steg-1");
+});
+
+test("home recipe fries in oil, weighs two sizes, and drops broth", () => {
+  const fry = ARANCINI_PAGE.recipe.steps.find((step) => step.name === "Friter");
+  const weigh = ARANCINI_PAGE.recipe.steps.find((step) => step.name === "Vei bollene");
+  assert.ok(fry);
+  assert.ok(weigh);
+  assert.match(fry.text, /frityrolje eller solsikkeolje/);
+  assert.match(fry.text, /170 °C/);
+  assert.match(fry.text, /6–8 minutter/);
+  assert.match(weigh.text, /35 g/);
+  assert.match(weigh.text, /45 g/);
+  assert.match(weigh.text, /50 g/);
+  assert.match(weigh.text, /60–70 g/);
+  assert.match(ARANCINI_PAGE.recipe.sizesNote, /Vei bollene/);
+  assert.match(pageSource, /recipe\.sizesHeading/);
+  assert.equal(copyBlob.toLowerCase().includes("buljong"), false);
+  assert.equal(pageSource.includes("airfryer"), false);
+  assert.equal(pageSource.includes("page.oven"), false);
 });

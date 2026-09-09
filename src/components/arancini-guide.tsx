@@ -76,6 +76,21 @@ export function AranciniGuide({ venues }: { venues: PublicVenue[] }) {
               </div>
             </dl>
 
+            <div className="mt-10 max-w-2xl">
+              <h3 className="font-display text-2xl tracking-tight">{recipe.sizesHeading}</h3>
+              <ul className="mt-5 divide-y divide-foreground/10">
+                {recipe.sizes.map((size) => (
+                  <li key={size.title} className="py-3">
+                    <p className="font-display text-lg tracking-tight">{size.title}</p>
+                    <p className="mt-1 text-base leading-relaxed text-foreground/75 md:text-lg">
+                      {size.body}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-base italic text-foreground/60">{recipe.sizesNote}</p>
+            </div>
+
             <div className="mt-12 flex flex-col gap-14 lg:grid lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] lg:gap-16">
               <div>
                 <h3 className="font-display text-2xl tracking-tight">
@@ -123,24 +138,6 @@ export function AranciniGuide({ venues }: { venues: PublicVenue[] }) {
 
         <div className="relative mx-auto max-w-3xl px-5 py-16 md:px-8 md:py-24">
           <section>
-            <h2 className="font-display text-3xl tracking-tight md:text-4xl">
-              {page.airfryer.heading}
-            </h2>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/75 md:text-lg">
-              {page.airfryer.body}
-            </p>
-          </section>
-
-          <section className="mt-16 md:mt-20">
-            <h2 className="font-display text-3xl tracking-tight md:text-4xl">
-              {page.oven.heading}
-            </h2>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-foreground/75 md:text-lg">
-              {page.oven.body}
-            </p>
-          </section>
-
-          <section className="mt-16 md:mt-20">
             <h2 className="font-display text-3xl tracking-tight md:text-4xl">
               {page.fillings.heading}
             </h2>

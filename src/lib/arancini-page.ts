@@ -25,22 +25,33 @@ export const ARANCINI_PAGE = {
     heading: "Arancini-oppskrift med ’nduja og mozzarella",
     description:
       "Enkel hjemmeoppskrift på sicilianske arancini med ’nduja og mozzarella.",
-    yieldLabel: "Ca. 12 arancini",
-    yieldLd: "ca. 12 stk.",
+    yieldLabel: "Ca. 6–9 arancini",
+    yieldLd: "ca. 6–9 stk., etter størrelse",
     timeLabel: "Tid: ca. 1 time + avkjøling",
     prepLabel: "Forberedelse: ca. 1 time + avkjøling",
-    cookLabel: "Steking: 4–6 minutter",
+    cookLabel: "Fritering: 6–8 minutter",
     category: "Street food",
     cuisine: "Siciliansk / italiensk",
     prepTime: "PT1H",
-    cookTime: "PT6M",
+    cookTime: "PT8M",
     totalTime: "PT1H",
     ingredientsHeading: "Ingredienser",
     methodHeading: "Slik gjør du",
+    sizesHeading: "Størrelse",
+    sizesNote: "Vei bollene så de blir like store.",
+    sizes: [
+      {
+        title: "Snack",
+        body: "35 g ris + batter og panko blir ca. 45 g ferdig. Passer fint som snack.",
+      },
+      {
+        title: "Måltid",
+        body: "50 g ris + batter og panko blir ca. 60–70 g ferdig. Da blir du som regel mett av tre.",
+      },
+    ],
     keywords: "arancini, sicilianske risboller, ’nduja, mozzarella, oppskrift",
     ingredients: [
       "300 g risottoris, gjerne Carnaroli eller Arborio",
-      "ca. 8 dl grønnsaksbuljong",
       "40 g smør",
       "50 g parmesan",
       "60–80 g ’nduja",
@@ -48,12 +59,12 @@ export const ARANCINI_PAGE = {
       "hvetemel",
       "2 egg",
       "150–200 g panko eller brødsmuler",
-      "nøytral olje til fritering",
+      "frityrolje eller solsikkeolje",
     ],
     steps: [
       {
         name: "Kok risen",
-        text: "Kok risen i buljongen til den er mør og væsken er absorbert.",
+        text: "Kok risen til den er mør og kan formes.",
       },
       {
         name: "Rør inn fyll",
@@ -62,6 +73,10 @@ export const ARANCINI_PAGE = {
       {
         name: "Avkjøl risen",
         text: "Spre risen utover og la den avkjøles helt.",
+      },
+      {
+        name: "Vei bollene",
+        text: "Vei risen så bollene blir like store. 35 g ris + batter og panko blir ca. 45 g ferdig og passer som snack. 50 g ris + batter og panko blir ca. 60–70 g ferdig — da blir du som regel mett av tre.",
       },
       {
         name: "Lag en fordypning",
@@ -77,21 +92,13 @@ export const ARANCINI_PAGE = {
       },
       {
         name: "Friter",
-        text: "Friter ved 170–175 °C i omtrent 4–6 minutter, til den er gyllen og sprø.",
+        text: "Fyll en gryte med frityrolje eller solsikkeolje. Varm opp til rundt 170 °C og la aranciniene ligge i 6–8 minutter, alt etter størrelse, til de er gylne og sprø.",
       },
       {
         name: "Server varm",
-        text: "La den renne av kort og server varm.",
+        text: "La dem renne av kort og server varm.",
       },
     ],
-  },
-  airfryer: {
-    heading: "Kan arancini lages i airfryer?",
-    body: "Ja. Pensle eller spray paneringen lett med olje og stek arancinien ved omtrent 190 °C i 10–14 minutter. Snu dem gjerne halvveis, og stek til paneringen er gyllen og sprø.",
-  },
-  oven: {
-    heading: "Kan arancini lages i ovn?",
-    body: "Ja. Stek dem ved omtrent 210 °C i 15–20 minutter. Litt olje på paneringen gir bedre farge og en sprøere overflate.",
   },
   fillings: {
     heading: "Hva kan arancini fylles med?",
