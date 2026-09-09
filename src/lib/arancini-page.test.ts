@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { ARANCINI_PAGE, ARANCINI_RECIPE_JSON_LD } from "./arancini-page.ts";
+import {
+  ARANCINI_PAGE,
+  ARANCINI_RECIPE_JSON_LD,
+  recipeStepId,
+  recipeStepUrl,
+} from "./arancini-page.ts";
 
 const pageSource = readFileSync(new URL("../components/arancini-guide.tsx", import.meta.url), "utf8");
 const routeSource = readFileSync(new URL("../routes/arancini.tsx", import.meta.url), "utf8");
@@ -42,7 +47,7 @@ test("Recipe JSON-LD mirrors the visible home recipe", () => {
   assert.deepEqual(ld.recipeIngredient, [...ARANCINI_PAGE.recipe.ingredients]);
   assert.deepEqual(
     ld.recipeInstructions.map((step) => step.text),
-    [...ARANCINI_PAGE.recipe.steps],
+    ARANCINI_PAGE.recipe.steps.map((step) => step.text),
   );
   assert.match(pageSource, /recipe\.yieldLabel/);
   assert.match(pageSource, /recipe\.yieldLd/);
@@ -69,4 +74,24 @@ test("Oslo venues come from the public portal API, not hardcoded names", () => {
 test("old arancini URL permanently redirects", () => {
   assert.match(oldRoute, /statusCode: 301/);
   assert.match(oldRoute, /href: "\/arancini"/);
+});
+
+test("Recipe JSON-LD fills Search Console HowToStep fields without inventing nutrition or video", () => {
+  const ld = ARANCINI_RECIPE_JSON_LD;
+  assert.equal(ld.keywords, ARANCINI_PAGE.recipe.keywords);
+  assert.match(ld.keywords, /arancini/);
+  assert.equal("nutrition" in ld, false);
+  assert.equal("video" in ld, false);
+  assert.equal(ld.recipeInstructions.length, ARANCINI_PAGE.recipe.steps.length);
+  ld.recipeInstructions.forEach((step, index) => {
+    assert.equal(step["@type"], "HowToStep");
+    assert.equal(step.name, ARANCINI_PAGE.recipe.steps[index].name);
+    assert.equal(step.text, ARANCINI_PAGE.recipe.steps[index].text);
+    assert.equal(step.url, recipeStepUrl(index));
+    assert.match(step.url, /#steg-\d+$/);
+  });
+  assert.match(pageSource, /recipeStepId/);
+  assert.match(pageSource, /step\.name/);
+  assert.match(pageSource, /step\.text/);
+  assert.equal(recipeStepId(0), "steg-1");
 });

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { BrandFooter } from "@/components/brand-footer";
 import { BrandNav } from "@/components/brand-nav";
-import { ARANCINI_PAGE, ARANCINI_PHOTO_PATH } from "@/lib/arancini-page";
+import { ARANCINI_PAGE, ARANCINI_PHOTO_PATH, recipeStepId } from "@/lib/arancini-page";
 import type { PublicVenue } from "@/lib/portal-venues";
 import drawLine from "@/assets/brand/draw-arancini-line.png";
 import drawLemon from "@/assets/brand/draw-lemon.webp";
@@ -94,16 +94,25 @@ export function AranciniGuide({ venues }: { venues: PublicVenue[] }) {
                 <h3 className="font-display text-2xl tracking-tight">{recipe.methodHeading}</h3>
                 <ol className="mt-6 space-y-6">
                   {recipe.steps.map((step, index) => (
-                    <li key={step} className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-4">
+                    <li
+                      key={step.name}
+                      id={recipeStepId(index)}
+                      className="grid scroll-mt-28 grid-cols-[2.5rem_minmax(0,1fr)] gap-4"
+                    >
                       <span
                         aria-hidden
                         className="font-display text-2xl leading-none text-[color:var(--sea)]"
                       >
                         {index + 1}
                       </span>
-                      <p className="text-base leading-relaxed text-foreground/80 md:text-lg">
-                        {step}
-                      </p>
+                      <div>
+                        <h4 className="font-display text-lg tracking-tight md:text-xl">
+                          {step.name}
+                        </h4>
+                        <p className="mt-1 text-base leading-relaxed text-foreground/80 md:text-lg">
+                          {step.text}
+                        </p>
+                      </div>
                     </li>
                   ))}
                 </ol>

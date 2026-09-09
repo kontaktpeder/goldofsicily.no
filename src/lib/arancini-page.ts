@@ -37,6 +37,7 @@ export const ARANCINI_PAGE = {
     totalTime: "PT1H",
     ingredientsHeading: "Ingredienser",
     methodHeading: "Slik gjør du",
+    keywords: "arancini, sicilianske risboller, ’nduja, mozzarella, oppskrift",
     ingredients: [
       "300 g risottoris, gjerne Carnaroli eller Arborio",
       "ca. 8 dl grønnsaksbuljong",
@@ -50,14 +51,38 @@ export const ARANCINI_PAGE = {
       "nøytral olje til fritering",
     ],
     steps: [
-      "Kok risen i buljongen til den er mør og væsken er absorbert.",
-      "Mens risen fortsatt er varm, rør inn smør, parmesan og ’nduja.",
-      "Spre risen utover og la den avkjøles helt.",
-      "Ta litt ris i hånden og lag en fordypning i midten.",
-      "Legg i en bit mozzarella og form risen rundt til en fast ball.",
-      "Vend arancinien først i mel, deretter egg og til slutt panko.",
-      "Friter ved 170–175 °C i omtrent 4–6 minutter, til den er gyllen og sprø.",
-      "La den renne av kort og server varm.",
+      {
+        name: "Kok risen",
+        text: "Kok risen i buljongen til den er mør og væsken er absorbert.",
+      },
+      {
+        name: "Rør inn fyll",
+        text: "Mens risen fortsatt er varm, rør inn smør, parmesan og ’nduja.",
+      },
+      {
+        name: "Avkjøl risen",
+        text: "Spre risen utover og la den avkjøles helt.",
+      },
+      {
+        name: "Lag en fordypning",
+        text: "Ta litt ris i hånden og lag en fordypning i midten.",
+      },
+      {
+        name: "Form bollene",
+        text: "Legg i en bit mozzarella og form risen rundt til en fast ball.",
+      },
+      {
+        name: "Paner aranciniene",
+        text: "Vend arancinien først i mel, deretter egg og til slutt panko.",
+      },
+      {
+        name: "Friter",
+        text: "Friter ved 170–175 °C i omtrent 4–6 minutter, til den er gyllen og sprø.",
+      },
+      {
+        name: "Server varm",
+        text: "La den renne av kort og server varm.",
+      },
     ],
   },
   airfryer: {
@@ -93,6 +118,14 @@ export const ARANCINI_PAGE = {
   },
 } as const;
 
+export function recipeStepId(index: number) {
+  return `steg-${index + 1}`;
+}
+
+export function recipeStepUrl(index: number) {
+  return `${SITE_URL}${ARANCINI_PAGE.path}#${recipeStepId(index)}`;
+}
+
 export function buildAranciniRecipeJsonLd(imageUrl = ARANCINI_PHOTO_URL) {
   const recipe = ARANCINI_PAGE.recipe;
   return {
@@ -101,14 +134,17 @@ export function buildAranciniRecipeJsonLd(imageUrl = ARANCINI_PHOTO_URL) {
     name: recipe.heading,
     description: recipe.description,
     image: [imageUrl],
+    keywords: recipe.keywords,
     recipeYield: recipe.yieldLd,
     prepTime: recipe.prepTime,
     cookTime: recipe.cookTime,
     totalTime: recipe.totalTime,
     recipeIngredient: [...recipe.ingredients],
-    recipeInstructions: recipe.steps.map((text) => ({
+    recipeInstructions: recipe.steps.map((step, index) => ({
       "@type": "HowToStep",
-      text,
+      name: step.name,
+      text: step.text,
+      url: recipeStepUrl(index),
     })),
     recipeCategory: recipe.category,
     recipeCuisine: recipe.cuisine,
