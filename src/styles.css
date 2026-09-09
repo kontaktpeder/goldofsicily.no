@@ -160,6 +160,17 @@
     letter-spacing: -0.03em;
   }
 
+  .arancini-pronunciation {
+    display: inline-block;
+    font-size: 0.4em;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+    color: color-mix(in oklab, currentColor 48%, transparent);
+    vertical-align: baseline;
+  }
+
   .brand-lockup {
     font-family: var(--font-display);
     font-weight: 500;

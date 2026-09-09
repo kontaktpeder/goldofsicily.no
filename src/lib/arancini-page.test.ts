@@ -16,8 +16,21 @@ const copyBlob = JSON.stringify(ARANCINI_PAGE);
 test("arancini page keeps information H1 and recipe H2", () => {
   assert.equal(ARANCINI_PAGE.h1, "Hva er arancini?");
   assert.equal(ARANCINI_PAGE.recipe.heading, "Arancini-oppskrift med ’nduja og mozzarella");
-  assert.match(pageSource, /page\.h1/);
+  assert.match(pageSource, /Hva er arancini/);
   assert.match(pageSource, /recipe\.heading/);
+});
+
+test("H1 shows the pronunciation beside arancini, without a badge", () => {
+  assert.equal(ARANCINI_PAGE.h1Pronunciation, "(a-ran-TCHI-ni)");
+  assert.match(pageSource, /arancini-pronunciation/);
+  assert.match(pageSource, /page\.h1Pronunciation/);
+  const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+  const block = css.slice(css.indexOf(".arancini-pronunciation"), css.indexOf(".brand-lockup"));
+  assert.match(block, /font-size: 0\.4em/);
+  assert.match(block, /font-style: italic/);
+  assert.match(block, /vertical-align: baseline/);
+  assert.equal(block.includes("background"), false);
+  assert.equal(block.includes("border"), false);
 });
 
 test("home recipe stays simpler than a production recipe", () => {

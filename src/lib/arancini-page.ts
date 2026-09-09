@@ -11,6 +11,7 @@ export const ARANCINI_PAGE = {
   description:
     "Hva er arancini, og hvordan lager du dem hjemme? Se vår enkle arancini-oppskrift med ’nduja og mozzarella, og finn ut hvor Gold of Sicily serveres.",
   h1: "Hva er arancini?",
+  h1Pronunciation: "(a-ran-TCHI-ni)",
   intro:
     "Arancini er sicilianske risboller laget av kokt ris, fyll og ost, som paneres og stekes til de blir sprø utenpå og myke inni. De finnes i mange varianter over hele Sicilia og spises gjerne som street food, lunsj eller en liten rett.",
   photoAlt: "Seks sprø Gold of Sicily-arancini på et mørkt brett",
