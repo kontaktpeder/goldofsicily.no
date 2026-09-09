@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BrandLockup, BrandWordmarkColor } from "@/components/brand-mark";
+import { BrandLockup, BrandWordmark } from "@/components/brand-mark";
 import { BRAND, type BrandLang } from "@/lib/brand-copy";
 import { SITE } from "@/lib/site";
 
@@ -15,8 +15,8 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
   return (
     <footer className="bg-[color:var(--sea)] font-display text-[#F3EBDD]">
       <div className="mx-auto max-w-7xl px-5 py-10 md:px-8 md:py-14">
-        <Link to={t.paths.home} className="inline-block">
-          <BrandWordmarkColor className="footer-wordmark" />
+        <Link to={t.paths.home} className="inline-block text-[#F3EBDD]">
+          <BrandWordmark className="footer-wordmark" />
         </Link>
         <BrandLockup
           lang={lang}

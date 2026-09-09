@@ -198,14 +198,14 @@
     object-fit: contain;
   }
 
-  .brand-wordmark-color.footer-wordmark {
+  .brand-wordmark.footer-wordmark {
     width: 7.5rem;
     max-width: 7.5rem;
     height: auto;
   }
 
   @media (min-width: 768px) {
-    .brand-wordmark-color.footer-wordmark {
+    .brand-wordmark.footer-wordmark {
       width: 10rem;
       max-width: 10rem;
     }
@@ -756,14 +756,14 @@ html.pilot-lock #app {
   text-decoration: underline;
 }
 
-.brand-wordmark-color.footer-wordmark {
+.brand-wordmark.footer-wordmark {
   width: 7.5rem;
   max-width: 7.5rem;
   height: auto;
 }
 
 @media (min-width: 768px) {
-  .brand-wordmark-color.footer-wordmark {
+  .brand-wordmark.footer-wordmark {
     width: 10rem;
     max-width: 10rem;
   }
