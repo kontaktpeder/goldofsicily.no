@@ -16,8 +16,11 @@ export function AranciniGuide({ venues }: { venues: PublicVenue[] }) {
       <article className="relative overflow-hidden">
         <div className="relative mx-auto max-w-3xl px-5 pb-8 pt-16 md:px-8 md:pt-24">
           <h1 className="font-display text-[clamp(2.6rem,8vw,5.25rem)] leading-[1.05] tracking-tight">
-            Hva er arancini{" "}
-            <span className="arancini-pronunciation">{page.h1Pronunciation}</span>?
+            Hva er{" "}
+            <span className="md:whitespace-nowrap">
+              arancini?{" "}
+              <span className="arancini-pronunciation">{page.h1Pronunciation}</span>
+            </span>
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-foreground/80 md:text-xl">
             {page.intro}
