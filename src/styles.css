@@ -210,15 +210,14 @@
   }
 
   .brand-wordmark.footer-wordmark {
-    width: 7.5rem;
-    max-width: 7.5rem;
-    height: auto;
+    width: auto;
+    max-width: none;
+    height: 2.5rem;
   }
 
   @media (min-width: 768px) {
     .brand-wordmark.footer-wordmark {
-      width: 10rem;
-      max-width: 10rem;
+      height: 3rem;
     }
   }
 
@@ -768,15 +767,14 @@ html.pilot-lock #app {
 }
 
 .brand-wordmark.footer-wordmark {
-  width: 7.5rem;
-  max-width: 7.5rem;
-  height: auto;
+  width: auto;
+  max-width: none;
+  height: 2.5rem;
 }
 
 @media (min-width: 768px) {
   .brand-wordmark.footer-wordmark {
-    width: 10rem;
-    max-width: 10rem;
+    height: 3rem;
   }
 }
 

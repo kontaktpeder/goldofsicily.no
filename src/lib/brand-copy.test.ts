@@ -68,31 +68,25 @@ test("homepage hero uses the character logo and hides the header wordmark until 
   assert.match(css, /max-height: min\(24rem, 44svh\)/);
 });
 
-test("footer is a real site map with lockup, links, contact and copyright", () => {
+test("footer is airy with a white text logo, lockup and socials", () => {
   const footer = readFileSync(new URL("../components/brand-footer.tsx", import.meta.url), "utf8");
   const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
   assert.match(footer, /BrandWordmark/);
   assert.equal(footer.includes("BrandWordmarkColor"), false);
   assert.match(footer, /text-\[#F3EBDD\]/);
   assert.match(footer, /BrandLockup/);
-  assert.match(footer, /t\.nav\.arancini/);
-  assert.match(footer, /t\.nav\.find/);
-  assert.match(footer, /t\.nav\.venues/);
-  assert.match(footer, /t\.nav\.about/);
-  assert.match(footer, /SITE\.phoneLabel/);
-  assert.match(footer, /SITE\.email/);
-  assert.match(footer, /t\.footer\.copyright/);
-  assert.match(footer, /sm:grid-cols-3/);
+  assert.match(footer, /t\.footer\.instagram/);
+  assert.match(footer, /t\.footer\.tiktok/);
+  assert.match(footer, /py-16 md:px-8 md:py-24/);
   assert.match(footer, /footer-wordmark/);
   assert.match(css, /\.brand-wordmark\.footer-wordmark/);
-  assert.match(footer, /t\.footer\.navHeading/);
-  assert.match(footer, /t\.footer\.contactHeading/);
-  assert.match(footer, /t\.footer\.socialHeading/);
+  assert.equal(footer.includes("sm:grid-cols-3"), false);
+  assert.equal(footer.includes("t.footer.navHeading"), false);
+  assert.equal(footer.includes("t.footer.copyright"), false);
   assert.equal(footer.includes("BrandDrawingColor"), false);
   assert.equal(footer.includes("draw-lemon"), false);
   assert.equal(footer.includes("Oslo / Sicilia"), false);
   assert.equal(footer.includes("t.footer.places"), false);
-  assert.equal(BRAND.no.footer.copyright, "© 2026 Gold of Sicily");
 });
 
 test("uploaded menu files render only on venue pages, beside dishes", () => {
