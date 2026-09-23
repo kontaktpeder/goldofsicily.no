@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { BRAND } from "./brand-copy.ts";
+import { SITE } from "./site.ts";
 
 test("arancini nav points at the evergreen /arancini page", () => {
   assert.equal(BRAND.no.paths.arancini, "/arancini");
@@ -80,9 +81,18 @@ test("footer is airy with a white text logo, lockup and socials", () => {
   assert.match(footer, /py-16 md:px-8 md:py-24/);
   assert.match(footer, /footer-wordmark/);
   assert.match(css, /\.brand-wordmark\.footer-wordmark/);
+  assert.match(footer, /SITE\.legalNotice/);
+  assert.match(footer, /mt-14 text-xs/);
   assert.equal(footer.includes("sm:grid-cols-3"), false);
   assert.equal(footer.includes("t.footer.navHeading"), false);
   assert.equal(footer.includes("t.footer.copyright"), false);
+  assert.match(SITE.legalNotice, /Gold of Sicily AS/);
+  assert.match(SITE.legalNotice, /Org\.nr\. 938 541 175/);
+  assert.match(SITE.legalNotice, /Foretaksregisteret/);
+  assert.match(SITE.legalNotice, /Sorgenfrigata 4, 0367 Oslo/);
+  assert.equal(SITE.legalNotice.includes("Holding"), false);
+  assert.equal(SITE.legalNotice.includes("MVA"), false);
+  assert.equal(SITE.legalNotice.includes("938 263 981"), false);
   assert.equal(footer.includes("BrandDrawingColor"), false);
   assert.equal(footer.includes("draw-lemon"), false);
   assert.equal(footer.includes("Oslo / Sicilia"), false);
@@ -92,7 +102,10 @@ test("footer is airy with a white text logo, lockup and socials", () => {
 test("uploaded menu files render only on venue pages, beside dishes", () => {
   const grid = readFileSync(new URL("../components/find-gold-grid.tsx", import.meta.url), "utf8");
   const detail = readFileSync(new URL("../components/venue-detail.tsx", import.meta.url), "utf8");
-  const menuFile = readFileSync(new URL("../components/venue-menu-file.tsx", import.meta.url), "utf8");
+  const menuFile = readFileSync(
+    new URL("../components/venue-menu-file.tsx", import.meta.url),
+    "utf8",
+  );
   assert.equal(grid.includes("VenueMenuFile"), false);
   assert.match(detail, /VenueMenuFile/);
   assert.match(detail, /md:grid-cols-\[minmax\(11rem,16rem\)_minmax\(0,1fr\)\]/);
