@@ -13,7 +13,16 @@ export function BrandFooter({ lang }: { lang: BrandLang }) {
           <BrandWordmark className="footer-wordmark" />
         </Link>
         <BrandLockup lang={lang} as="p" align="left" invert className="mt-6 text-xl md:text-2xl" />
-        <p className="mt-10 flex flex-wrap items-baseline gap-x-3 text-xl italic">
+        <p className="mt-10 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xl italic">
+          <a href={`tel:${SITE.phoneTel}`} className="underline-offset-4 hover:underline">
+            {SITE.phoneLabel}
+          </a>
+          <span aria-hidden>·</span>
+          <a href={`mailto:${SITE.email}`} className="underline-offset-4 hover:underline">
+            {SITE.email}
+          </a>
+        </p>
+        <p className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xl italic">
           <a
             href={SITE.instagram}
             target="_blank"

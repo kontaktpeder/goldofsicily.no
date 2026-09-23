@@ -76,6 +76,11 @@ test("footer is airy with a white text logo, lockup and socials", () => {
   assert.equal(footer.includes("BrandWordmarkColor"), false);
   assert.match(footer, /text-\[#F3EBDD\]/);
   assert.match(footer, /BrandLockup/);
+  assert.match(footer, /tel:\$\{SITE\.phoneTel\}/);
+  assert.match(footer, /mailto:\$\{SITE\.email\}/);
+  assert.match(footer, /SITE\.phoneLabel/);
+  assert.ok(footer.indexOf("SITE.phoneTel") < footer.indexOf("t.footer.instagram"));
+  assert.ok(footer.indexOf("t.footer.instagram") < footer.indexOf("SITE.legalNotice"));
   assert.match(footer, /t\.footer\.instagram/);
   assert.match(footer, /t\.footer\.tiktok/);
   assert.match(footer, /py-16 md:px-8 md:py-24/);
