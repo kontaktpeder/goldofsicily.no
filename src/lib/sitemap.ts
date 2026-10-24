@@ -12,6 +12,8 @@ export const SITEMAP_STATIC: SitemapEntry[] = [
   { path: "/finn-oss", changefreq: "weekly", priority: "0.9" },
   { path: "/about", changefreq: "monthly", priority: "0.6" },
   { path: "/for-serveringssteder", changefreq: "weekly", priority: "0.8" },
+  { path: "/kjop", changefreq: "daily", priority: "0.8" },
+  { path: "/en/buy", changefreq: "daily", priority: "0.6" },
   { path: "/samarbeid", changefreq: "monthly", priority: "0.5" },
   { path: "/next-popup", changefreq: "weekly", priority: "0.4" },
   { path: "/en/for-venues", changefreq: "weekly", priority: "0.6" },

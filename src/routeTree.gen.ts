@@ -14,6 +14,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SamarbeidRouteImport } from './routes/samarbeid'
 import { Route as PilotRouteImport } from './routes/pilot'
 import { Route as NextPopupRouteImport } from './routes/next-popup'
+import { Route as KjopRouteImport } from './routes/kjop'
 import { Route as ForServeringsstederRouteImport } from './routes/for-serveringssteder'
 import { Route as ForBarerRouteImport } from './routes/for-barer'
 import { Route as FinnOssRouteImport } from './routes/finn-oss'
@@ -33,6 +34,7 @@ import { Route as EnForVenuesRouteImport } from './routes/en.for-venues'
 import { Route as EnForBarsRouteImport } from './routes/en.for-bars'
 import { Route as EnFindUsRouteImport } from './routes/en.find-us'
 import { Route as EnCollaborateRouteImport } from './routes/en.collaborate'
+import { Route as EnBuyRouteImport } from './routes/en.buy'
 import { Route as EnAboutRouteImport } from './routes/en.about'
 import { Route as AdminPopupRouteImport } from './routes/admin/popup'
 import { Route as AdminNewsletterRouteImport } from './routes/admin/newsletter'
@@ -69,6 +71,11 @@ const PilotRoute = PilotRouteImport.update({
 const NextPopupRoute = NextPopupRouteImport.update({
   id: '/next-popup',
   path: '/next-popup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KjopRoute = KjopRouteImport.update({
+  id: '/kjop',
+  path: '/kjop',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForServeringsstederRoute = ForServeringsstederRouteImport.update({
@@ -166,6 +173,11 @@ const EnCollaborateRoute = EnCollaborateRouteImport.update({
   path: '/collaborate',
   getParentRoute: () => EnRoute,
 } as any)
+const EnBuyRoute = EnBuyRouteImport.update({
+  id: '/buy',
+  path: '/buy',
+  getParentRoute: () => EnRoute,
+} as any)
 const EnAboutRoute = EnAboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -239,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/for-serveringssteder': typeof ForServeringsstederRoute
+  '/kjop': typeof KjopRoute
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
@@ -250,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/popup': typeof AdminPopupRoute
   '/en/about': typeof EnAboutRoute
+  '/en/buy': typeof EnBuyRoute
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
@@ -275,6 +289,7 @@ export interface FileRoutesByTo {
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/for-serveringssteder': typeof ForServeringsstederRoute
+  '/kjop': typeof KjopRoute
   '/next-popup': typeof NextPopupRoute
   '/samarbeid': typeof SamarbeidRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -285,6 +300,7 @@ export interface FileRoutesByTo {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/popup': typeof AdminPopupRoute
   '/en/about': typeof EnAboutRoute
+  '/en/buy': typeof EnBuyRoute
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
@@ -313,6 +329,7 @@ export interface FileRoutesById {
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/for-serveringssteder': typeof ForServeringsstederRoute
+  '/kjop': typeof KjopRoute
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
@@ -324,6 +341,7 @@ export interface FileRoutesById {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/popup': typeof AdminPopupRoute
   '/en/about': typeof EnAboutRoute
+  '/en/buy': typeof EnBuyRoute
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
@@ -353,6 +371,7 @@ export interface FileRouteTypes {
     | '/finn-oss'
     | '/for-barer'
     | '/for-serveringssteder'
+    | '/kjop'
     | '/next-popup'
     | '/pilot'
     | '/samarbeid'
@@ -364,6 +383,7 @@ export interface FileRouteTypes {
     | '/admin/newsletter'
     | '/admin/popup'
     | '/en/about'
+    | '/en/buy'
     | '/en/collaborate'
     | '/en/find-us'
     | '/en/for-bars'
@@ -389,6 +409,7 @@ export interface FileRouteTypes {
     | '/finn-oss'
     | '/for-barer'
     | '/for-serveringssteder'
+    | '/kjop'
     | '/next-popup'
     | '/samarbeid'
     | '/sitemap.xml'
@@ -399,6 +420,7 @@ export interface FileRouteTypes {
     | '/admin/newsletter'
     | '/admin/popup'
     | '/en/about'
+    | '/en/buy'
     | '/en/collaborate'
     | '/en/find-us'
     | '/en/for-bars'
@@ -426,6 +448,7 @@ export interface FileRouteTypes {
     | '/finn-oss'
     | '/for-barer'
     | '/for-serveringssteder'
+    | '/kjop'
     | '/next-popup'
     | '/pilot'
     | '/samarbeid'
@@ -437,6 +460,7 @@ export interface FileRouteTypes {
     | '/admin/newsletter'
     | '/admin/popup'
     | '/en/about'
+    | '/en/buy'
     | '/en/collaborate'
     | '/en/find-us'
     | '/en/for-bars'
@@ -465,6 +489,7 @@ export interface RootRouteChildren {
   FinnOssRoute: typeof FinnOssRoute
   ForBarerRoute: typeof ForBarerRoute
   ForServeringsstederRoute: typeof ForServeringsstederRoute
+  KjopRoute: typeof KjopRoute
   NextPopupRoute: typeof NextPopupRoute
   PilotRoute: typeof PilotRouteWithChildren
   SamarbeidRoute: typeof SamarbeidRoute
@@ -512,6 +537,13 @@ declare module '@tanstack/react-router' {
       path: '/next-popup'
       fullPath: '/next-popup'
       preLoaderRoute: typeof NextPopupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kjop': {
+      id: '/kjop'
+      path: '/kjop'
+      fullPath: '/kjop'
+      preLoaderRoute: typeof KjopRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/for-serveringssteder': {
@@ -647,6 +679,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnCollaborateRouteImport
       parentRoute: typeof EnRoute
     }
+    '/en/buy': {
+      id: '/en/buy'
+      path: '/buy'
+      fullPath: '/en/buy'
+      preLoaderRoute: typeof EnBuyRouteImport
+      parentRoute: typeof EnRoute
+    }
     '/en/about': {
       id: '/en/about'
       path: '/about'
@@ -756,6 +795,7 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface EnRouteChildren {
   EnAboutRoute: typeof EnAboutRoute
+  EnBuyRoute: typeof EnBuyRoute
   EnCollaborateRoute: typeof EnCollaborateRoute
   EnFindUsRoute: typeof EnFindUsRoute
   EnForBarsRoute: typeof EnForBarsRoute
@@ -768,6 +808,7 @@ interface EnRouteChildren {
 
 const EnRouteChildren: EnRouteChildren = {
   EnAboutRoute: EnAboutRoute,
+  EnBuyRoute: EnBuyRoute,
   EnCollaborateRoute: EnCollaborateRoute,
   EnFindUsRoute: EnFindUsRoute,
   EnForBarsRoute: EnForBarsRoute,
@@ -816,6 +857,7 @@ const rootRouteChildren: RootRouteChildren = {
   FinnOssRoute: FinnOssRoute,
   ForBarerRoute: ForBarerRoute,
   ForServeringsstederRoute: ForServeringsstederRoute,
+  KjopRoute: KjopRoute,
   NextPopupRoute: NextPopupRoute,
   PilotRoute: PilotRouteWithChildren,
   SamarbeidRoute: SamarbeidRoute,

@@ -7,10 +7,12 @@ type EnPath =
   | "/en/about"
   | "/en/for-venues"
   | "/en/find-us"
-  | "/en/collaborate";
+  | "/en/collaborate"
+  | "/en/buy";
 type NoPath =
   | "/"
   | "/arancini"
+  | "/kjop"
   | "/next-popup"
   | "/about"
   | "/for-serveringssteder"
@@ -27,6 +29,7 @@ const NO_TO_EN: Record<string, EnPath> = {
   "/for-serveringssteder": "/en/for-venues",
   "/finn-oss": "/en/find-us",
   "/samarbeid": "/en/collaborate",
+  "/kjop": "/en/buy",
 };
 
 const EN_TO_NO: Record<string, NoPath> = {
@@ -39,6 +42,7 @@ const EN_TO_NO: Record<string, NoPath> = {
   "/en/for-venues": "/for-serveringssteder",
   "/en/find-us": "/finn-oss",
   "/en/collaborate": "/samarbeid",
+  "/en/buy": "/kjop",
 };
 
 export function counterpartPath(lang: "no" | "en", pathname: string): string {

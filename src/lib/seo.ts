@@ -48,6 +48,12 @@ const FOR_VENUES_ALTERNATES: HrefLangAlternate[] = [
   { hrefLang: "x-default", path: "/for-serveringssteder" },
 ];
 
+const BUY_ALTERNATES: HrefLangAlternate[] = [
+  { hrefLang: "nb", path: "/kjop" },
+  { hrefLang: "en", path: "/en/buy" },
+  { hrefLang: "x-default", path: "/kjop" },
+];
+
 export function buildPageHead(seo: PageSeo = {}) {
   const title = seo.title ?? DEFAULT_TITLE;
   const description = seo.description ?? DEFAULT_DESCRIPTION;
@@ -251,6 +257,21 @@ export const PAGE_SEO = {
     description:
       "Bryllup, firmafest, festival eller popup-samarbeid i Oslo? Ta kontakt med Gold of Sicily for sicilianske arancini til ditt arrangement.",
     path: "/samarbeid",
+  },
+  "/kjop": {
+    title: "Kjøp Golden Balls | Gold of Sicily",
+    description:
+      "Kjøp Golden Balls fra Gold of Sicily. 6-pakning kommer snart. 50-pakning følger lageret, 1 250 kr inkludert mva.",
+    path: "/kjop",
+    alternates: BUY_ALTERNATES,
+  },
+  "/en/buy": {
+    title: "Buy Golden Balls | Gold of Sicily",
+    description:
+      "Buy Golden Balls from Gold of Sicily. The 6-pack is coming soon. The 50-pack follows stock, 1 250 kr including VAT.",
+    path: "/en/buy",
+    locale: "en_GB",
+    alternates: BUY_ALTERNATES,
   },
   "/for-serveringssteder": {
     title: "Arancini til barer og serveringssteder | Gold of Sicily",
