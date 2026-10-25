@@ -28,6 +28,7 @@ import { Route as EnIndexRouteImport } from './routes/en.index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as StederSlugRouteImport } from './routes/steder.$slug'
 import { Route as PilotLeverandorRouteImport } from './routes/pilot.leverandor'
+import { Route as KjopTilbudRouteImport } from './routes/kjop.tilbud'
 import { Route as EnWhatIsAranciniRouteImport } from './routes/en.what-is-arancini'
 import { Route as EnNextPopupRouteImport } from './routes/en.next-popup'
 import { Route as EnForVenuesRouteImport } from './routes/en.for-venues'
@@ -42,6 +43,7 @@ import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
 import { Route as AdminAccountingRouteImport } from './routes/admin/accounting'
 import { Route as AdminSlugRouteImport } from './routes/admin/$slug'
 import { Route as EnVenuesSlugRouteImport } from './routes/en.venues.$slug'
+import { Route as EnBuyOfferRouteImport } from './routes/en.buy.offer'
 import { Route as ApiPublicV1ModuleWidgetsRouteImport } from './routes/api/public/v1/module.widgets'
 import { Route as ApiPublicV1ModuleOrganizationRouteImport } from './routes/api/public/v1/module.organization'
 import { Route as ApiPublicV1ModuleInfoRouteImport } from './routes/api/public/v1/module.info'
@@ -143,6 +145,11 @@ const PilotLeverandorRoute = PilotLeverandorRouteImport.update({
   path: '/leverandor',
   getParentRoute: () => PilotRoute,
 } as any)
+const KjopTilbudRoute = KjopTilbudRouteImport.update({
+  id: '/tilbud',
+  path: '/tilbud',
+  getParentRoute: () => KjopRoute,
+} as any)
 const EnWhatIsAranciniRoute = EnWhatIsAranciniRouteImport.update({
   id: '/what-is-arancini',
   path: '/what-is-arancini',
@@ -213,6 +220,11 @@ const EnVenuesSlugRoute = EnVenuesSlugRouteImport.update({
   path: '/venues/$slug',
   getParentRoute: () => EnRoute,
 } as any)
+const EnBuyOfferRoute = EnBuyOfferRouteImport.update({
+  id: '/offer',
+  path: '/offer',
+  getParentRoute: () => EnBuyRoute,
+} as any)
 const ApiPublicV1ModuleWidgetsRoute =
   ApiPublicV1ModuleWidgetsRouteImport.update({
     id: '/api/public/v1/module/widgets',
@@ -251,7 +263,7 @@ export interface FileRoutesByFullPath {
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/for-serveringssteder': typeof ForServeringsstederRoute
-  '/kjop': typeof KjopRoute
+  '/kjop': typeof KjopRouteWithChildren
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
@@ -263,18 +275,20 @@ export interface FileRoutesByFullPath {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/popup': typeof AdminPopupRoute
   '/en/about': typeof EnAboutRoute
-  '/en/buy': typeof EnBuyRoute
+  '/en/buy': typeof EnBuyRouteWithChildren
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
   '/en/for-venues': typeof EnForVenuesRoute
   '/en/next-popup': typeof EnNextPopupRoute
   '/en/what-is-arancini': typeof EnWhatIsAranciniRoute
+  '/kjop/tilbud': typeof KjopTilbudRoute
   '/pilot/leverandor': typeof PilotLeverandorRoute
   '/steder/$slug': typeof StederSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/en/': typeof EnIndexRoute
   '/pilot/': typeof PilotIndexRoute
+  '/en/buy/offer': typeof EnBuyOfferRoute
   '/en/venues/$slug': typeof EnVenuesSlugRoute
   '/api/public/v1/module/health': typeof ApiPublicV1ModuleHealthRoute
   '/api/public/v1/module/info': typeof ApiPublicV1ModuleInfoRoute
@@ -289,7 +303,7 @@ export interface FileRoutesByTo {
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/for-serveringssteder': typeof ForServeringsstederRoute
-  '/kjop': typeof KjopRoute
+  '/kjop': typeof KjopRouteWithChildren
   '/next-popup': typeof NextPopupRoute
   '/samarbeid': typeof SamarbeidRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -300,18 +314,20 @@ export interface FileRoutesByTo {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/popup': typeof AdminPopupRoute
   '/en/about': typeof EnAboutRoute
-  '/en/buy': typeof EnBuyRoute
+  '/en/buy': typeof EnBuyRouteWithChildren
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
   '/en/for-venues': typeof EnForVenuesRoute
   '/en/next-popup': typeof EnNextPopupRoute
   '/en/what-is-arancini': typeof EnWhatIsAranciniRoute
+  '/kjop/tilbud': typeof KjopTilbudRoute
   '/pilot/leverandor': typeof PilotLeverandorRoute
   '/steder/$slug': typeof StederSlugRoute
   '/admin': typeof AdminIndexRoute
   '/en': typeof EnIndexRoute
   '/pilot': typeof PilotIndexRoute
+  '/en/buy/offer': typeof EnBuyOfferRoute
   '/en/venues/$slug': typeof EnVenuesSlugRoute
   '/api/public/v1/module/health': typeof ApiPublicV1ModuleHealthRoute
   '/api/public/v1/module/info': typeof ApiPublicV1ModuleInfoRoute
@@ -329,7 +345,7 @@ export interface FileRoutesById {
   '/finn-oss': typeof FinnOssRoute
   '/for-barer': typeof ForBarerRoute
   '/for-serveringssteder': typeof ForServeringsstederRoute
-  '/kjop': typeof KjopRoute
+  '/kjop': typeof KjopRouteWithChildren
   '/next-popup': typeof NextPopupRoute
   '/pilot': typeof PilotRouteWithChildren
   '/samarbeid': typeof SamarbeidRoute
@@ -341,18 +357,20 @@ export interface FileRoutesById {
   '/admin/newsletter': typeof AdminNewsletterRoute
   '/admin/popup': typeof AdminPopupRoute
   '/en/about': typeof EnAboutRoute
-  '/en/buy': typeof EnBuyRoute
+  '/en/buy': typeof EnBuyRouteWithChildren
   '/en/collaborate': typeof EnCollaborateRoute
   '/en/find-us': typeof EnFindUsRoute
   '/en/for-bars': typeof EnForBarsRoute
   '/en/for-venues': typeof EnForVenuesRoute
   '/en/next-popup': typeof EnNextPopupRoute
   '/en/what-is-arancini': typeof EnWhatIsAranciniRoute
+  '/kjop/tilbud': typeof KjopTilbudRoute
   '/pilot/leverandor': typeof PilotLeverandorRoute
   '/steder/$slug': typeof StederSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/en/': typeof EnIndexRoute
   '/pilot/': typeof PilotIndexRoute
+  '/en/buy/offer': typeof EnBuyOfferRoute
   '/en/venues/$slug': typeof EnVenuesSlugRoute
   '/api/public/v1/module/health': typeof ApiPublicV1ModuleHealthRoute
   '/api/public/v1/module/info': typeof ApiPublicV1ModuleInfoRoute
@@ -390,11 +408,13 @@ export interface FileRouteTypes {
     | '/en/for-venues'
     | '/en/next-popup'
     | '/en/what-is-arancini'
+    | '/kjop/tilbud'
     | '/pilot/leverandor'
     | '/steder/$slug'
     | '/admin/'
     | '/en/'
     | '/pilot/'
+    | '/en/buy/offer'
     | '/en/venues/$slug'
     | '/api/public/v1/module/health'
     | '/api/public/v1/module/info'
@@ -427,11 +447,13 @@ export interface FileRouteTypes {
     | '/en/for-venues'
     | '/en/next-popup'
     | '/en/what-is-arancini'
+    | '/kjop/tilbud'
     | '/pilot/leverandor'
     | '/steder/$slug'
     | '/admin'
     | '/en'
     | '/pilot'
+    | '/en/buy/offer'
     | '/en/venues/$slug'
     | '/api/public/v1/module/health'
     | '/api/public/v1/module/info'
@@ -467,11 +489,13 @@ export interface FileRouteTypes {
     | '/en/for-venues'
     | '/en/next-popup'
     | '/en/what-is-arancini'
+    | '/kjop/tilbud'
     | '/pilot/leverandor'
     | '/steder/$slug'
     | '/admin/'
     | '/en/'
     | '/pilot/'
+    | '/en/buy/offer'
     | '/en/venues/$slug'
     | '/api/public/v1/module/health'
     | '/api/public/v1/module/info'
@@ -489,7 +513,7 @@ export interface RootRouteChildren {
   FinnOssRoute: typeof FinnOssRoute
   ForBarerRoute: typeof ForBarerRoute
   ForServeringsstederRoute: typeof ForServeringsstederRoute
-  KjopRoute: typeof KjopRoute
+  KjopRoute: typeof KjopRouteWithChildren
   NextPopupRoute: typeof NextPopupRoute
   PilotRoute: typeof PilotRouteWithChildren
   SamarbeidRoute: typeof SamarbeidRoute
@@ -637,6 +661,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PilotLeverandorRouteImport
       parentRoute: typeof PilotRoute
     }
+    '/kjop/tilbud': {
+      id: '/kjop/tilbud'
+      path: '/tilbud'
+      fullPath: '/kjop/tilbud'
+      preLoaderRoute: typeof KjopTilbudRouteImport
+      parentRoute: typeof KjopRoute
+    }
     '/en/what-is-arancini': {
       id: '/en/what-is-arancini'
       path: '/what-is-arancini'
@@ -735,6 +766,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnVenuesSlugRouteImport
       parentRoute: typeof EnRoute
     }
+    '/en/buy/offer': {
+      id: '/en/buy/offer'
+      path: '/offer'
+      fullPath: '/en/buy/offer'
+      preLoaderRoute: typeof EnBuyOfferRouteImport
+      parentRoute: typeof EnBuyRoute
+    }
     '/api/public/v1/module/widgets': {
       id: '/api/public/v1/module/widgets'
       path: '/api/public/v1/module/widgets'
@@ -793,9 +831,19 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface EnBuyRouteChildren {
+  EnBuyOfferRoute: typeof EnBuyOfferRoute
+}
+
+const EnBuyRouteChildren: EnBuyRouteChildren = {
+  EnBuyOfferRoute: EnBuyOfferRoute,
+}
+
+const EnBuyRouteWithChildren = EnBuyRoute._addFileChildren(EnBuyRouteChildren)
+
 interface EnRouteChildren {
   EnAboutRoute: typeof EnAboutRoute
-  EnBuyRoute: typeof EnBuyRoute
+  EnBuyRoute: typeof EnBuyRouteWithChildren
   EnCollaborateRoute: typeof EnCollaborateRoute
   EnFindUsRoute: typeof EnFindUsRoute
   EnForBarsRoute: typeof EnForBarsRoute
@@ -808,7 +856,7 @@ interface EnRouteChildren {
 
 const EnRouteChildren: EnRouteChildren = {
   EnAboutRoute: EnAboutRoute,
-  EnBuyRoute: EnBuyRoute,
+  EnBuyRoute: EnBuyRouteWithChildren,
   EnCollaborateRoute: EnCollaborateRoute,
   EnFindUsRoute: EnFindUsRoute,
   EnForBarsRoute: EnForBarsRoute,
@@ -820,6 +868,16 @@ const EnRouteChildren: EnRouteChildren = {
 }
 
 const EnRouteWithChildren = EnRoute._addFileChildren(EnRouteChildren)
+
+interface KjopRouteChildren {
+  KjopTilbudRoute: typeof KjopTilbudRoute
+}
+
+const KjopRouteChildren: KjopRouteChildren = {
+  KjopTilbudRoute: KjopTilbudRoute,
+}
+
+const KjopRouteWithChildren = KjopRoute._addFileChildren(KjopRouteChildren)
 
 interface PilotRouteChildren {
   PilotLeverandorRoute: typeof PilotLeverandorRoute
@@ -857,7 +915,7 @@ const rootRouteChildren: RootRouteChildren = {
   FinnOssRoute: FinnOssRoute,
   ForBarerRoute: ForBarerRoute,
   ForServeringsstederRoute: ForServeringsstederRoute,
-  KjopRoute: KjopRoute,
+  KjopRoute: KjopRouteWithChildren,
   NextPopupRoute: NextPopupRoute,
   PilotRoute: PilotRouteWithChildren,
   SamarbeidRoute: SamarbeidRoute,

@@ -43,6 +43,8 @@ export type PublicShop = {
   purchaseGate: PurchaseGate;
   /** True only when this portal build can store a sales-start notice separately. */
   launchList: boolean;
+  /** Server setting. False keeps private checkout as a request, not a binding order. */
+  bindingOpen: boolean;
 };
 
 const FLAVOR_NAME: Record<ShopFlavorSlug, { nameNo: string; nameEn: string }> = {
@@ -171,6 +173,7 @@ export function shopUnavailable(): PublicShop {
     flavors,
     purchaseGate: closedGate(flavors),
     launchList: false,
+    bindingOpen: false,
   };
 }
 
@@ -209,7 +212,12 @@ function readFacts(value: unknown): FlavorFacts {
 
 export function parsePublicShop(value: unknown): PublicShop | null {
   if (!value || typeof value !== "object") return null;
-  const row = value as { stockKnown?: unknown; flavors?: unknown; purchaseGate?: unknown };
+  const row = value as {
+    stockKnown?: unknown;
+    flavors?: unknown;
+    purchaseGate?: unknown;
+    ordering?: { bindingOpen?: unknown };
+  };
   if (!Array.isArray(row.flavors)) return null;
   const flavors: PublicFlavor[] = [];
   for (const slug of SHOP_FLAVORS) {
@@ -237,6 +245,7 @@ export function parsePublicShop(value: unknown): PublicShop | null {
     flavors,
     purchaseGate: closedGate(flavors),
     launchList: "purchaseGate" in row && !!row.purchaseGate && typeof row.purchaseGate === "object",
+    bindingOpen: row.ordering?.bindingOpen === true,
   };
 }
 

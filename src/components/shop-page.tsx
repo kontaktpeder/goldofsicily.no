@@ -18,6 +18,7 @@ import {
   orderCta,
   orderTotalOre,
   piecePriceLine,
+  postShopOrder,
   type DiscoverySource,
   type FlavorFacts,
   type PublicShop,
@@ -44,6 +45,24 @@ const COPY = {
     perBox: "per eske",
     vat: "inkl. mva",
     closed: "Bestillingen er ikke åpen ennå.",
+    request: "Send forespørsel",
+    requestNote:
+      "Dette er en forespørsel, ikke en bestilling. Frakt og leveringstid er ikke avtalt.",
+    bindingNote: "Bestillingen er bindende. Faktura kommer etter levering. Henting på Majorstua.",
+    name: "Navn",
+    phone: "Telefon",
+    address: "Adresse",
+    postal: "Postnummer",
+    city: "Poststed",
+    org: "Organisasjonsnummer, valgfritt",
+    pickup: "Henting · Majorstua",
+    delivery: "Levering til adresse",
+    deliveryNote: "Levering er en forespørsel. Vi avtaler ikke frakt eller tid her.",
+    receivedQuote: "Forespørselen er mottatt. Dette er ikke en bestilling.",
+    receivedBinding: "Bestillingen er mottatt. Faktura kommer etter levering.",
+    short: "Det er ikke nok esker igjen.",
+    orderInvalid: "Sjekk feltene og prøv igjen.",
+    orderUnavailable: "Vi fikk ikke sendt den. Prøv igjen.",
     email: "E-post",
     emailPlaceholder: "deg@epost.no",
     discovery: "Hvor fant du Gold?",
@@ -107,6 +126,23 @@ const COPY = {
     perBox: "per box",
     vat: "incl. VAT",
     closed: "Ordering isn’t open yet.",
+    request: "Send a request",
+    requestNote: "This is a request, not an order. Freight and delivery time are not agreed.",
+    bindingNote: "This order is binding. The invoice comes after delivery. Pickup at Majorstua.",
+    name: "Name",
+    phone: "Phone",
+    address: "Address",
+    postal: "Postal code",
+    city: "City",
+    org: "Organisation number, optional",
+    pickup: "Pickup · Majorstua",
+    delivery: "Delivery to an address",
+    deliveryNote: "Delivery is a request. Freight and time are not agreed here.",
+    receivedQuote: "The request is received. This is not an order.",
+    receivedBinding: "The order is received. The invoice comes after delivery.",
+    short: "There are not enough boxes left.",
+    orderInvalid: "Check the fields and try again.",
+    orderUnavailable: "We couldn’t send it. Try again.",
     email: "Email",
     emailPlaceholder: "you@email.com",
     discovery: "Where did you find Gold?",
@@ -407,12 +443,24 @@ function ProductFacts({ lang, name, facts }: { lang: Lang; name: string; facts: 
   );
 }
 
-function NoticeJump({ lang, watch }: { lang: Lang; watch: string }) {
+function NoticeJump({
+  lang,
+  watch,
+  targetId = NOTICE_ID,
+  label,
+  focusId = EMAIL_ID,
+}: {
+  lang: Lang;
+  watch: string;
+  targetId?: string;
+  label?: string;
+  focusId?: string;
+}) {
   const copy = COPY[lang];
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const form = document.getElementById(NOTICE_ID);
+    const form = document.getElementById(targetId);
     if (!form) return;
     const barClearance = 64;
     const update = () => {
@@ -434,26 +482,189 @@ function NoticeJump({ lang, watch }: { lang: Lang; watch: string }) {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [watch]);
+  }, [watch, targetId]);
 
   if (!show) return null;
 
   return (
     <div className="shop-notice-bar fixed inset-x-0 bottom-0 z-30 border-t border-foreground/10 bg-[color:var(--cream)] px-4 py-2 lg:hidden">
       <a
-        href={`#${NOTICE_ID}`}
+        href={`#${targetId}`}
         className={`flex min-h-11 items-center justify-center bg-[color:var(--olive)] px-4 font-display text-lg italic text-[color:var(--cream)] ${focusRing}`}
         onClick={(event) => {
           event.preventDefault();
-          document
-            .getElementById(NOTICE_ID)
-            ?.scrollIntoView({ behavior: "smooth", block: "start" });
-          document.getElementById(EMAIL_ID)?.focus();
+          document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (focusId) document.getElementById(focusId)?.focus();
+          else document.getElementById(targetId)?.querySelector("input")?.focus();
         }}
       >
-        {copy.submit}
+        {label ?? copy.submit}
       </a>
     </div>
+  );
+}
+
+const ORDER_ID = "shop-order";
+
+function OrderForm({
+  lang,
+  flavor,
+  boxes,
+  bindingOpen,
+  bindingLabel,
+}: {
+  lang: Lang;
+  flavor: ShopFlavorSlug;
+  boxes: number;
+  bindingOpen: boolean;
+  bindingLabel: string;
+}) {
+  const copy = COPY[lang];
+  const [fulfillment, setFulfillment] = useState<"pickup" | "delivery_request">("pickup");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [addressLine, setAddressLine] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [orgNumber, setOrgNumber] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [message, setMessage] = useState("");
+  const binding = bindingOpen && fulfillment === "pickup";
+
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setStatus("loading");
+    const result = await postShopOrder({
+      flavor,
+      boxes,
+      name,
+      email,
+      phone,
+      addressLine,
+      postalCode,
+      city,
+      ...(orgNumber.trim() ? { orgNumber } : {}),
+      fulfillment,
+      lang,
+    });
+    if (result.ok) {
+      setStatus("done");
+      const lead = result.kind === "binding" ? copy.receivedBinding : copy.receivedQuote;
+      setMessage(result.number ? `${result.number}. ${lead}` : lead);
+      return;
+    }
+    setStatus("error");
+    setMessage(
+      result.reason === "short"
+        ? copy.short
+        : result.reason === "invalid"
+          ? copy.orderInvalid
+          : copy.orderUnavailable,
+    );
+  }
+
+  if (status === "done") {
+    return (
+      <p className="mt-6 text-lg italic leading-snug" role="status">
+        {message}
+      </p>
+    );
+  }
+
+  return (
+    <form id={ORDER_ID} className="mt-6 flex flex-col gap-3" onSubmit={onSubmit}>
+      <p className="text-base italic text-foreground/75">
+        {binding ? copy.bindingNote : copy.requestNote}
+      </p>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="sr-only">{copy.pickup}</legend>
+        <label className="flex min-h-11 items-center gap-3 text-base">
+          <input
+            type="radio"
+            name="fulfillment"
+            checked={fulfillment === "pickup"}
+            onChange={() => setFulfillment("pickup")}
+          />
+          {copy.pickup}
+        </label>
+        <label className="flex min-h-11 items-center gap-3 text-base">
+          <input
+            type="radio"
+            name="fulfillment"
+            checked={fulfillment === "delivery_request"}
+            onChange={() => setFulfillment("delivery_request")}
+          />
+          {copy.delivery}
+        </label>
+      </fieldset>
+      {fulfillment === "delivery_request" ? (
+        <p className="text-sm italic text-foreground/70">{copy.deliveryNote}</p>
+      ) : null}
+      <Field label={copy.name} value={name} onChange={setName} autoComplete="name" />
+      <Field
+        label={copy.email}
+        value={email}
+        onChange={setEmail}
+        type="email"
+        autoComplete="email"
+      />
+      <Field label={copy.phone} value={phone} onChange={setPhone} type="tel" autoComplete="tel" />
+      <Field
+        label={copy.address}
+        value={addressLine}
+        onChange={setAddressLine}
+        autoComplete="street-address"
+      />
+      <Field
+        label={copy.postal}
+        value={postalCode}
+        onChange={setPostalCode}
+        autoComplete="postal-code"
+      />
+      <Field label={copy.city} value={city} onChange={setCity} autoComplete="address-level2" />
+      <Field label={copy.org} value={orgNumber} onChange={setOrgNumber} />
+      {status === "error" ? (
+        <p className="text-base italic text-[color:var(--tomato)]" role="alert">
+          {message}
+        </p>
+      ) : null}
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className={`min-h-12 w-full bg-[color:var(--olive)] px-4 py-4 font-display text-xl italic tracking-tight text-[color:var(--cream)] disabled:opacity-60 ${focusRing}`}
+      >
+        {status === "loading" ? copy.submitting : binding ? bindingLabel : copy.request}
+      </button>
+    </form>
+  );
+}
+
+function Field({
+  label,
+  value,
+  onChange,
+  type = "text",
+  autoComplete,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  type?: string;
+  autoComplete?: string;
+}) {
+  return (
+    <label className="flex flex-col gap-1 text-sm">
+      <span className="text-[0.65rem] uppercase tracking-[0.16em] text-foreground/55">{label}</span>
+      <input
+        required={label !== COPY.no.org && label !== COPY.en.org}
+        type={type}
+        value={value}
+        autoComplete={autoComplete}
+        onChange={(event) => onChange(event.target.value)}
+        className={`min-h-12 border border-foreground/20 bg-transparent px-3 ${focusRing}`}
+      />
+    </label>
   );
 }
 
@@ -466,8 +677,8 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
   const boxes = selected?.boxes50 ?? 0;
   const shownQty = clampBoxQty(qty, boxes, shop.stockKnown);
   const soldOut = shop.stockKnown && boxes <= 0;
-  const canOrder = shop.paymentOpen && shop.stockKnown && boxes > 0;
-  const stockLine = fiftyStockLine(lang, boxes, shop.stockKnown, shop.paymentOpen);
+  const inStock = shop.stockKnown && boxes > 0;
+  const stockLine = fiftyStockLine(lang, boxes, shop.stockKnown, shop.bindingOpen);
 
   return (
     <div className="min-h-screen bg-[color:var(--cream)] pb-16 font-display text-foreground lg:pb-0">
@@ -625,7 +836,7 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
                 {stockLine}
               </p>
             ) : null}
-            {!shop.paymentOpen && !soldOut ? (
+            {!shop.bindingOpen && !soldOut ? (
               <p className="mt-4 text-base italic text-foreground/70">{copy.closed}</p>
             ) : null}
 
@@ -635,25 +846,36 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
               ))}
             </ul>
 
-            {canOrder ? (
-              <button
-                type="button"
-                className={`mt-6 min-h-12 w-full bg-[color:var(--olive)] px-4 py-4 font-display text-xl italic tracking-tight text-[color:var(--cream)] ${focusRing}`}
-                onClick={(event) => event.preventDefault()}
-              >
-                {orderCta(lang, shownQty)}
-              </button>
+            {inStock ? (
+              <OrderForm
+                lang={lang}
+                flavor={flavor}
+                boxes={shownQty}
+                bindingOpen={shop.bindingOpen}
+                bindingLabel={orderCta(lang, shownQty)}
+              />
             ) : (
               <div id={NOTICE_ID} className="scroll-mt-28">
                 <NoticeForm
                   key={`${flavor}-${soldOut ? "out" : "in"}`}
                   lang={lang}
                   flavor={flavor}
-                  launchNotice={!shop.paymentOpen}
+                  launchNotice={!shop.stockKnown || !soldOut}
                   restockNotice={soldOut}
                 />
               </div>
             )}
+            {inStock && !shop.bindingOpen ? (
+              <div id={NOTICE_ID} className="scroll-mt-28">
+                <NoticeForm
+                  key={`${flavor}-launch`}
+                  lang={lang}
+                  flavor={flavor}
+                  launchNotice
+                  restockNotice={false}
+                />
+              </div>
+            ) : null}
           </div>
 
           <div className="mt-14 lg:col-start-1 lg:row-start-2 lg:mt-0">
@@ -669,7 +891,17 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
         </div>
       </main>
       <BrandFooter lang={lang} />
-      {shop.paymentOpen ? null : <NoticeJump lang={lang} watch={flavor} />}
+      {inStock ? (
+        <NoticeJump
+          lang={lang}
+          watch={flavor}
+          targetId={ORDER_ID}
+          label={shop.bindingOpen ? orderCta(lang, shownQty) : copy.request}
+          focusId=""
+        />
+      ) : (
+        <NoticeJump lang={lang} watch={flavor} />
+      )}
     </div>
   );
 }
