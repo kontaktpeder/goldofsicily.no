@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { parseWaitlist } from "@/lib/shop-catalog";
-import { postWaitlist } from "@/lib/shop";
+import { launchPostAllowed, parseWaitlist } from "@/lib/shop-catalog";
+import { loadShopPage, postWaitlist } from "@/lib/shop";
 
 export const submitShopWaitlist = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => {
@@ -9,7 +9,11 @@ export const submitShopWaitlist = createServerFn({ method: "POST" })
     return parsed;
   })
   .handler(async ({ data }) => {
-    const result = await postWaitlist(data);
+    const shop = data.launchNotice ? await loadShopPage() : null;
+    const decision = launchPostAllowed(shop?.launchList === true, data);
+    if (decision === "block") throw new Error("unavailable");
+    const payload = decision === "strip-launch" ? { ...data, launchNotice: false } : data;
+    const result = await postWaitlist(payload);
     if (result !== "ok") throw new Error(result);
-    return { ok: true as const };
+    return { ok: true as const, launchStored: payload.launchNotice };
   });

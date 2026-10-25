@@ -7,23 +7,69 @@ export type ShopFlavorSlug = (typeof SHOP_FLAVORS)[number];
 export const DISCOVERY_SOURCES = ["friends", "instagram", "venue", "search", "other"] as const;
 export type DiscoverySource = (typeof DISCOVERY_SOURCES)[number];
 
+export const CONSUMER_FACT_KEYS = ["ingredients", "allergens", "storage", "prep"] as const;
+export type ConsumerFactKey = (typeof CONSUMER_FACT_KEYS)[number];
+
+/** Texts from the portal are not confirmed. `verified` stays false until a real check exists. */
+export type FlavorFacts = {
+  verified: boolean;
+  ingredients: string | null;
+  allergens: string | null;
+  storage: string | null;
+  prep: string | null;
+};
+
 export type PublicFlavor = {
   slug: ShopFlavorSlug;
   nameNo: string;
   nameEn: string;
   boxes50: number;
+  facts: FlavorFacts;
+};
+
+export type PurchaseGate = {
+  open: false;
+  missing: string[];
 };
 
 export type PublicShop = {
   paymentOpen: false;
   stockKnown: boolean;
   flavors: PublicFlavor[];
+  purchaseGate: PurchaseGate;
+  /** True only when this portal build can store a sales-start notice separately. */
+  launchList: boolean;
 };
 
 const FLAVOR_NAME: Record<ShopFlavorSlug, { nameNo: string; nameEn: string }> = {
-  nduja: { nameNo: "’Nduja", nameEn: "’Nduja" },
-  truffle: { nameNo: "Trøffel", nameEn: "Truffle" },
+  nduja: { nameNo: "’Nduja & mozzarella", nameEn: "’Nduja & mozzarella" },
+  truffle: { nameNo: "Trøffel & sjampinjong", nameEn: "Truffle & champignon" },
 };
+
+export function emptyFacts(): FlavorFacts {
+  return { verified: false, ingredients: null, allergens: null, storage: null, prep: null };
+}
+
+export function consumerFactGaps(slug: string, facts: FlavorFacts): string[] {
+  const gaps: string[] = [];
+  for (const key of CONSUMER_FACT_KEYS) {
+    if (!facts.verified || !facts[key]?.trim()) gaps.push(`${slug}:${key}`);
+  }
+  return gaps;
+}
+
+/** Real checkout needs an explicit verification and every mandatory consumer fact. */
+export function canOpenCheckout(paymentRequested: boolean, facts: FlavorFacts): boolean {
+  if (!paymentRequested || !facts.verified) return false;
+  return CONSUMER_FACT_KEYS.every((key) => Boolean(facts[key]?.trim()));
+}
+
+function closedGate(flavors: readonly PublicFlavor[]): PurchaseGate {
+  return {
+    open: false,
+    missing: flavors.flatMap((flavor) => consumerFactGaps(flavor.slug, flavor.facts)),
+  };
+}
 
 export function formatShopPrice(ore: number): string {
   const kroner = Math.round(ore / 100);
@@ -31,6 +77,17 @@ export function formatShopPrice(ore: number): string {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   return `${body} kr`;
+}
+
+export function clampBoxQty(qty: number, boxes: number, stockKnown: boolean): number {
+  if (!stockKnown || boxes <= 0) return 1;
+  const whole = Number.isFinite(qty) ? Math.floor(qty) : 1;
+  return Math.min(boxes, Math.max(1, whole));
+}
+
+export function orderTotalOre(qty: number): number {
+  const boxes = Number.isFinite(qty) ? Math.max(0, Math.floor(qty)) : 0;
+  return boxes * PRICE_FIFTY_ORE;
 }
 
 export function fiftyStockLine(lang: "no" | "en", boxes: number, stockKnown: boolean): string {
@@ -41,30 +98,56 @@ export function fiftyStockLine(lang: "no" | "en", boxes: number, stockKnown: boo
   }
   if (boxes <= 0) {
     return lang === "en"
-      ? "The gold is gone. Get a note at the next drop."
-      : "Det er tomt for gull. Få beskjed ved neste slipp.";
+      ? "The gold is gone. We’ll let you know when the next batch is ready."
+      : "Det er tomt for gull. Vi gir deg beskjed når neste batch er klar.";
   }
-  if (lang === "en") return boxes === 1 ? "1 box left" : `${boxes} boxes left`;
-  return boxes === 1 ? "1 eske igjen" : `${boxes} esker igjen`;
+  if (lang === "en") return boxes === 1 ? "1 box available" : `${boxes} boxes available`;
+  return boxes === 1 ? "1 eske tilgjengelig" : `${boxes} esker tilgjengelig`;
 }
 
 export function shopUnavailable(): PublicShop {
+  const flavors = SHOP_FLAVORS.map((slug) => ({
+    slug,
+    ...FLAVOR_NAME[slug],
+    boxes50: 0,
+    facts: emptyFacts(),
+  }));
   return {
     paymentOpen: false,
     stockKnown: false,
-    flavors: SHOP_FLAVORS.map((slug) => ({ slug, ...FLAVOR_NAME[slug], boxes50: 0 })),
+    flavors,
+    purchaseGate: closedGate(flavors),
+    launchList: false,
+  };
+}
+
+function readFactText(row: Record<string, unknown>, key: ConsumerFactKey): string | null {
+  const raw = row[key];
+  if (typeof raw !== "string") return null;
+  const text = raw.trim();
+  return text.length > 0 ? text : null;
+}
+
+function readFacts(value: unknown): FlavorFacts {
+  const row = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  return {
+    verified: false,
+    ingredients: readFactText(row, "ingredients"),
+    allergens: readFactText(row, "allergens"),
+    storage: readFactText(row, "storage"),
+    prep: readFactText(row, "prep"),
   };
 }
 
 export function parsePublicShop(value: unknown): PublicShop | null {
   if (!value || typeof value !== "object") return null;
-  const row = value as { stockKnown?: unknown; flavors?: unknown };
+  const row = value as { stockKnown?: unknown; flavors?: unknown; purchaseGate?: unknown };
   if (!Array.isArray(row.flavors)) return null;
   const flavors: PublicFlavor[] = [];
   for (const slug of SHOP_FLAVORS) {
     const found = row.flavors.find(
       (item) => item && typeof item === "object" && (item as { slug?: unknown }).slug === slug,
-    ) as { boxes50?: unknown } | undefined;
+    ) as { boxes50?: unknown; facts?: unknown } | undefined;
     if (
       !found ||
       typeof found.boxes50 !== "number" ||
@@ -73,9 +156,33 @@ export function parsePublicShop(value: unknown): PublicShop | null {
     ) {
       return null;
     }
-    flavors.push({ slug, ...FLAVOR_NAME[slug], boxes50: found.boxes50 });
+    flavors.push({
+      slug,
+      ...FLAVOR_NAME[slug],
+      boxes50: found.boxes50,
+      facts: readFacts(found.facts),
+    });
   }
-  return { paymentOpen: false, stockKnown: row.stockKnown === true, flavors };
+  return {
+    paymentOpen: false,
+    stockKnown: row.stockKnown === true,
+    flavors,
+    purchaseGate: closedGate(flavors),
+    launchList: "purchaseGate" in row && !!row.purchaseGate && typeof row.purchaseGate === "object",
+  };
+}
+
+/**
+ * A portal without the sales-start list must not receive a launch-only signup.
+ * That older route would store it as a flavor waitlist and could mail immediately.
+ */
+export function launchPostAllowed(
+  launchList: boolean,
+  input: { launchNotice: boolean; restockNotice: boolean },
+): "post" | "strip-launch" | "block" {
+  if (!input.launchNotice || launchList) return "post";
+  if (input.restockNotice) return "strip-launch";
+  return "block";
 }
 
 export type WaitlistInput = {
@@ -84,7 +191,22 @@ export type WaitlistInput = {
   lang: "no" | "en";
   discovery: DiscoverySource;
   newsletterConsent: boolean;
+  launchNotice: boolean;
+  restockNotice: boolean;
 };
+
+/** Older clients omit the flags and stay on the flavor waitlist only. */
+export function noticeFlags(
+  launchRaw: unknown,
+  restockRaw: unknown,
+): { launchNotice: boolean; restockNotice: boolean } | null {
+  const hasLaunch = typeof launchRaw === "boolean";
+  const hasRestock = typeof restockRaw === "boolean";
+  const launchNotice = hasLaunch ? launchRaw : false;
+  const restockNotice = hasRestock ? restockRaw : !hasLaunch;
+  if (!launchNotice && !restockNotice) return null;
+  return { launchNotice, restockNotice };
+}
 
 export function parseWaitlist(body: unknown): WaitlistInput | null {
   if (!body || typeof body !== "object") return null;
@@ -96,11 +218,15 @@ export function parseWaitlist(body: unknown): WaitlistInput | null {
   if (!(SHOP_FLAVORS as readonly string[]).includes(row.flavor)) return null;
   if (row.lang !== "no" && row.lang !== "en") return null;
   if (!(DISCOVERY_SOURCES as readonly string[]).includes(row.discovery)) return null;
+  const notices = noticeFlags(row.launchNotice, row.restockNotice);
+  if (!notices) return null;
   return {
     email,
     flavor: row.flavor as ShopFlavorSlug,
     lang: row.lang,
     discovery: row.discovery as DiscoverySource,
     newsletterConsent: row.newsletterConsent,
+    launchNotice: notices.launchNotice,
+    restockNotice: notices.restockNotice,
   };
 }

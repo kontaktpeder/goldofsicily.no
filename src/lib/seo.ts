@@ -259,16 +259,16 @@ export const PAGE_SEO = {
     path: "/samarbeid",
   },
   "/kjop": {
-    title: "Kjøp Golden Balls | Gold of Sicily",
+    title: "Sicilianske arancini | Gold of Sicily",
     description:
-      "Kjøp Golden Balls fra Gold of Sicily. 6-pakning kommer snart. 50-pakning følger lageret, 1 250 kr inkludert mva.",
+      "Håndlagde arancini fra Oslo. 50-eske 1 250 kr inkludert mva. 6-pakning kommer snart.",
     path: "/kjop",
     alternates: BUY_ALTERNATES,
   },
   "/en/buy": {
-    title: "Buy Golden Balls | Gold of Sicily",
+    title: "Sicilian arancini | Gold of Sicily",
     description:
-      "Buy Golden Balls from Gold of Sicily. The 6-pack is coming soon. The 50-pack follows stock, 1 250 kr including VAT.",
+      "Handmade arancini from Oslo. A 50-box is 1 250 kr including VAT. The 6-pack is coming soon.",
     path: "/en/buy",
     locale: "en_GB",
     alternates: BUY_ALTERNATES,

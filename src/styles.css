@@ -778,3 +778,20 @@ html.pilot-lock #app {
   }
 }
 
+.shop-line-icon {
+  width: 4.25rem;
+  height: 4.25rem;
+  flex: none;
+  background-color: var(--olive);
+  -webkit-mask-image: var(--mark);
+  mask-image: var(--mark);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+}
+

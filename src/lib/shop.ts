@@ -7,17 +7,23 @@ import {
 } from "@/lib/shop-catalog";
 
 export {
+  CONSUMER_FACT_KEYS,
   DISCOVERY_SOURCES,
   PRICE_FIFTY_ORE,
   PRICE_SIX_ORE,
+  canOpenCheckout,
+  clampBoxQty,
+  launchPostAllowed,
   fiftyStockLine,
   formatShopPrice,
+  orderTotalOre,
   parsePublicShop,
   parseWaitlist,
   shopUnavailable,
 } from "@/lib/shop-catalog";
 export type {
   DiscoverySource,
+  FlavorFacts,
   PublicFlavor,
   PublicShop,
   ShopFlavorSlug,
