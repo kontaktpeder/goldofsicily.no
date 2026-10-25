@@ -14,7 +14,8 @@ const COPY = {
     done: "Takk. Tilbudet er godtatt.",
     stock: "Lageret rakk ikke. Vi tar kontakt.",
     closed: "Tilbudet er ikke åpent lenger.",
-    pickup: "Henting på Majorstua. Faktura etter levering.",
+    pickup:
+      "Henting utenfor Smalgangen 31, 0188 Oslo. Vi møter deg utenfor restauranten. Faktura etter levering.",
     delivery: "Levering er fortsatt en forespørsel. Frakt og tid er ikke avtalt.",
     boxes: "esker",
   },
@@ -26,7 +27,8 @@ const COPY = {
     done: "Thank you. The offer is accepted.",
     stock: "The stock was gone. We’ll be in touch.",
     closed: "This offer is no longer open.",
-    pickup: "Pickup at Majorstua. Invoice after delivery.",
+    pickup:
+      "Pickup outside Smalgangen 31, 0188 Oslo. We meet you outside the restaurant. Invoice after delivery.",
     delivery: "Delivery is still a request. Freight and time are not agreed.",
     boxes: "boxes",
   },

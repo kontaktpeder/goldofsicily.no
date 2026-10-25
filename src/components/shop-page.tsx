@@ -48,14 +48,17 @@ const COPY = {
     request: "Send forespørsel",
     requestNote:
       "Dette er en forespørsel, ikke en bestilling. Frakt og leveringstid er ikke avtalt.",
-    bindingNote: "Bestillingen er bindende. Faktura kommer etter levering. Henting på Majorstua.",
+    bindingNote:
+      "Bestillingen er bindende. Faktura kommer etter levering. Henting utenfor Smalgangen 31, 0188 Oslo.",
     name: "Navn",
     phone: "Telefon",
     address: "Adresse",
     postal: "Postnummer",
     city: "Poststed",
     org: "Organisasjonsnummer, valgfritt",
-    pickup: "Henting · Majorstua",
+    pickup: "Henting utenfor Smalgangen 31, 0188 Oslo",
+    pickupNote:
+      "Vi leier kjøkkenet i restauranten. Hentingen skjer utenfor, ikke inne i restauranten.",
     delivery: "Levering til adresse",
     deliveryNote: "Levering er en forespørsel. Vi avtaler ikke frakt eller tid her.",
     receivedQuote: "Forespørselen er mottatt. Dette er ikke en bestilling.",
@@ -89,7 +92,7 @@ const COPY = {
       { title: "Velg favorittene", body: "’Nduja & mozzarella, eller trøffel & sjampinjong." },
       {
         title: "Henting og levering",
-        body: "Henting og levering avklares før bestillingen kan betales.",
+        body: "Henting skjer utenfor Smalgangen 31, 0188 Oslo. Levering avklares før bestillingen kan betales.",
       },
       { title: "Varm og server", body: "Fra frys til fest." },
     ],
@@ -128,14 +131,17 @@ const COPY = {
     closed: "Ordering isn’t open yet.",
     request: "Send a request",
     requestNote: "This is a request, not an order. Freight and delivery time are not agreed.",
-    bindingNote: "This order is binding. The invoice comes after delivery. Pickup at Majorstua.",
+    bindingNote:
+      "This order is binding. The invoice comes after delivery. Pickup is outside Smalgangen 31, 0188 Oslo.",
     name: "Name",
     phone: "Phone",
     address: "Address",
     postal: "Postal code",
     city: "City",
     org: "Organisation number, optional",
-    pickup: "Pickup · Majorstua",
+    pickup: "Pickup outside Smalgangen 31, 0188 Oslo",
+    pickupNote:
+      "We rent the kitchen in the restaurant. Pickup is outside, not inside the restaurant.",
     delivery: "Delivery to an address",
     deliveryNote: "Delivery is a request. Freight and time are not agreed here.",
     receivedQuote: "The request is received. This is not an order.",
@@ -169,7 +175,7 @@ const COPY = {
       { title: "Choose your favourites", body: "’Nduja & mozzarella, or truffle & champignon." },
       {
         title: "Pickup and delivery",
-        body: "Pickup and delivery are settled before an order can be paid.",
+        body: "Pickup is outside Smalgangen 31, 0188 Oslo. Delivery is settled before an order can be paid.",
       },
       { title: "Heat and serve", body: "From the freezer to the feast." },
     ],
@@ -598,9 +604,11 @@ function OrderForm({
           {copy.delivery}
         </label>
       </fieldset>
-      {fulfillment === "delivery_request" ? (
+      {fulfillment === "pickup" ? (
+        <p className="text-sm italic text-foreground/70">{copy.pickupNote}</p>
+      ) : (
         <p className="text-sm italic text-foreground/70">{copy.deliveryNote}</p>
-      ) : null}
+      )}
       <Field label={copy.name} value={name} onChange={setName} autoComplete="name" />
       <Field
         label={copy.email}
