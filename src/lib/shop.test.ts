@@ -46,7 +46,7 @@ test("phase 1 prices, quantity and the stock lines stay fixed", () => {
   assert.doesNotMatch(fiftyStockLine("no", 0, true), /på vei/);
 });
 
-test("a portal payload cannot turn payment on or mark facts confirmed", () => {
+test("payment stays off, and only a complete confirmed fact set is marked confirmed", () => {
   const shop = parsePublicShop({
     paymentOpen: true,
     stockKnown: true,
@@ -60,12 +60,31 @@ test("a portal payload cannot turn payment on or mark facts confirmed", () => {
   assert.equal(shop?.paymentOpen, false);
   assert.equal(shop?.purchaseGate.open, false);
   assert.equal(shop?.launchList, true);
-  assert.equal(shop?.flavors[0]?.facts.verified, false);
+  assert.equal(shop?.flavors[0]?.facts.verified, true);
   assert.equal(shop?.flavors[0]?.facts.allergens, "melk");
+  assert.equal(shop?.purchaseGate.missing.includes("nduja:allergens"), false);
   assert.equal(shop?.flavors[0]?.boxes50, 7);
   assert.equal("pieces" in (shop?.flavors[0] ?? {}), false);
-  assert.ok(shop?.purchaseGate.missing.includes("nduja:allergens"));
-  assert.ok(shop?.purchaseGate.missing.includes("truffle:prep"));
+  assert.equal(shop?.purchaseGate.missing.includes("truffle:prep"), false);
+  const partial = parsePublicShop({
+    stockKnown: true,
+    flavors: [
+      {
+        slug: "nduja",
+        boxes50: 1,
+        facts: {
+          verified: true,
+          ingredients: "ris",
+          allergens: " ",
+          storage: "fryst",
+          prep: "ovn",
+        },
+      },
+      { slug: "truffle", boxes50: 0 },
+    ],
+  });
+  assert.equal(partial?.flavors[0]?.facts.verified, false);
+  assert.ok(partial?.purchaseGate.missing.includes("nduja:allergens"));
   assert.equal(parsePublicShop({ stockKnown: true, flavors: [] }), null);
   assert.equal(shopUnavailable().stockKnown, false);
   assert.equal(shopUnavailable().purchaseGate.open, false);

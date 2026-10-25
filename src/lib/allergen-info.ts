@@ -20,20 +20,11 @@ export const allergenProducts: AllergenProduct[] = [
       en: "'Nduja arancini",
     },
     confirmed: {
-      no: ["Melk"],
-      en: ["Milk"],
+      no: ["Hvete (gluten)", "Soya", "Melk", "Egg", "Selleri"],
+      en: ["Wheat (gluten)", "Soy", "Milk", "Egg", "Celery"],
     },
-    dependsOnIngredients: {
-      no: [
-        "Hvete — må kontrolleres ut fra valgt panering (hvetebasert panering)",
-        "Selleri, soya, sennep eller sulfitt — må kontrolleres ut fra valgt buljong, nduja og panering",
-      ],
-      en: [
-        "Wheat — must be verified against the chosen coating (wheat-based breading)",
-        "Celery, soy, mustard or sulphites — must be verified against the chosen stock, 'nduja and coating",
-      ],
-    },
-    status: { no: "Foreløpig", en: "Preliminary" },
+    dependsOnIngredients: { no: [], en: [] },
+    status: { no: "Bekreftet", en: "Confirmed" },
   },
   {
     id: "truffle-mushroom",
@@ -42,20 +33,11 @@ export const allergenProducts: AllergenProduct[] = [
       en: "Truffle & mushroom",
     },
     confirmed: {
-      no: ["Melk"],
-      en: ["Milk"],
+      no: ["Hvete (gluten)", "Soya", "Melk", "Egg", "Selleri"],
+      en: ["Wheat (gluten)", "Soy", "Milk", "Egg", "Celery"],
     },
-    dependsOnIngredients: {
-      no: [
-        "Hvete — må kontrolleres ut fra valgt panering (hvetebasert panering)",
-        "Selleri, soya, sulfitt eller andre allergener — må kontrolleres ut fra valgt buljong og trøffelkrem",
-      ],
-      en: [
-        "Wheat — must be verified against the chosen coating (wheat-based breading)",
-        "Celery, soy, sulphites or other allergens — must be verified against the chosen stock and truffle cream",
-      ],
-    },
-    status: { no: "Foreløpig", en: "Preliminary" },
+    dependsOnIngredients: { no: [], en: [] },
+    status: { no: "Bekreftet", en: "Confirmed" },
   },
 ];
 
@@ -63,39 +45,35 @@ export const allergenCopy = {
   no: {
     title: "Allergener og produktinformasjon",
     intro:
-      "Alle produkter leveres med tydelig allergeninformasjon basert på oppskriften og råvarene som brukes i den aktuelle produksjonen.",
+      "Begge variantene har de samme deklarerte allergenene, fra den offisielle produktspesifikasjonen.",
     body: [
-      "Produktene våre er fortsatt under utvikling, og enkelte leverandører og råvarer kan endres før oppskriftene blir endelig standardisert.",
-      "Vi kontrollerer derfor allergeninnholdet i de konkrete råvarene som brukes i hver produksjon. Dersom en ingrediens eller leverandør endres, oppdateres produktinformasjonen før varen leveres.",
+      "’Nduja & mozzarella og trøffel & sjampinjong deklarerer hvete (gluten), soya, melk, egg og selleri.",
+      "Ingredienslisten for hver variant står på kjøpssiden og følger produktet.",
     ],
-    overviewLabel: "Foreløpig allergenoversikt",
-    overviewSummary:
-      "Melk er bekreftet i begge variantene. Andre allergener avhenger av valgt buljong, panering, nduja og trøffelkrem. Endelig allergeninformasjon følger alltid den konkrete leveransen.",
+    overviewLabel: "Deklarerte allergener",
+    overviewSummary: "Hvete (gluten), soya, melk, egg og selleri gjelder begge variantene.",
     confirmedLabel: "Bekreftet",
     dependsLabel: "Må kontrolleres ut fra valgt råvare",
     closing:
-      "Den endelige allergenoversikten følger alltid den konkrete varen eller leveransen. Serveringsstedet får oppdatert informasjon som kan brukes i meny, ved disken og i internkontrollen.",
-    contactLink:
-      "Har dere spørsmål om allergener eller en konkret levering? Kontakt oss.",
+      "Serveringsstedet bruker denne deklarasjonen i meny, ved disken og i internkontrollen.",
+    contactLink: "Har dere spørsmål om allergener eller en konkret levering? Kontakt oss.",
     contactHref: "#kontakt",
   },
   en: {
     title: "Allergens and product information",
     intro:
-      "Every product is delivered with clear allergen information based on the recipe and ingredients used in that specific production batch.",
+      "Both varieties carry the same declared allergens, from the official product specification.",
     body: [
-      "Our products are still under development, and some suppliers and ingredients may change before recipes are fully standardised.",
-      "We therefore verify allergen content in the specific ingredients used in each production run. If an ingredient or supplier changes, product information is updated before delivery.",
+      "’Nduja & mozzarella and truffle & champignon declare wheat (gluten), soy, milk, egg and celery.",
+      "The ingredient list for each variety is on the buy page and follows the product.",
     ],
-    overviewLabel: "Preliminary allergen overview",
-    overviewSummary:
-      "Milk is confirmed in both varieties. Other allergens depend on the chosen stock, coating, 'nduja and truffle cream. Final allergen information always follows the specific delivery.",
+    overviewLabel: "Declared allergens",
+    overviewSummary: "Wheat (gluten), soy, milk, egg and celery apply to both varieties.",
     confirmedLabel: "Confirmed",
     dependsLabel: "Must be verified against chosen ingredients",
     closing:
-      "The final allergen overview always follows the specific product or delivery. Venues receive updated information for menus, the counter and internal food-safety routines.",
-    contactLink:
-      "Questions about allergens or a specific delivery? Contact us.",
+      "Venues use this declaration on the menu, at the counter and in their food-safety routines.",
+    contactLink: "Questions about allergens or a specific delivery? Contact us.",
     contactHref: "#kontakt",
   },
 } as const;

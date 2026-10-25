@@ -10,13 +10,17 @@ export type DiscoverySource = (typeof DISCOVERY_SOURCES)[number];
 export const CONSUMER_FACT_KEYS = ["ingredients", "allergens", "storage", "prep"] as const;
 export type ConsumerFactKey = (typeof CONSUMER_FACT_KEYS)[number];
 
-/** Texts from the portal are not confirmed. `verified` stays false until a real check exists. */
+/** `verified` is true only when the portal has marked the four consumer facts confirmed. */
 export type FlavorFacts = {
   verified: boolean;
   ingredients: string | null;
   allergens: string | null;
   storage: string | null;
   prep: string | null;
+  ingredientsEn: string | null;
+  allergensEn: string | null;
+  storageEn: string | null;
+  prepEn: string | null;
 };
 
 export type PublicFlavor = {
@@ -47,10 +51,29 @@ const FLAVOR_NAME: Record<ShopFlavorSlug, { nameNo: string; nameEn: string }> = 
 };
 
 export function emptyFacts(): FlavorFacts {
-  return { verified: false, ingredients: null, allergens: null, storage: null, prep: null };
+  return {
+    verified: false,
+    ingredients: null,
+    allergens: null,
+    storage: null,
+    prep: null,
+    ingredientsEn: null,
+    allergensEn: null,
+    storageEn: null,
+    prepEn: null,
+  };
 }
 
-export function consumerFactGaps(slug: string, facts: FlavorFacts): string[] {
+export function consumerFactGaps(
+  slug: string,
+  facts: {
+    verified: boolean;
+    ingredients: string | null;
+    allergens: string | null;
+    storage: string | null;
+    prep: string | null;
+  },
+): string[] {
   const gaps: string[] = [];
   for (const key of CONSUMER_FACT_KEYS) {
     if (!facts.verified || !facts[key]?.trim()) gaps.push(`${slug}:${key}`);
@@ -59,7 +82,16 @@ export function consumerFactGaps(slug: string, facts: FlavorFacts): string[] {
 }
 
 /** Real checkout needs an explicit verification and every mandatory consumer fact. */
-export function canOpenCheckout(paymentRequested: boolean, facts: FlavorFacts): boolean {
+export function canOpenCheckout(
+  paymentRequested: boolean,
+  facts: {
+    verified: boolean;
+    ingredients: string | null;
+    allergens: string | null;
+    storage: string | null;
+    prep: string | null;
+  },
+): boolean {
   if (!paymentRequested || !facts.verified) return false;
   return CONSUMER_FACT_KEYS.every((key) => Boolean(facts[key]?.trim()));
 }
@@ -128,14 +160,29 @@ function readFactText(row: Record<string, unknown>, key: ConsumerFactKey): strin
   return text.length > 0 ? text : null;
 }
 
+function readOptionalText(row: Record<string, unknown>, key: string): string | null {
+  const raw = row[key];
+  if (typeof raw !== "string") return null;
+  const text = raw.trim();
+  return text.length > 0 ? text : null;
+}
+
 function readFacts(value: unknown): FlavorFacts {
   const row = value && typeof value === "object" ? (value as Record<string, unknown>) : {};
+  const ingredients = readFactText(row, "ingredients");
+  const allergens = readFactText(row, "allergens");
+  const storage = readFactText(row, "storage");
+  const prep = readFactText(row, "prep");
   return {
-    verified: false,
-    ingredients: readFactText(row, "ingredients"),
-    allergens: readFactText(row, "allergens"),
-    storage: readFactText(row, "storage"),
-    prep: readFactText(row, "prep"),
+    verified: row.verified === true && Boolean(ingredients && allergens && storage && prep),
+    ingredients,
+    allergens,
+    storage,
+    prep,
+    ingredientsEn: readOptionalText(row, "ingredientsEn"),
+    allergensEn: readOptionalText(row, "allergensEn"),
+    storageEn: readOptionalText(row, "storageEn"),
+    prepEn: readOptionalText(row, "prepEn"),
   };
 }
 

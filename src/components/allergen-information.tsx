@@ -5,10 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-  allergenCopy,
-  allergenProducts,
-} from "@/lib/allergen-info";
+import { allergenCopy, allergenProducts } from "@/lib/allergen-info";
 
 type Lang = "no" | "en";
 
@@ -45,7 +42,7 @@ export function AllergenInformation({ lang = "no" }: { lang?: Lang }) {
           <Accordion type="single" collapsible className="mt-2">
             <AccordionItem value="details" className="border-foreground/15">
               <AccordionTrigger className="py-3 text-left text-sm font-medium text-foreground/70 hover:no-underline hover:text-foreground">
-                {lang === "no" ? "Se detaljer og foreløpig oversikt" : "See details and preliminary overview"}
+                {lang === "no" ? "Se ingredienser og allergener" : "See ingredients and allergens"}
               </AccordionTrigger>
               <AccordionContent className="space-y-6 text-sm leading-relaxed text-foreground/80 md:text-base">
                 {t.body.map((paragraph) => (
@@ -93,16 +90,18 @@ export function AllergenInformation({ lang = "no" }: { lang?: Lang }) {
                           </ul>
                         </div>
 
-                        <div>
-                          <p className="text-[0.65rem] uppercase tracking-[0.14em] text-foreground/45">
-                            {t.dependsLabel}
-                          </p>
-                          <ul className="mt-2 list-disc space-y-1.5 pl-4 text-xs leading-relaxed text-foreground/70 md:text-sm">
-                            {product.dependsOnIngredients[lang].map((item) => (
-                              <li key={item}>{item}</li>
-                            ))}
-                          </ul>
-                        </div>
+                        {product.dependsOnIngredients[lang].length > 0 ? (
+                          <div>
+                            <p className="text-[0.65rem] uppercase tracking-[0.14em] text-foreground/45">
+                              {t.dependsLabel}
+                            </p>
+                            <ul className="mt-2 list-disc space-y-1.5 pl-4 text-xs leading-relaxed text-foreground/70 md:text-sm">
+                              {product.dependsOnIngredients[lang].map((item) => (
+                                <li key={item}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : null}
                       </div>
                     </article>
                   ))}

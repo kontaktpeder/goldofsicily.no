@@ -362,13 +362,32 @@ function NoticeForm({
   );
 }
 
+function factBody(
+  facts: FlavorFacts,
+  lang: Lang,
+  key: "ingredients" | "allergens" | "storage" | "prep",
+): string | null {
+  if (lang === "en") {
+    const english =
+      key === "ingredients"
+        ? facts.ingredientsEn
+        : key === "allergens"
+          ? facts.allergensEn
+          : key === "storage"
+            ? facts.storageEn
+            : facts.prepEn;
+    if (english) return english;
+  }
+  return facts[key];
+}
+
 function FactBlocks({ lang, facts }: { lang: Lang; facts: FlavorFacts }) {
   const copy = COPY[lang];
   const rows = [
-    [copy.ingredients, facts.ingredients],
-    [copy.allergens, facts.allergens],
-    [copy.storage, facts.storage],
-    [copy.prep, facts.prep],
+    [copy.ingredients, factBody(facts, lang, "ingredients")],
+    [copy.allergens, factBody(facts, lang, "allergens")],
+    [copy.storage, factBody(facts, lang, "storage")],
+    [copy.prep, factBody(facts, lang, "prep")],
   ] as const;
   const filled = rows.filter((row) => row[1]);
   if (filled.length === 0) return null;
