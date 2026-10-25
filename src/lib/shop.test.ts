@@ -9,7 +9,9 @@ import {
   launchPostAllowed,
   fiftyStockLine,
   formatShopPrice,
+  orderCta,
   orderTotalOre,
+  piecePriceLine,
   parsePublicShop,
   parseWaitlist,
   shopUnavailable,
@@ -33,17 +35,20 @@ test("phase 1 prices, quantity and the stock lines stay fixed", () => {
   assert.equal(clampBoxQty(0, 7, true), 1);
   assert.equal(clampBoxQty(3, 0, true), 1);
   assert.equal(clampBoxQty(3, 7, false), 1);
-  assert.equal(fiftyStockLine("no", 7, true), "7 esker tilgjengelig");
-  assert.equal(fiftyStockLine("no", 1, true), "1 eske tilgjengelig");
-  assert.equal(
-    fiftyStockLine("no", 0, true),
-    "Det er tomt for gull. Vi gir deg beskjed når neste batch er klar.",
-  );
-  assert.equal(fiftyStockLine("en", 7, true), "7 boxes available");
-  assert.equal(fiftyStockLine("en", 1, true), "1 box available");
-  assert.match(fiftyStockLine("en", 0, true), /next batch is ready/);
-  assert.match(fiftyStockLine("no", 0, false), /Vi får ikke lest det nå/);
-  assert.doesNotMatch(fiftyStockLine("no", 0, true), /på vei/);
+  assert.equal(piecePriceLine("no"), "25 kr/stk");
+  assert.equal(piecePriceLine("en"), "25 kr each");
+  assert.equal(orderCta("no", 1), "Bestill 50 stk · 1 250 kr");
+  assert.equal(orderCta("en", 2), "Order 100 pcs · 2 500 kr");
+  assert.equal(fiftyStockLine("no", 7, true, false), "7 esker på lager");
+  assert.equal(fiftyStockLine("no", 1, true, false), "1 eske på lager");
+  assert.equal(fiftyStockLine("no", 7, true, true), "7 esker tilgjengelig");
+  assert.equal(fiftyStockLine("en", 7, true, false), "7 boxes in stock");
+  assert.equal(fiftyStockLine("en", 1, true, true), "1 box available");
+  assert.match(fiftyStockLine("no", 0, true, false), /Det er tomt for gull/);
+  assert.match(fiftyStockLine("no", 0, true, false), /neste batch er klar/);
+  assert.match(fiftyStockLine("en", 0, true, false), /next batch is ready/);
+  assert.match(fiftyStockLine("no", 0, false, false), /Vi får ikke lest det nå/);
+  assert.doesNotMatch(fiftyStockLine("no", 0, true, false), /på vei/);
 });
 
 test("payment stays off, and only a complete confirmed fact set is marked confirmed", () => {
@@ -143,6 +148,28 @@ test("newsletter consent stays separate, and a notice needs at least one list", 
   });
   assert.equal(launch?.launchNotice, true);
   assert.equal(launch?.restockNotice, false);
+  const quiet = parseWaitlist({
+    email: "ada@example.com",
+    flavor: "nduja",
+    lang: "no",
+    newsletterConsent: false,
+    launchNotice: true,
+    restockNotice: false,
+  });
+  assert.equal(quiet?.discovery, null);
+  assert.equal(quiet?.launchNotice, true);
+  assert.equal(
+    parseWaitlist({
+      email: "ada@example.com",
+      flavor: "nduja",
+      lang: "no",
+      discovery: "billboard",
+      newsletterConsent: false,
+      launchNotice: true,
+      restockNotice: false,
+    }),
+    null,
+  );
   assert.equal(
     parseWaitlist({
       email: "ada@example.com",
@@ -162,12 +189,18 @@ test("the buy page keeps payment off, leads with the box slot, and stays out of 
   const gallery = readFileSync(new URL("./shop-gallery.ts", import.meta.url), "utf8");
   const nav = readFileSync(new URL("../components/brand-nav.tsx", import.meta.url), "utf8");
   const sitemap = readFileSync(new URL("./sitemap.ts", import.meta.url), "utf8");
-  assert.match(page, /Bestilling åpner snart/);
-  assert.match(page, /Ordering opens soon/);
+  assert.match(page, /Baller i boks\./);
+  assert.match(page, /Golden balls\. In a box\./);
+  assert.match(page, /Få beskjed når du kan bestille/);
+  assert.match(page, /Let me know when I can order/);
+  assert.match(page, /orderCta\(lang, shownQty\)/);
+  assert.equal((page.match(/Slik fungerer det/g) ?? []).length, 1);
+  assert.equal((page.match(/Produktinformasjon/g) ?? []).length, 1);
   assert.match(page, /disabled/);
   assert.match(page, /Kommer snart/);
+  assert.match(page, /shop-notice-bar/);
+  assert.match(page, /IntersectionObserver/);
   assert.equal(page.toLowerCase().includes("stripe"), false);
-  assert.doesNotMatch(page, /fixed bottom|inset-x-0 bottom|sticky/);
   assert.match(page, /facts\.verified \? copy\.confirmed : copy\.preliminary/);
   assert.match(gallery, /eske-50\.jpg/);
   assert.match(gallery, /photo-the-gold/);

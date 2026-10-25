@@ -259,16 +259,16 @@ export const PAGE_SEO = {
     path: "/samarbeid",
   },
   "/kjop": {
-    title: "Sicilianske arancini | Gold of Sicily",
+    title: "Baller i boks | Sicilianske arancini i Oslo",
     description:
-      "Håndlagde arancini fra Oslo. 50-eske 1 250 kr inkludert mva. 6-pakning kommer snart.",
+      "Håndlagde sicilianske arancini fra Oslo. Sprø risballer i 50-eske, 1 250 kr inkludert mva. 6-pakning kommer snart.",
     path: "/kjop",
     alternates: BUY_ALTERNATES,
   },
   "/en/buy": {
-    title: "Sicilian arancini | Gold of Sicily",
+    title: "Golden balls in a box | Sicilian arancini in Oslo",
     description:
-      "Handmade arancini from Oslo. A 50-box is 1 250 kr including VAT. The 6-pack is coming soon.",
+      "Handmade Sicilian arancini from Oslo. Crisp rice balls in a 50-box, 1 250 kr including VAT. The 6-pack is coming soon.",
     path: "/en/buy",
     locale: "en_GB",
     alternates: BUY_ALTERNATES,

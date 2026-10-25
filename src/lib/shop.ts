@@ -16,7 +16,9 @@ export {
   launchPostAllowed,
   fiftyStockLine,
   formatShopPrice,
+  orderCta,
   orderTotalOre,
+  piecePriceLine,
   parsePublicShop,
   parseWaitlist,
   shopUnavailable,
@@ -70,7 +72,9 @@ export async function postWaitlist(
       });
       if (response.status === 404) continue;
       if (response.ok) return "ok";
-      if (response.status === 400) return "invalid";
+      // The page already checked the email. A portal 400 means that list
+      // still requires the optional question, or it is not open yet.
+      if (response.status === 400) return "unavailable";
     } catch {
       continue;
     }

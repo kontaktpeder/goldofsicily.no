@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import iconAirfryer from "@/assets/brand/icon-airfryer.png";
 import iconArancini from "@/assets/brand/icon-arancini.png";
@@ -15,7 +15,9 @@ import {
   clampBoxQty,
   fiftyStockLine,
   formatShopPrice,
+  orderCta,
   orderTotalOre,
+  piecePriceLine,
   type DiscoverySource,
   type FlavorFacts,
   type PublicShop,
@@ -26,9 +28,9 @@ type Lang = "no" | "en";
 
 const COPY = {
   no: {
-    title: "Sicilianske arancini.",
-    sub: "Sprø utenpå. Myk inni.",
-    body: "Håndlagde arancini fra Oslo. Leveres fryst, klare på få minutter. Fra frys til fest.",
+    title: "Baller i boks.",
+    sub: "Sprø, sicilianske arancini.",
+    body: "Håndlagde risballer fra Oslo, med sprø utside og smakfullt fyll. Leveres fryst og varmes enkelt opp. Fra frys til fest.",
     langLabel: "English",
     taste: "Smak",
     size: "Størrelse",
@@ -41,10 +43,11 @@ const COPY = {
     total: "Totalt",
     perBox: "per eske",
     vat: "inkl. mva",
-    opens: "Bestilling åpner snart",
+    closed: "Bestillingen er ikke åpen ennå.",
     email: "E-post",
     emailPlaceholder: "deg@epost.no",
     discovery: "Hvor fant du Gold?",
+    discoveryOptional: "Hvor fant du Gold? Valgfritt",
     discoveryLabels: {
       friends: "Venner",
       instagram: "Instagram",
@@ -52,17 +55,13 @@ const COPY = {
       search: "Søk",
       other: "Annet",
     } satisfies Record<DiscoverySource, string>,
-    launch: "Si ifra når bestilling åpner",
-    restock: "Si ifra når denne smaken er tilbake",
-    newsletter: "Ja, jeg vil også ha nyhetsbrev fra Gold of Sicily.",
-    submit: "Si ifra når jeg kan bestille",
+    newsletter: "Ja, jeg vil også ha nyhetsbrevet fra Gold of Sicily.",
+    submit: "Få beskjed når du kan bestille",
     submitting: "Lagrer …",
-    doneLaunch: "Du står på listen. Vi sier ifra når bestilling åpner.",
-    doneRestock: "Du står på listen. Vi sier ifra når denne smaken er tilbake.",
-    doneBoth:
-      "Du står på listen. Vi sier ifra når bestilling åpner, og når denne smaken er tilbake.",
-    invalid: "Sjekk e-post, smak og hvor du fant Gold.",
-    needNotice: "Kryss av for minst ett varsel.",
+    doneLaunch: "Du står på listen. Vi skriver når du kan bestille.",
+    doneRestock: "Du står på listen. Vi skriver når denne smaken er tilbake.",
+    doneBoth: "Du står på listen. Vi skriver når du kan bestille, og når denne smaken er tilbake.",
+    invalid: "Sjekk e-postadressen.",
     unavailable: "Listen er ikke åpnet i portalen ennå.",
     error: "Vi fikk ikke lagret det. Prøv igjen.",
     trust: ["Leveres fryst", "Utviklet og produsert i Oslo", "Pris inkludert mva"],
@@ -92,9 +91,9 @@ const COPY = {
     slide: "Bilde",
   },
   en: {
-    title: "Sicilian arancini.",
-    sub: "Crisp outside. Soft inside.",
-    body: "Handmade arancini from Oslo. Delivered frozen, ready in a few minutes. From the freezer to the feast.",
+    title: "Golden balls. In a box.",
+    sub: "Crisp, Sicilian arancini.",
+    body: "Handmade rice balls from Oslo, with a crisp outside and a flavourful filling. Delivered frozen and easy to heat. From the freezer to the feast.",
     langLabel: "Norsk",
     taste: "Flavour",
     size: "Size",
@@ -107,10 +106,11 @@ const COPY = {
     total: "Total",
     perBox: "per box",
     vat: "incl. VAT",
-    opens: "Ordering opens soon",
+    closed: "Ordering isn’t open yet.",
     email: "Email",
     emailPlaceholder: "you@email.com",
     discovery: "Where did you find Gold?",
+    discoveryOptional: "Where did you find Gold? Optional",
     discoveryLabels: {
       friends: "Friends",
       instagram: "Instagram",
@@ -118,16 +118,13 @@ const COPY = {
       search: "Search",
       other: "Other",
     } satisfies Record<DiscoverySource, string>,
-    launch: "Tell me when ordering opens",
-    restock: "Tell me when this flavour is back",
     newsletter: "Yes, I also want the Gold of Sicily newsletter.",
-    submit: "Tell me when I can order",
+    submit: "Let me know when I can order",
     submitting: "Saving …",
-    doneLaunch: "You’re on the list. We’ll write when ordering opens.",
+    doneLaunch: "You’re on the list. We’ll write when you can order.",
     doneRestock: "You’re on the list. We’ll write when this flavour is back.",
-    doneBoth: "You’re on the list. We’ll write when ordering opens, and when this flavour is back.",
-    invalid: "Check the email, flavour and where you found Gold.",
-    needNotice: "Tick at least one notice.",
+    doneBoth: "You’re on the list. We’ll write when you can order, and when this flavour is back.",
+    invalid: "Check the email address.",
     unavailable: "The list is not open in the portal yet.",
     error: "We couldn’t save that. Try again.",
     trust: ["Delivered frozen", "Developed and produced in Oslo", "Price includes VAT"],
@@ -159,6 +156,10 @@ const COPY = {
 } as const;
 
 const STEP_MARKS = [iconArancini, iconBox, iconAirfryer];
+const NOTICE_ID = "shop-notice";
+const EMAIL_ID = "shop-email";
+const focusRing =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--olive)]";
 
 function flavorName(shop: PublicShop, slug: ShopFlavorSlug, lang: Lang) {
   const flavor = shop.flavors.find((item) => item.slug === slug);
@@ -171,7 +172,7 @@ function FlavorDot({ slug }: { slug: ShopFlavorSlug }) {
     <span
       aria-hidden
       className={`inline-block h-2 w-2 shrink-0 rounded-full ${
-        slug === "nduja" ? "bg-[color:var(--tomato)]" : "bg-[color:var(--olive)]"
+        slug === "nduja" ? "bg-[color:var(--tomato)]" : "bg-[color:var(--golden)]"
       }`}
     />
   );
@@ -185,16 +186,16 @@ function Gallery({ lang }: { lang: Lang }) {
   if (!slide) return null;
 
   return (
-    <figure>
+    <figure className="relative">
       <img
         src={slide.src}
         alt={copy.photo[slide.id]}
-        className={`aspect-[4/5] w-full bg-[color:var(--paper)] sm:aspect-[5/4] lg:aspect-[4/5] ${
+        className={`w-full bg-[color:var(--paper)] object-center ${
           slide.kind === "box" ? "object-contain" : "object-cover"
-        }`}
+        } h-[26vh] min-h-40 max-h-48 sm:h-80 lg:h-[min(70vh,38rem)] lg:max-h-none`}
       />
       {slides.length > 1 ? (
-        <div className="mt-3 flex gap-2 px-5 md:px-0">
+        <div className="absolute bottom-3 left-3 flex gap-2">
           {slides.map((item, itemIndex) => {
             const active = itemIndex === index;
             return (
@@ -204,8 +205,8 @@ function Gallery({ lang }: { lang: Lang }) {
                 aria-label={`${copy.slide} ${itemIndex + 1}`}
                 aria-pressed={active}
                 onClick={() => setIndex(itemIndex)}
-                className={`h-16 w-16 overflow-hidden border ${
-                  active ? "border-foreground" : "border-transparent opacity-70"
+                className={`h-11 w-11 overflow-hidden border bg-[color:var(--cream)] ${focusRing} ${
+                  active ? "border-foreground" : "border-transparent opacity-80"
                 }`}
               >
                 <img src={item.src} alt="" className="h-full w-full object-cover" />
@@ -221,36 +222,25 @@ function Gallery({ lang }: { lang: Lang }) {
 function NoticeForm({
   lang,
   flavor,
-  soldOut,
+  launchNotice,
+  restockNotice,
 }: {
   lang: Lang;
   flavor: ShopFlavorSlug;
-  soldOut: boolean;
+  launchNotice: boolean;
+  restockNotice: boolean;
 }) {
   const copy = COPY[lang];
   const submit = useServerFn(submitShopWaitlist);
   const [email, setEmail] = useState("");
   const [discovery, setDiscovery] = useState<DiscoverySource | "">("");
-  const [launch, setLaunch] = useState(true);
-  const [restock, setRestock] = useState(true);
   const [newsletter, setNewsletter] = useState(false);
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
-    const launchNotice = launch;
-    const restockNotice = soldOut && restock;
-    if (!launchNotice && !restockNotice) {
-      setStatus("error");
-      setMessage(copy.needNotice);
-      return;
-    }
-    if (!discovery) {
-      setStatus("error");
-      setMessage(copy.invalid);
-      return;
-    }
+    if (!launchNotice && !restockNotice) return;
     setStatus("loading");
     try {
       await submit({
@@ -258,7 +248,7 @@ function NoticeForm({
           email,
           flavor,
           lang,
-          discovery,
+          ...(discovery ? { discovery } : {}),
           newsletterConsent: newsletter,
           launchNotice,
           restockNotice,
@@ -281,84 +271,70 @@ function NoticeForm({
     }
   }
 
-  if (status === "done") {
-    return <p className="mt-6 text-base italic leading-relaxed text-foreground/80">{message}</p>;
-  }
-
   return (
-    <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
-      <label className="block font-sans text-sm">
-        <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
-          {copy.email}
-        </span>
-        <input
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder={copy.emailPlaceholder}
-          className="w-full border-b border-foreground/30 bg-transparent py-2 text-base outline-none"
-        />
-      </label>
-      <label className="block font-sans text-sm">
-        <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
-          {copy.discovery}
-        </span>
-        <select
-          required
-          value={discovery}
-          onChange={(event) => setDiscovery(event.target.value as DiscoverySource | "")}
-          className="w-full border-b border-foreground/30 bg-transparent py-2 text-base outline-none"
-        >
-          <option value="">{copy.discovery}</option>
-          {DISCOVERY_SOURCES.map((source) => (
-            <option key={source} value={source}>
-              {copy.discoveryLabels[source]}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label className="flex items-start gap-3 font-sans text-sm leading-snug">
-        <input
-          type="checkbox"
-          checked={launch}
-          onChange={(event) => setLaunch(event.target.checked)}
-          className="mt-1"
-        />
-        <span>{copy.launch}</span>
-      </label>
-      {soldOut ? (
-        <label className="flex items-start gap-3 font-sans text-sm leading-snug">
-          <input
-            type="checkbox"
-            checked={restock}
-            onChange={(event) => setRestock(event.target.checked)}
-            className="mt-1"
-          />
-          <span>{copy.restock}</span>
-        </label>
-      ) : null}
-      <label className="flex items-start gap-3 font-sans text-sm leading-snug">
-        <input
-          type="checkbox"
-          checked={newsletter}
-          onChange={(event) => setNewsletter(event.target.checked)}
-          className="mt-1"
-        />
-        <span>{copy.newsletter}</span>
-      </label>
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="bg-[color:var(--espresso)] px-4 py-4 font-display text-xl italic tracking-tight text-[color:var(--cream)] disabled:opacity-40"
-      >
-        {status === "loading" ? copy.submitting : copy.submit}
-      </button>
-      {status === "error" ? (
-        <p className="font-sans text-sm text-[color:var(--tomato)]">{message}</p>
-      ) : null}
-    </form>
+    <>
+      {status === "done" ? (
+        <p className="mt-6 text-base italic leading-relaxed text-foreground/80">{message}</p>
+      ) : (
+        <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
+          <label className="block font-sans text-base" htmlFor={EMAIL_ID}>
+            <span className="mb-1 block text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
+              {copy.email}
+            </span>
+            <input
+              id={EMAIL_ID}
+              type="email"
+              required
+              autoComplete="email"
+              inputMode="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder={copy.emailPlaceholder}
+              className={`min-h-12 w-full border-b border-foreground/30 bg-transparent py-3 text-lg outline-none ${focusRing}`}
+            />
+          </label>
+          <label className="flex min-h-11 items-start gap-3 font-sans text-sm leading-snug">
+            <input
+              type="checkbox"
+              checked={newsletter}
+              onChange={(event) => setNewsletter(event.target.checked)}
+              className={`mt-1 h-4 w-4 ${focusRing}`}
+            />
+            <span>{copy.newsletter}</span>
+          </label>
+          <button
+            type="submit"
+            disabled={status === "loading"}
+            className={`min-h-12 bg-[color:var(--olive)] px-4 py-4 font-display text-xl italic tracking-tight text-[color:var(--cream)] disabled:opacity-40 ${focusRing}`}
+          >
+            {status === "loading" ? copy.submitting : copy.submit}
+          </button>
+          <details className="font-sans text-sm text-foreground/70">
+            <summary className={`cursor-pointer py-1 ${focusRing}`}>
+              {copy.discoveryOptional}
+            </summary>
+            <label className="mt-3 block">
+              <span className="sr-only">{copy.discovery}</span>
+              <select
+                value={discovery}
+                onChange={(event) => setDiscovery(event.target.value as DiscoverySource | "")}
+                className={`min-h-11 w-full border-b border-foreground/30 bg-transparent py-2 text-base outline-none ${focusRing}`}
+              >
+                <option value="">{copy.discoveryOptional}</option>
+                {DISCOVERY_SOURCES.map((source) => (
+                  <option key={source} value={source}>
+                    {copy.discoveryLabels[source]}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </details>
+          {status === "error" ? (
+            <p className="font-sans text-sm text-[color:var(--tomato)]">{message}</p>
+          ) : null}
+        </form>
+      )}
+    </>
   );
 }
 
@@ -392,7 +368,7 @@ function FactBlocks({ lang, facts }: { lang: Lang; facts: FlavorFacts }) {
   const filled = rows.filter((row) => row[1]);
   if (filled.length === 0) return null;
   return (
-    <dl className="mt-6 flex flex-col gap-4">
+    <dl className="mt-4 flex flex-col gap-4 pb-2">
       {filled.map(([label, text]) => (
         <div key={label}>
           <dt className="text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">{label}</dt>
@@ -408,10 +384,17 @@ function FactBlocks({ lang, facts }: { lang: Lang; facts: FlavorFacts }) {
 function ProductFacts({ lang, name, facts }: { lang: Lang; name: string; facts: FlavorFacts }) {
   const copy = COPY[lang];
   return (
-    <section className="mt-14 border-t border-foreground/10 pt-10">
-      <h2 className="font-display text-3xl tracking-tight">{copy.factsTitle}</h2>
-      <p className="mt-3 text-lg italic">{name}</p>
-      <p className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
+    <details className="group mt-12 border-t border-foreground/10">
+      <summary
+        className={`flex cursor-pointer list-none items-center justify-between py-4 font-display text-2xl tracking-tight ${focusRing}`}
+      >
+        {copy.factsTitle}
+        <span aria-hidden className="text-xl text-foreground/45 group-open:rotate-45">
+          +
+        </span>
+      </summary>
+      <p className="text-lg italic">{name}</p>
+      <p className="mt-3 text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
         {facts.verified ? copy.confirmed : copy.preliminary}
       </p>
       {facts.verified ? null : (
@@ -420,7 +403,57 @@ function ProductFacts({ lang, name, facts }: { lang: Lang; name: string; facts: 
         </p>
       )}
       <FactBlocks lang={lang} facts={facts} />
-    </section>
+    </details>
+  );
+}
+
+function NoticeJump({ lang, watch }: { lang: Lang; watch: string }) {
+  const copy = COPY[lang];
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const form = document.getElementById(NOTICE_ID);
+    if (!form) return;
+    const barClearance = 64;
+    const update = () => {
+      const formBox = form.getBoundingClientRect();
+      const stockBox = document.querySelector("[data-shop-stock]")?.getBoundingClientRect();
+      const formOutside = formBox.bottom <= 0 || formBox.top >= window.innerHeight;
+      const stockAboveBar = !stockBox || stockBox.bottom <= window.innerHeight - barClearance;
+      setShow(formOutside && stockAboveBar);
+    };
+    update();
+    const observer = new IntersectionObserver(update, { threshold: 0 });
+    observer.observe(form);
+    const stock = document.querySelector("[data-shop-stock]");
+    if (stock) observer.observe(stock);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [watch]);
+
+  if (!show) return null;
+
+  return (
+    <div className="shop-notice-bar fixed inset-x-0 bottom-0 z-30 border-t border-foreground/10 bg-[color:var(--cream)] px-4 py-2 lg:hidden">
+      <a
+        href={`#${NOTICE_ID}`}
+        className={`flex min-h-11 items-center justify-center bg-[color:var(--olive)] px-4 font-display text-lg italic text-[color:var(--cream)] ${focusRing}`}
+        onClick={(event) => {
+          event.preventDefault();
+          document
+            .getElementById(NOTICE_ID)
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          document.getElementById(EMAIL_ID)?.focus();
+        }}
+      >
+        {copy.submit}
+      </a>
+    </div>
   );
 }
 
@@ -433,53 +466,46 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
   const boxes = selected?.boxes50 ?? 0;
   const shownQty = clampBoxQty(qty, boxes, shop.stockKnown);
   const soldOut = shop.stockKnown && boxes <= 0;
-  const stockLine = fiftyStockLine(lang, boxes, shop.stockKnown);
+  const canOrder = shop.paymentOpen && shop.stockKnown && boxes > 0;
+  const stockLine = fiftyStockLine(lang, boxes, shop.stockKnown, shop.paymentOpen);
 
   return (
-    <div className="min-h-screen bg-[color:var(--cream)] font-display text-foreground">
+    <div className="min-h-screen bg-[color:var(--cream)] pb-16 font-display text-foreground lg:pb-0">
       <BrandNav lang={lang} />
-      <main className="mx-auto max-w-7xl px-5 pb-24 pt-24 md:px-8 md:pt-28">
-        <div className="mb-4 flex justify-end">
+      <main className="mx-auto max-w-7xl px-5 md:px-8">
+        <div className="mb-3 flex justify-end">
           {lang === "no" ? (
-            <Link to="/en/buy" className="text-base italic text-[color:var(--sea)]">
+            <Link to="/en/buy" className={`text-base italic text-[color:var(--sea)] ${focusRing}`}>
               {copy.langLabel}
             </Link>
           ) : (
-            <Link to="/kjop" className="text-base italic text-[color:var(--sea)]">
+            <Link to="/kjop" className={`text-base italic text-[color:var(--sea)] ${focusRing}`}>
               {copy.langLabel}
             </Link>
           )}
         </div>
 
-        <div className="lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(20rem,0.85fr)] lg:items-start lg:gap-14">
-          <div className="-mx-5 md:mx-0">
+        <div className="lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)] lg:items-start lg:gap-x-14 lg:gap-y-8">
+          <div className="-mx-5 md:mx-0 lg:col-start-1 lg:row-start-1">
             <Gallery lang={lang} />
-            <div className="mt-14 hidden px-5 md:px-0 lg:block">
-              <HowItWorks lang={lang} />
-              {selected ? (
-                <ProductFacts
-                  lang={lang}
-                  name={flavorName(shop, selected.slug, lang)}
-                  facts={selected.facts}
-                />
-              ) : null}
-            </div>
           </div>
 
-          <div className="pt-8 lg:pt-2">
-            <h1 className="font-display text-[clamp(2.7rem,8vw,4.4rem)] leading-[1.02] tracking-tight">
+          <div className="pt-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:pt-0">
+            <h1 className="font-display text-[clamp(2.6rem,8vw,4.2rem)] leading-[1.02] tracking-tight">
               {copy.title}
             </h1>
-            <p className="mt-3 font-display text-2xl italic leading-snug tracking-tight text-[color:var(--sea)] md:text-3xl">
+            <p className="mt-2 font-display text-2xl italic leading-snug tracking-tight text-[color:var(--sea)] md:text-3xl">
               {copy.sub}
             </p>
-            <p className="mt-4 max-w-md text-lg leading-relaxed text-foreground/75">{copy.body}</p>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-foreground/75 md:text-lg">
+              {copy.body}
+            </p>
 
-            <fieldset className="mt-8">
+            <fieldset className="mt-4">
               <legend className="text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
                 {copy.taste}
               </legend>
-              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="mt-2 grid grid-cols-2 gap-2">
                 {shop.flavors.map((item) => {
                   const active = item.slug === flavor;
                   return (
@@ -488,8 +514,8 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
                       type="button"
                       aria-pressed={active}
                       onClick={() => setFlavor(item.slug)}
-                      className={`flex min-h-12 items-center gap-3 border px-3 py-3 text-left text-lg italic ${
-                        active ? "border-foreground" : "border-foreground/20"
+                      className={`flex min-h-12 items-center gap-3 border px-3 py-3 text-left text-lg italic leading-tight ${focusRing} ${
+                        active ? "border-foreground" : "border-foreground/15"
                       }`}
                     >
                       <FlavorDot slug={item.slug} />
@@ -500,24 +526,37 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
               </div>
             </fieldset>
 
-            <fieldset className="mt-6">
+            <fieldset className="mt-5">
               <legend className="text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
                 {copy.size}
               </legend>
               <div className="mt-3 grid grid-cols-1 gap-2">
-                <button
-                  type="button"
-                  aria-pressed
-                  className="flex min-h-12 items-center justify-between gap-3 border border-foreground px-3 py-3 text-left"
-                >
-                  <span className="flex items-center gap-3 text-lg italic">
-                    <span aria-hidden className="inline-block h-2 w-2 rounded-full bg-foreground" />
-                    {copy.fifty}
-                  </span>
-                  <span className="font-display text-xl tracking-tight">
-                    {formatShopPrice(PRICE_FIFTY_ORE)}
-                  </span>
-                </button>
+                <div className="border border-foreground px-3 py-3">
+                  <div className="flex min-h-12 items-center justify-between gap-3">
+                    <span className="flex items-center gap-3 text-lg italic">
+                      <span
+                        aria-hidden
+                        className="inline-block h-2 w-2 rounded-full bg-foreground"
+                      />
+                      {copy.fifty}
+                    </span>
+                    <span className="font-display text-xl tracking-tight">
+                      {formatShopPrice(PRICE_FIFTY_ORE)}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm text-foreground/55">
+                    {piecePriceLine(lang)} · {copy.vat}
+                  </p>
+                  {soldOut ? null : (
+                    <p
+                      data-shop-stock
+                      className="mt-2 text-sm leading-snug text-foreground/75"
+                      aria-live="polite"
+                    >
+                      {stockLine}
+                    </p>
+                  )}
+                </div>
                 <button
                   type="button"
                   disabled
@@ -534,7 +573,7 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
               </div>
             </fieldset>
 
-            <div className="mt-6 flex items-center justify-between gap-4">
+            <div className="mt-5 flex items-center justify-between gap-4">
               <p className="text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
                 {copy.quantity}
               </p>
@@ -546,7 +585,7 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
                   onClick={() =>
                     setQty((current) => clampBoxQty(current - 1, boxes, shop.stockKnown))
                   }
-                  className="h-11 w-11 border border-foreground/25 font-display text-2xl leading-none disabled:opacity-30"
+                  className={`h-11 w-11 border border-foreground/25 font-display text-2xl leading-none disabled:opacity-30 ${focusRing}`}
                 >
                   −
                 </button>
@@ -560,14 +599,14 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
                   onClick={() =>
                     setQty((current) => clampBoxQty(current + 1, boxes, shop.stockKnown))
                   }
-                  className="h-11 w-11 border border-foreground/25 font-display text-2xl leading-none disabled:opacity-30"
+                  className={`h-11 w-11 border border-foreground/25 font-display text-2xl leading-none disabled:opacity-30 ${focusRing}`}
                 >
                   +
                 </button>
               </div>
             </div>
 
-            <p className="mt-8 text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
+            <p className="mt-6 text-[0.65rem] uppercase tracking-[0.2em] text-foreground/55">
               {copy.total}
             </p>
             <p className="font-display text-5xl tracking-tight" aria-live="polite">
@@ -577,47 +616,60 @@ export function ShopPage({ lang, shop }: { lang: Lang; shop: PublicShop }) {
               {formatShopPrice(PRICE_FIFTY_ORE)} {copy.perBox} · {copy.vat}
             </p>
 
-            <p
-              className={
-                soldOut
-                  ? "mt-6 font-display text-[clamp(1.55rem,4vw,2rem)] italic leading-snug tracking-tight"
-                  : "mt-6 text-base leading-relaxed text-foreground/70"
-              }
-              aria-live="polite"
-            >
-              {stockLine}
-            </p>
+            {soldOut ? (
+              <p
+                data-shop-stock
+                className="mt-5 whitespace-pre-line font-display text-[clamp(1.45rem,4vw,1.9rem)] italic leading-snug tracking-tight"
+                aria-live="polite"
+              >
+                {stockLine}
+              </p>
+            ) : null}
+            {!shop.paymentOpen && !soldOut ? (
+              <p className="mt-4 text-base italic text-foreground/70">{copy.closed}</p>
+            ) : null}
 
-            <ul className="mt-6 flex flex-col gap-1 text-base italic text-foreground/70">
+            <ul className="mt-4 flex flex-col gap-1 text-base italic text-foreground/70">
               {copy.trust.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
 
-            <h2 className="mt-10 font-display text-3xl italic tracking-tight">{copy.opens}</h2>
-            <NoticeForm
-              key={`${flavor}-${soldOut ? "out" : "in"}`}
-              lang={lang}
-              flavor={flavor}
-              soldOut={soldOut}
-            />
+            {canOrder ? (
+              <button
+                type="button"
+                className={`mt-6 min-h-12 w-full bg-[color:var(--olive)] px-4 py-4 font-display text-xl italic tracking-tight text-[color:var(--cream)] ${focusRing}`}
+                onClick={(event) => event.preventDefault()}
+              >
+                {orderCta(lang, shownQty)}
+              </button>
+            ) : (
+              <div id={NOTICE_ID} className="scroll-mt-28">
+                <NoticeForm
+                  key={`${flavor}-${soldOut ? "out" : "in"}`}
+                  lang={lang}
+                  flavor={flavor}
+                  launchNotice={!shop.paymentOpen}
+                  restockNotice={soldOut}
+                />
+              </div>
+            )}
           </div>
-        </div>
 
-        <div className="lg:hidden">
-          <div className="mt-16">
+          <div className="mt-14 lg:col-start-1 lg:row-start-2 lg:mt-0">
             <HowItWorks lang={lang} />
+            {selected ? (
+              <ProductFacts
+                lang={lang}
+                name={flavorName(shop, selected.slug, lang)}
+                facts={selected.facts}
+              />
+            ) : null}
           </div>
-          {selected ? (
-            <ProductFacts
-              lang={lang}
-              name={flavorName(shop, selected.slug, lang)}
-              facts={selected.facts}
-            />
-          ) : null}
         </div>
       </main>
       <BrandFooter lang={lang} />
+      {shop.paymentOpen ? null : <NoticeJump lang={lang} watch={flavor} />}
     </div>
   );
 }
@@ -627,7 +679,7 @@ function HowItWorks({ lang }: { lang: Lang }) {
   return (
     <section>
       <h2 className="font-display text-3xl tracking-tight">{copy.how}</h2>
-      <ol className="mt-8 flex flex-col gap-8">
+      <ol className="mt-6 flex flex-col gap-6">
         {copy.steps.map((step, index) => {
           const mark = STEP_MARKS[index];
           return (

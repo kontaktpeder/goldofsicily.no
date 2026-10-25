@@ -122,7 +122,24 @@ export function orderTotalOre(qty: number): number {
   return boxes * PRICE_FIFTY_ORE;
 }
 
-export function fiftyStockLine(lang: "no" | "en", boxes: number, stockKnown: boolean): string {
+export function piecePriceLine(lang: "no" | "en"): string {
+  const price = formatShopPrice(PRICE_FIFTY_ORE / 50);
+  return lang === "en" ? `${price} each` : `${price}/stk`;
+}
+
+/** Future checkout label. Payment stays off until that path is actually opened. */
+export function orderCta(lang: "no" | "en", qty: number): string {
+  const pieces = Math.max(1, Math.floor(qty)) * 50;
+  const price = formatShopPrice(orderTotalOre(Math.max(1, Math.floor(qty))));
+  return lang === "en" ? `Order ${pieces} pcs · ${price}` : `Bestill ${pieces} stk · ${price}`;
+}
+
+export function fiftyStockLine(
+  lang: "no" | "en",
+  boxes: number,
+  stockKnown: boolean,
+  orderingOpen: boolean,
+): string {
   if (!stockKnown) {
     return lang === "en"
       ? "Stock is read from the portal. We can’t see it right now."
@@ -130,8 +147,12 @@ export function fiftyStockLine(lang: "no" | "en", boxes: number, stockKnown: boo
   }
   if (boxes <= 0) {
     return lang === "en"
-      ? "The gold is gone. We’ll let you know when the next batch is ready."
-      : "Det er tomt for gull. Vi gir deg beskjed når neste batch er klar.";
+      ? "The gold is gone.\nWe’ll let you know when the next batch is ready."
+      : "Det er tomt for gull.\nVi gir deg beskjed når neste batch er klar.";
+  }
+  if (!orderingOpen) {
+    if (lang === "en") return boxes === 1 ? "1 box in stock" : `${boxes} boxes in stock`;
+    return boxes === 1 ? "1 eske på lager" : `${boxes} esker på lager`;
   }
   if (lang === "en") return boxes === 1 ? "1 box available" : `${boxes} boxes available`;
   return boxes === 1 ? "1 eske tilgjengelig" : `${boxes} esker tilgjengelig`;
@@ -236,11 +257,19 @@ export type WaitlistInput = {
   email: string;
   flavor: ShopFlavorSlug;
   lang: "no" | "en";
-  discovery: DiscoverySource;
+  discovery: DiscoverySource | null;
   newsletterConsent: boolean;
   launchNotice: boolean;
   restockNotice: boolean;
 };
+
+function readDiscovery(value: unknown): DiscoverySource | null | undefined {
+  if (value == null || value === "") return null;
+  if (typeof value !== "string") return undefined;
+  return (DISCOVERY_SOURCES as readonly string[]).includes(value)
+    ? (value as DiscoverySource)
+    : undefined;
+}
 
 /** Older clients omit the flags and stay on the flavor waitlist only. */
 export function noticeFlags(
@@ -259,19 +288,19 @@ export function parseWaitlist(body: unknown): WaitlistInput | null {
   if (!body || typeof body !== "object") return null;
   const row = body as Record<string, unknown>;
   if (typeof row.email !== "string" || typeof row.flavor !== "string") return null;
-  if (typeof row.discovery !== "string" || typeof row.newsletterConsent !== "boolean") return null;
+  if (typeof row.newsletterConsent !== "boolean") return null;
   const email = row.email.trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 255) return null;
   if (!(SHOP_FLAVORS as readonly string[]).includes(row.flavor)) return null;
   if (row.lang !== "no" && row.lang !== "en") return null;
-  if (!(DISCOVERY_SOURCES as readonly string[]).includes(row.discovery)) return null;
+  const discovery = readDiscovery(row.discovery);
   const notices = noticeFlags(row.launchNotice, row.restockNotice);
-  if (!notices) return null;
+  if (discovery === undefined || !notices) return null;
   return {
     email,
     flavor: row.flavor as ShopFlavorSlug,
     lang: row.lang,
-    discovery: row.discovery as DiscoverySource,
+    discovery,
     newsletterConsent: row.newsletterConsent,
     launchNotice: notices.launchNotice,
     restockNotice: notices.restockNotice,

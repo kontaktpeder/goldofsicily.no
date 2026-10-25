@@ -12,4 +12,28 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  plugins: [
+    {
+      name: "ssr-create-middleware-import",
+      apply: "serve",
+      transform(code, id) {
+        if (this.environment?.name !== "ssr") return;
+        const file = id.split("?")[0];
+        if (
+          !file.endsWith("/src/start.ts") &&
+          !file.endsWith("/src/integrations/supabase/auth-middleware.ts") &&
+          !file.endsWith("/src/integrations/supabase/auth-attacher.ts")
+        ) {
+          return;
+        }
+        // Vite's dev SSR runner evaluates @tanstack/react-start before its
+        // re-exported createMiddleware is ready. The function itself lives in
+        // start-client-core and is safe to call. The client keeps the original
+        // import so the browser bundle does not pull in server-only code.
+        return code
+          .replaceAll("from '@tanstack/react-start'", 'from "@tanstack/start-client-core"')
+          .replaceAll('from "@tanstack/react-start"', 'from "@tanstack/start-client-core"');
+      },
+    },
+  ],
 });
