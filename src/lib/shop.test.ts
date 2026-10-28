@@ -190,6 +190,7 @@ test("the buy page keeps payment off, leads with the box slot, and stays out of 
   const nav = readFileSync(new URL("../components/brand-nav.tsx", import.meta.url), "utf8");
   const sitemap = readFileSync(new URL("./sitemap.ts", import.meta.url), "utf8");
   assert.match(page, /Henting utenfor Smalgangen 31, 0188 Oslo/);
+  assert.match(page, /60 kr innen 5 km/);
   assert.equal(page.includes("Majorstua"), false);
   assert.match(page, /Baller i boks\./);
   assert.match(page, /Golden balls\. In a box\./);

@@ -59,8 +59,22 @@ export async function loadShopPage(): Promise<PublicShop> {
 }
 
 export type ShopOrderPost =
-  | { ok: true; number: string; kind: "binding" | "quote" }
+  | {
+      ok: true;
+      number: string;
+      kind: "binding" | "quote";
+      totalOre: number | null;
+      freightOre: number | null;
+    }
   | { ok: false; reason: "short" | "invalid" | "unavailable" };
+
+export type DeliveryQuote = {
+  zone: "km5" | "km10" | "km15" | "outside";
+  freightOre: number | null;
+  distanceM: number | null;
+  goodsOre: number;
+  totalOre: number | null;
+};
 
 export async function postShopOrder(input: Record<string, unknown>): Promise<ShopOrderPost> {
   for (const base of portalBases()) {
@@ -74,10 +88,17 @@ export async function postShopOrder(input: Record<string, unknown>): Promise<Sho
       });
       if (response.status === 404) continue;
       if (response.ok) {
-        const body = (await response.json()) as { number?: unknown; kind?: unknown };
+        const body = (await response.json()) as {
+          number?: unknown;
+          kind?: unknown;
+          totalOre?: unknown;
+          freightOre?: unknown;
+        };
         const number = typeof body.number === "string" ? body.number : "";
         const kind = body.kind === "binding" ? "binding" : "quote";
-        return { ok: true, number, kind };
+        const totalOre = typeof body.totalOre === "number" ? body.totalOre : null;
+        const freightOre = typeof body.freightOre === "number" ? body.freightOre : null;
+        return { ok: true, number, kind, totalOre, freightOre };
       }
       if (response.status === 409) return { ok: false, reason: "short" };
       if (response.status === 400) return { ok: false, reason: "invalid" };
@@ -88,11 +109,48 @@ export async function postShopOrder(input: Record<string, unknown>): Promise<Sho
   return { ok: false, reason: "unavailable" };
 }
 
+export async function postDeliveryQuote(input: {
+  addressLine: string;
+  postalCode: string;
+  city: string;
+  boxes: number;
+}): Promise<DeliveryQuote | null> {
+  for (const base of portalBases()) {
+    try {
+      const response = await fetch(`${base}/api/public/v1/shop/delivery`, {
+        method: "POST",
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+        redirect: "manual",
+        signal: AbortSignal.timeout(8000),
+      });
+      if (response.status === 404) continue;
+      if (!response.ok) return null;
+      const body = (await response.json()) as Partial<DeliveryQuote>;
+      const zone = body.zone;
+      if (zone !== "km5" && zone !== "km10" && zone !== "km15" && zone !== "outside") return null;
+      return {
+        zone,
+        freightOre: typeof body.freightOre === "number" ? body.freightOre : null,
+        distanceM: typeof body.distanceM === "number" ? body.distanceM : null,
+        goodsOre: typeof body.goodsOre === "number" ? body.goodsOre : 0,
+        totalOre: typeof body.totalOre === "number" ? body.totalOre : null,
+      };
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
 export type PublicOffer = {
   number: string;
   flavorName: string;
   boxes: number;
   totalOre: number;
+  goodsOre: number;
+  freightOre: number | null;
+  note: string;
   fulfillment: "pickup" | "delivery_request";
   lang: "no" | "en";
   status: string;
@@ -119,6 +177,9 @@ export async function loadShopOffer(token: string): Promise<PublicOffer | null> 
         flavorName: typeof body.flavorName === "string" ? body.flavorName : "",
         boxes: body.boxes,
         totalOre: typeof body.totalOre === "number" ? body.totalOre : 0,
+        goodsOre: typeof body.goodsOre === "number" ? body.goodsOre : 0,
+        freightOre: typeof body.freightOre === "number" ? body.freightOre : null,
+        note: typeof body.note === "string" ? body.note : "",
         fulfillment: body.fulfillment === "delivery_request" ? "delivery_request" : "pickup",
         lang: body.lang === "en" ? "en" : "no",
         status: typeof body.status === "string" ? body.status : "",

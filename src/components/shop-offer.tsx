@@ -16,7 +16,9 @@ const COPY = {
     closed: "Tilbudet er ikke åpent lenger.",
     pickup:
       "Henting utenfor Smalgangen 31, 0188 Oslo. Vi møter deg utenfor restauranten. Faktura etter levering.",
-    delivery: "Levering er fortsatt en forespørsel. Frakt og tid er ikke avtalt.",
+    delivery: "Levering til adressen. Faktura etter levering.",
+    goods: "Varer",
+    freight: "Frakt",
     boxes: "esker",
   },
   en: {
@@ -29,7 +31,9 @@ const COPY = {
     closed: "This offer is no longer open.",
     pickup:
       "Pickup outside Smalgangen 31, 0188 Oslo. We meet you outside the restaurant. Invoice after delivery.",
-    delivery: "Delivery is still a request. Freight and time are not agreed.",
+    delivery: "Delivery to the address. Invoice after delivery.",
+    goods: "Goods",
+    freight: "Freight",
     boxes: "boxes",
   },
 } as const;
@@ -77,8 +81,15 @@ export function ShopOffer({ token }: { token: string }) {
               {offer.boxes} {copy.boxes} · {offer.flavorName}
             </p>
             <p className="mt-2 font-display text-4xl">{formatShopPrice(offer.totalOre)}</p>
+            {offer.freightOre != null ? (
+              <p className="mt-2 text-base">
+                {copy.goods} {formatShopPrice(offer.goodsOre)} · {copy.freight}{" "}
+                {formatShopPrice(offer.freightOre)}
+              </p>
+            ) : null}
             <p className="mt-3 text-base italic text-foreground/75">
               {offer.fulfillment === "pickup" ? copy.pickup : copy.delivery}
+              {offer.note ? ` ${offer.note}` : ""}
             </p>
             {message ? (
               <p className="mt-6 text-lg italic" role="status">

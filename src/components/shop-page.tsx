@@ -18,6 +18,7 @@ import {
   orderCta,
   orderTotalOre,
   piecePriceLine,
+  postDeliveryQuote,
   postShopOrder,
   type DiscoverySource,
   type FlavorFacts,
@@ -60,7 +61,11 @@ const COPY = {
     pickupNote:
       "Vi leier kjøkkenet i restauranten. Hentingen skjer utenfor, ikke inne i restauranten.",
     delivery: "Levering til adresse",
-    deliveryNote: "Levering er en forespørsel. Vi avtaler ikke frakt eller tid her.",
+    deliveryNote:
+      "Fast pris i luftlinje fra Smalgangen 31: 60 kr innen 5 km, 179 kr innen 10 km og 349 kr innen 15 km. Utenfor 15 km sender vi et tilbud.",
+    deliveryQuote: "Regner ut levering …",
+    deliveryOutside: "Adressen er utenfor 15 km. Vi sender et tilbud med full pris.",
+    deliveryPriced: "inkl. levering",
     receivedQuote: "Forespørselen er mottatt. Dette er ikke en bestilling.",
     receivedBinding: "Bestillingen er mottatt. Faktura kommer etter levering.",
     short: "Det er ikke nok esker igjen.",
@@ -143,7 +148,11 @@ const COPY = {
     pickupNote:
       "We rent the kitchen in the restaurant. Pickup is outside, not inside the restaurant.",
     delivery: "Delivery to an address",
-    deliveryNote: "Delivery is a request. Freight and time are not agreed here.",
+    deliveryNote:
+      "Fixed straight-line price from Smalgangen 31: 60 kr within 5 km, 179 kr within 10 km and 349 kr within 15 km. Beyond 15 km we send an offer.",
+    deliveryQuote: "Calculating delivery …",
+    deliveryOutside: "This address is beyond 15 km. We will send an offer with the full price.",
+    deliveryPriced: "incl. delivery",
     receivedQuote: "The request is received. This is not an order.",
     receivedBinding: "The order is received. The invoice comes after delivery.",
     short: "There are not enough boxes left.",
@@ -536,7 +545,37 @@ function OrderForm({
   const [orgNumber, setOrgNumber] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
-  const binding = bindingOpen && fulfillment === "pickup";
+  const [quote, setQuote] = useState<Awaited<ReturnType<typeof postDeliveryQuote>>>(null);
+  const [quoting, setQuoting] = useState(false);
+  const pricedDelivery = fulfillment === "delivery_request" && quote?.freightOre != null;
+  const binding = bindingOpen && (fulfillment === "pickup" || pricedDelivery);
+
+  useEffect(() => {
+    if (fulfillment !== "delivery_request") {
+      setQuote(null);
+      setQuoting(false);
+      return;
+    }
+    const postal = postalCode.replace(/\s/g, "");
+    if (addressLine.trim().length < 4 || !/^\d{4}$/.test(postal) || city.trim().length < 2) {
+      setQuote(null);
+      setQuoting(false);
+      return;
+    }
+    let cancel = false;
+    setQuoting(true);
+    const timer = window.setTimeout(() => {
+      void postDeliveryQuote({ addressLine, postalCode: postal, city, boxes }).then((next) => {
+        if (cancel) return;
+        setQuote(next);
+        setQuoting(false);
+      });
+    }, 400);
+    return () => {
+      cancel = true;
+      window.clearTimeout(timer);
+    };
+  }, [addressLine, boxes, city, fulfillment, postalCode]);
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -557,7 +596,11 @@ function OrderForm({
     if (result.ok) {
       setStatus("done");
       const lead = result.kind === "binding" ? copy.receivedBinding : copy.receivedQuote;
-      setMessage(result.number ? `${result.number}. ${lead}` : lead);
+      const price =
+        result.totalOre != null && result.freightOre != null
+          ? ` ${formatShopPrice(result.totalOre)} ${copy.deliveryPriced}.`
+          : "";
+      setMessage(result.number ? `${result.number}. ${lead}${price}` : `${lead}${price}`);
       return;
     }
     setStatus("error");
@@ -631,6 +674,18 @@ function OrderForm({
         autoComplete="postal-code"
       />
       <Field label={copy.city} value={city} onChange={setCity} autoComplete="address-level2" />
+      {fulfillment === "delivery_request" && quoting ? (
+        <p className="text-sm italic text-foreground/70">{copy.deliveryQuote}</p>
+      ) : null}
+      {fulfillment === "delivery_request" && quote?.freightOre != null && quote.totalOre != null ? (
+        <p className="text-sm italic text-foreground/70">
+          {formatShopPrice(quote.freightOre)} · {formatShopPrice(quote.totalOre)}{" "}
+          {copy.deliveryPriced}
+        </p>
+      ) : null}
+      {fulfillment === "delivery_request" && quote && quote.freightOre == null ? (
+        <p className="text-sm italic text-foreground/70">{copy.deliveryOutside}</p>
+      ) : null}
       <Field label={copy.org} value={orgNumber} onChange={setOrgNumber} />
       {status === "error" ? (
         <p className="text-base italic text-[color:var(--tomato)]" role="alert">
